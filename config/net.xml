@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dmz>
+<plugins>
+   <plugin name="dmzNetPluginPacket"/>
+   <plugin name="dmzNetPluginRemoteDR"/>
+   <plugin name="dmzNetModuleLocalDRBasic"/>
+   <plugin name="dmzNetPluginRemoteTimeout"/>
+   <plugin name="dmzNetModulePacketCodecBasic"/>
+   <plugin name="dmzNetModulePacketIOHawkNL"/>
+   <plugin name="dmzNetModuleAttributeMapBasic"/>
+</plugins>
+<dmzNetModulePacketCodecBasic>
+   <header>
+      <const type="uint32" value="2002002"/>
+      <handle type="uint32"/>
+      <size type="uint32"/>
+   </header>
+   <packet handle="1" name="dmzNetExtPacketCodecObjectBasic">
+      <object type="vehicle"/>
+   </packet>
+   <packet handle="2" name="dmzNetExtPacketCodecEventBasic">
+      <event type="Event_Launch"/>
+      <event type="Event_Detonation"/>
+      <event type="Event_Collision"/>
+   </packet>
+   <plugins>
+      <plugin name="dmzNetExtPacketCodecObjectBasic"/>
+      <plugin name="dmzNetExtPacketCodecEventBasic"/>
+   </plugins>
+</dmzNetModulePacketCodecBasic>
+</dmz>

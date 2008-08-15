@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dmz>
+<runtime>
+   <time>
+      <frequency value="0.0"/>
+   </time>
+   <states>
+      <state name="Engine_On"/>
+      <state name="Deactivate"/>
+      <state name="Dead"/>
+   </states>
+   <types>
+      <event name="Event_Launch"/>
+      <event name="Event_Detonation"/>
+      <event name="Event_Collision"/>
+      <object name="vehicle">
+         <net>
+            <type enum="1"/>
+            <state name="Dead" mask="0x002"/>
+            <state name="Engine_On" mask="0x004"/>
+            <state name="Deactivate" mask="0x010"/>
+         </net>
+      </object>
+      <object name="cycle" parent="vehicle">
+         <net>
+            <type enum="1.1"/>
+         </net>
+         <audio>
+            <sound
+               state="Engine_On"
+               loopedfile="../../assets/sounds/game_engine_mono.wav"
+               scalar="throttle"
+            />
+         </audio>
+      </object>
+      <object name="red_cycle" parent="cycle">
+         <render>
+            <model file="red.obj"/>
+         </render>
+         <net>
+            <type enum="1.1.1"/>
+         </net>
+      </object>
+      <object name="orange_cycle" parent="cycle">
+         <render>
+            <model file="orange.obj"/>
+         </render>
+         <net>
+            <type enum="1.1.2"/>
+         </net>
+      </object>
+      <object name="yellow_cycle" parent="cycle">
+         <render>
+            <model file="yellow.obj"/>
+         </render>
+         <net>
+            <type enum="1.1.3"/>
+         </net>
+      </object>
+      <object name="blue_cycle" parent="cycle">
+         <render>
+            <model file="blue.obj"/>
+         </render>
+         <net>
+            <type enum="1.1.4"/>
+         </net>
+      </object>
+   </types>
+</runtime>
+</dmz>
