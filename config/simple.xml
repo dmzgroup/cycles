@@ -1,45 +1,31 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <dmz>
 <plugins>
-   <plugin name="dmzEntityPluginGroundSimple"/>
+   <plugin name="cycle" reserve="true"/>
    <plugin name="dmzEntityPluginFreeFly" reserve="true"/>
-   <plugin name="dmzEntityPluginPortalFollow"/>
-   <plugin name="dmzEntityPluginPortalTether"/>
+   <plugin name="dmzEntityPluginPortalFollow" scope="cycle"/>
+   <plugin name="dmzEntityPluginPortalTether" scope="freefly"/>
    <plugin name="dmzEntityPluginTeleport"/>
    <plugin name="dmzEntityPluginDamage"/>
    <plugin name="dmzEntityPluginDeadTimer"/>
 </plugins>
 <dmzLuaModuleBasic>
-   <instance name="dmzEntityPluginFreeFly"/>
+   <instance name="cycle"/>
+   <instance name="dmzEntityPluginFreeFly" scope="freefly"/>
 </dmzLuaModuleBasic>
-<dmzEntityPluginFreeFly>
+<cycle>
+   <input>
+      <channel name="cycle"/>
+   </input>
+   <offset x="0.0" y="2.5" z="8.5"/>
+</cycle>
+<freefly>
    <movement speed="100" turnRate="2.4"/>
    <input>
       <channel name="freefly"/>
    </input>
-</dmzEntityPluginFreeFly>
-<dmzEntityPluginGroundSimple>
-   <movement speed="25"/>
-   <input>
-      <channel name="ground"/>
-   </input>
-</dmzEntityPluginGroundSimple>
-<dmzEntityPluginPortalFollow>
-   <input>
-      <channel name="ground"/>
-   </input>
-</dmzEntityPluginPortalFollow>
-<dmzEntityPluginPortalTether>
-   <input>
-      <channel name="freefly"/>
-   </input>
-</dmzEntityPluginPortalTether>
-<dmzEntityPluginPortalFollow>
    <offset x="0.0" y="2.5" z="8.5"/>
-</dmzEntityPluginPortalFollow>
-<dmzEntityPluginPortalTether>
-   <offset x="0.0" y="2.5" z="6.5"/>
-</dmzEntityPluginPortalTether>
+</freefly>
 <dmzEntityPluginDeadTimer>
    <timer value="5.0"/>
 </dmzEntityPluginDeadTimer>

@@ -18,7 +18,7 @@
    </dmzInputPluginKeyEventToMessage>
    <dmzInputPluginChannelSwitch>
       <switch>
-         <channel name="ground"/>
+         <channel name="cycle"/>
          <channel name="freefly"/>
       </switch>
    </dmzInputPluginChannelSwitch>

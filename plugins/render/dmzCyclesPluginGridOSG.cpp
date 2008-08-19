@@ -190,7 +190,7 @@ dmz::CyclesPluginGridOSG::_create_grid () {
 void
 dmz::CyclesPluginGridOSG::_init (Config &local) {
 
-   _imageFile = config_to_string ("image.file", local, "grid.png");
+   _imageFile = config_to_string ("image.file", local, "grid2.png");
 }
 
 
