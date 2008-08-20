@@ -58,6 +58,11 @@ end
 local function test_move (self, hil, origPos, pos)
    if hil then
       dmz.isect.disable_isect (hil)
+      origPos = dmz.vector.new (origPos)
+      origPos:set_y (origPos:get_y () + 0.5)
+      pos = dmz.vector.new (pos)
+      pos:set_y (pos:get_y () + 0.5)
+ 
       local result = dmz.isect.do_isect (
          { type = dmz.isect.SegmentTest, start = origPos, vector = pos, },
          { type = dmz.isect.ClosestPoint, })
