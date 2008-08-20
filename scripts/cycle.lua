@@ -171,12 +171,12 @@ end
 function new (config, name)
    local self = {
       throttleHandle = dmz.handle.new (
-         config:lookup_string ("throttle.name", "throttle")),
-      Acceleration = config:lookup_number ("speed.acceleration", 10),
-      Deceleration = config:lookup_number ("speed.deceleration", -10),
-      MinSpeed = config:lookup_number ("speed.max", 25),
-      NormalSpeed = config:lookup_number ("speed.normal", 45),
-      MaxSpeed = config:lookup_number ("speed.max", 55),
+         config:to_string ("throttle.name", "throttle")),
+      Acceleration = config:to_number ("speed.acceleration", 10),
+      Deceleration = config:to_number ("speed.deceleration", -10),
+      MinSpeed = config:to_number ("speed.max", 25),
+      NormalSpeed = config:to_number ("speed.normal", 45),
+      MaxSpeed = config:to_number ("speed.max", 55),
       turn = 0,
       speed = 0,
       accel = 0,
