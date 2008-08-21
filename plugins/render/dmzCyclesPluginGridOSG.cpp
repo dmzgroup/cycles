@@ -82,7 +82,8 @@ dmz::CyclesPluginGridOSG::_create_grid () {
 
    const String FoundFile (_core ? _core->find_file (_imageFile) : "");
 
-   osg::ref_ptr<osg::Image> img = osgDB::readImageFile (FoundFile.get_buffer ());
+   osg::ref_ptr<osg::Image> img =
+      (FoundFile ? osgDB::readImageFile (FoundFile.get_buffer ()) : 0);
 
    if (img.valid () && _core) {
 
@@ -173,6 +174,65 @@ dmz::CyclesPluginGridOSG::_create_grid () {
 
          geom->setVertexArray (vertices);
          geom->setTexCoordArray (0, tcoords);
+         geode->addDrawable (geom);
+
+         geom = new osg::Geometry;
+
+         colors = new osg::Vec4Array;
+         colors->push_back (osg::Vec4 (0.4f, 0.4f, 0.4f, 1.0f));
+         geom->setColorArray (colors);
+         geom->setColorBinding (osg::Geometry::BIND_OVERALL);
+
+         stateset = geom->getOrCreateStateSet ();
+         stateset->setMode (GL_BLEND, osg::StateAttribute::ON);
+
+         vertices = new osg::Vec3Array;
+
+         stateset->setAttributeAndModes (new osg::CullFace (osg::CullFace::BACK));
+
+         count = 0;
+
+         const Float32 WallHeight (30.0f);
+
+         for (Int32 ix = 0; ix < GridSize; ix++) {
+
+            vertex *v1 = &(gridPoints[ix]);
+            vertex *v2 = &(gridPoints[ix + 1]);
+            vertices->push_back (osg::Vec3 (v1->x, 0.0f, v2->y));
+            vertices->push_back (osg::Vec3 (v1->x, 0.0f, v1->y));
+            vertices->push_back (osg::Vec3 (v1->x, WallHeight, v1->y));
+            vertices->push_back (osg::Vec3 (v1->x, WallHeight, v2->y));
+            count += 4;
+
+            v1 = &(gridPoints[ix + ((1 + GridSize) * GridSize)]);
+            v2 = &(gridPoints[ix + ((1 + GridSize) * GridSize) + 1]);
+            vertices->push_back (osg::Vec3 (v1->x, 0.0f, v1->y));
+            vertices->push_back (osg::Vec3 (v1->x, 0.0f, v2->y));
+            vertices->push_back (osg::Vec3 (v1->x, WallHeight, v2->y));
+            vertices->push_back (osg::Vec3 (v1->x, WallHeight, v1->y));
+            count += 4;
+
+            v1 = &(gridPoints[ix * (1 + GridSize)]);
+            v2 = &(gridPoints[(ix + 1) * (1 + GridSize)]);
+            vertices->push_back (osg::Vec3 (v1->x, 0.0f, v1->y));
+            vertices->push_back (osg::Vec3 (v2->x, 0.0f, v1->y));
+            vertices->push_back (osg::Vec3 (v2->x, WallHeight, v1->y));
+            vertices->push_back (osg::Vec3 (v1->x, WallHeight, v1->y));
+            count += 4;
+
+            v1 = &(gridPoints[(ix * (1 + GridSize)) + GridSize]);
+            v2 = &(gridPoints[((ix + 1) * (1 + GridSize)) + GridSize]);
+            vertices->push_back (osg::Vec3 (v2->x, 0.0f, v1->y));
+            vertices->push_back (osg::Vec3 (v1->x, 0.0f, v1->y));
+            vertices->push_back (osg::Vec3 (v1->x, WallHeight, v1->y));
+            vertices->push_back (osg::Vec3 (v2->x, WallHeight, v1->y));
+            count += 4;
+         }
+
+         geom->addPrimitiveSet (new osg::DrawArrays (GL_QUADS, 0, count));
+
+         geom->setVertexArray (vertices);
+
          geode->addDrawable (geom);
 
          osg::Group *s = _core->get_static_objects ();

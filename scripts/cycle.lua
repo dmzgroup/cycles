@@ -174,7 +174,7 @@ function new (config, name)
          config:to_string ("throttle.name", "throttle")),
       Acceleration = config:to_number ("speed.acceleration", 10),
       Deceleration = config:to_number ("speed.deceleration", -10),
-      MinSpeed = config:to_number ("speed.max", 25),
+      MinSpeed = config:to_number ("speed.min", 25),
       NormalSpeed = config:to_number ("speed.normal", 45),
       MaxSpeed = config:to_number ("speed.max", 55),
       turn = 0,
