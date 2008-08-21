@@ -16,7 +16,7 @@
       <size type="uint32"/>
    </header>
    <packet handle="1" name="dmzNetExtPacketCodecObjectBasic">
-      <object type="vehicle"/>
+      <object type="cycle"/>
    </packet>
    <packet handle="2" name="dmzNetExtPacketCodecEventBasic">
       <event type="Event_Launch"/>
