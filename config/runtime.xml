@@ -40,6 +40,9 @@
          <net>
             <type enum="1.1.1"/>
          </net>
+         <wall>
+            <color r="1.0" g="0.0" b="0.0"/>
+         </wall>
       </object>
       <object name="orange_cycle" parent="cycle">
          <render>

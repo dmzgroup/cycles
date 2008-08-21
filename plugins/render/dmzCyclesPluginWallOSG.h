@@ -83,7 +83,9 @@ namespace dmz {
 
             const WallStruct &WallInfo;
             osg::ref_ptr<osg::MatrixTransform> d;
+            osg::ref_ptr<osg::Geode> g;
             osg::ref_ptr<osg::Geometry> wall;
+            osg::ref_ptr<osg::Vec3Array> v;
 
             ObjectStruct (const WallStruct &TheWallInfo) : WallInfo (TheWallInfo) {;}
          };

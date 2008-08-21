@@ -7,6 +7,7 @@
       <plugin name="dmzRenderPluginObjectOSG"/>
       <plugin name="dmzRenderPluginLogoOSG"/>
       <plugin name="dmzCyclesPluginGridOSG"/>
+      <plugin name="dmzCyclesPluginWallOSG"/>
    </plugins>
    <dmzRenderModuleCoreOSGBasic>
       <search>

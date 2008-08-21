@@ -6,6 +6,9 @@
 #include <dmzRuntimeObjectType.h>
 #include <dmzRuntimePluginFactoryLinkSymbol.h>
 #include <dmzRuntimePluginInfo.h>
+#include <dmzTypesVector.h>
+
+#include <osg/Material>
 
 dmz::CyclesPluginWallOSG::CyclesPluginWallOSG (const PluginInfo &Info, Config &local) :
       Plugin (Info),
@@ -86,8 +89,9 @@ dmz::CyclesPluginWallOSG::create_object (
          const Float32 Green (config_to_float32 ("color.g", wallDef, 1.0));
          const Float32 Blue (config_to_float32 ("color.b", wallDef, 1.0));
          const Float32 Alpha (config_to_float32 ("color.a", wallDef, 1.0));
-         const Float32 Height (config_to_float32 ("height", wallDef, 1.0));
+         const Float32 Height (config_to_float32 ("height", wallDef, 2.0));
 
+_log.error << Red << " " << Green << " " << Blue << " " << Alpha << endl;
          wall = new WallStruct (
             True,
             osg::Vec4 (Red, Green, Blue, Alpha),
@@ -157,6 +161,23 @@ dmz::CyclesPluginWallOSG::update_object_position (
       const Vector &Value,
       const Vector *PreviousValue) {
 
+   ObjectStruct *os (_objectTable.lookup (ObjectHandle));
+
+   if (os) {
+
+      (*(os->v))[2] = osg::Vec3 (Value.get_x (), os->WallInfo.Height, Value.get_z ());
+      (*(os->v))[3] = osg::Vec3 (Value.get_x (), 0.0f, Value.get_z ());
+      osg::Vec3Array* normals = (osg::Vec3Array *)os->wall->getNormalArray ();
+      osg::Vec3 v1 = (*(os->v))[1] - (*(os->v))[0];
+      osg::Vec3 v2 = (*(os->v))[3] - (*(os->v))[0];
+      Vector vv1 (v1.x (), v1.y (), v1.z ());
+      Vector vv2 (v2.x (), v2.y (), v2.z ());
+      Vector cross = vv1.cross (vv2).normalize ();
+//_log.error << vv1 << " " << vv2 << " " << cross << endl;
+      (*normals)[0] = osg::Vec3 (cross.get_x (), cross.get_y (), cross.get_z ());
+      os->wall->dirtyDisplayList ();
+      os->wall->dirtyBound ();
+   }
 }
 
 
@@ -167,7 +188,6 @@ dmz::CyclesPluginWallOSG::update_object_velocity (
       const Handle AttributeHandle,
       const Vector &Value,
       const Vector *PreviousValue) {
-
 }
 
 
@@ -182,11 +202,46 @@ dmz::CyclesPluginWallOSG::_create_wall (
       ObjectStruct *os (new ObjectStruct (Wall));
 
       if (os && _objectTable.store (ObjectHandle, os)) {
+
          os->d = new osg::MatrixTransform;
-         osg::Geode *g (new osg::Geode);
+         os->g = new osg::Geode;
          os->wall = new osg::Geometry;
-         os->d->addChild (g);
-         g->addDrawable (os->wall.get ());
+         os->d->addChild (os->g.get ());
+
+         os->v = new osg::Vec3Array;
+
+         os->v->push_back (osg::Vec3 (0.0f, 0.0f, 0.0f));
+         os->v->push_back (osg::Vec3 (0.0f, Wall.Height, 0.0f));
+         os->v->push_back (osg::Vec3 (0.0f, Wall.Height, 10.0f));
+         os->v->push_back (osg::Vec3 (0.0f, 0.0f, 10.0f));
+
+#if 0
+         osg::StateSet *set = os->wall->getOrCreateStateSet ();
+         osg::Material *mat = new osg::Material;
+         mat->setAmbient (osg::Material::FRONT_AND_BACK, Wall.Color);
+         mat->setSpecular (osg::Material::FRONT_AND_BACK, Wall.Color);
+         mat->setDiffuse (osg::Material::FRONT_AND_BACK, Wall.Color);
+         set->setAttributeAndModes (mat);
+#endif
+
+         osg::Vec3Array* normals = new osg::Vec3Array;
+         normals->push_back (osg::Vec3 (1.0f, 0.0f, 0.0f));
+         os->wall->setNormalArray (normals);
+         os->wall->setNormalBinding (osg::Geometry::BIND_OVERALL);
+
+         osg::Vec4Array *color = new osg::Vec4Array;
+         color->push_back (Wall.Color);
+         os->wall->setColorArray (color);
+         os->wall->setColorBinding (osg::Geometry::BIND_OVERALL);
+
+         os->wall->setVertexArray (os->v.get ());
+         os->wall->addPrimitiveSet (new osg::DrawArrays (GL_QUADS, 0, 4));
+
+         os->g->addDrawable (os->wall.get ());
+
+         if (dgroup) { dgroup->addChild (os->d.get ()); }
+         else { _log.error << "Failed to add geode!" << endl; }
+
       }
       else if (os) { delete os; os = 0; }
    }
