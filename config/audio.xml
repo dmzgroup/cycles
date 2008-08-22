@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <dmz>
    <plugins>
-      <plugin name="dmzAudioModuleOpenAL"/>
+      <!-- <plugin name="dmzAudioModuleOpenAL"/> -->
+      <plugin name="dmzAudioModuleFMOD"/>
       <plugin name="dmzAudioModulePortalBasic"/>
       <plugin name="dmzAudioPluginObject" />
       <plugin name="dmzAudioPluginEventSimple" />
@@ -22,6 +23,6 @@
       <event type="Event_Launch" file="../../assets/sounds/launch.wav"/>
       <event type="Event_Detonation" file="../../assets/sounds/detonation.wav"/>
 -->
-      <event type="Event_Collision" file="../../assets/sounds/game_crash.wav"/>
+      <event type="Event_Collision" file="../../assets/sounds/game_crash_mono.wav"/>
    </dmzAudioPluginEventSimple>
 </dmz>

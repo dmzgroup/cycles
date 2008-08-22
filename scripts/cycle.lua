@@ -67,8 +67,11 @@ local function test_move (self, hil, origPos, pos)
          { type = dmz.isect.SegmentTest, start = origPos, vector = pos, },
          { type = dmz.isect.ClosestPoint, })
       if result and result[1] then
-print (tostring (origPos) .. " " .. tostring (pos) .. " " .. tostring (result[1].point) .. " " .. tostring (result[1].normal))
-         dmz.event.collision (hil, result[1].object)
+         --print (tostring (origPos) .. " " .. tostring (pos) .. " " .. tostring (result[1].point) .. " " .. tostring (result[1].normal))
+         local Event = dmz.event.open_collision (hil, result[1].object)
+         dmz.event.position (Event, nil, result[1].point)
+         --dmz.event.velocity (Event, nil, {0, 0, 0})
+         dmz.event.close (Event)
       end
       dmz.isect.enable_isect (hil)
    end

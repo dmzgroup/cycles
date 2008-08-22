@@ -215,14 +215,10 @@ dmz::CyclesPluginWallOSG::_create_wall (
          os->v->push_back (osg::Vec3 (0.0f, Wall.Height, 10.0f));
          os->v->push_back (osg::Vec3 (0.0f, 0.0f, 10.0f));
 
-#if 0
          osg::StateSet *set = os->wall->getOrCreateStateSet ();
          osg::Material *mat = new osg::Material;
-         mat->setAmbient (osg::Material::FRONT_AND_BACK, Wall.Color);
-         mat->setSpecular (osg::Material::FRONT_AND_BACK, Wall.Color);
-         mat->setDiffuse (osg::Material::FRONT_AND_BACK, Wall.Color);
+         mat->setEmission (osg::Material::FRONT_AND_BACK, Wall.Color);
          set->setAttributeAndModes (mat);
-#endif
 
          osg::Vec3Array* normals = new osg::Vec3Array;
          normals->push_back (osg::Vec3 (1.0f, 0.0f, 0.0f));
@@ -230,7 +226,8 @@ dmz::CyclesPluginWallOSG::_create_wall (
          os->wall->setNormalBinding (osg::Geometry::BIND_OVERALL);
 
          osg::Vec4Array *color = new osg::Vec4Array;
-         color->push_back (Wall.Color);
+         //color->push_back (Wall.Color);
+         color->push_back (osg::Vec4 (1.0f, 1.0f, 1.0f, 1.0f));
          os->wall->setColorArray (color);
          os->wall->setColorBinding (osg::Geometry::BIND_OVERALL);
 
