@@ -12,7 +12,11 @@
    <types>
       <event name="Event_Launch"/>
       <event name="Event_Detonation"/>
-      <event name="Event_Collision"/>
+      <event name="Event_Collision">
+         <net>
+            <type enum="3"/>
+         </net>
+      </event>
       <object name="vehicle">
          <net>
             <type enum="1"/>

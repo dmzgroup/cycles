@@ -15,17 +15,28 @@
       <handle type="uint32"/>
       <size type="uint32"/>
    </header>
-   <packet handle="1" name="dmzNetExtPacketCodecObjectBasic">
+   <packet handle="1" name="NetCodecCycle">
       <object type="cycle"/>
    </packet>
-   <packet handle="2" name="dmzNetExtPacketCodecEventBasic">
-      <event type="Event_Launch"/>
-      <event type="Event_Detonation"/>
+   <packet handle="2" name="NetCodecCollision">
       <event type="Event_Collision"/>
    </packet>
    <plugins>
-      <plugin name="dmzNetExtPacketCodecObjectBasic"/>
-      <plugin name="dmzNetExtPacketCodecEventBasic"/>
+      <plugin name="dmzNetExtPacketCodecObjectNative" unique="NetCodecCycle"/>
+      <plugin name="dmzNetExtPacketCodecEventNative" unique="NetCodecCollision"/>
    </plugins>
 </dmzNetModulePacketCodecBasic>
+<NetCodecCycle>
+   <adapter type="position" lnv="true"/>
+   <adapter type="velocity" lnv="true"/>
+   <adapter type="orientation" lnv="true"/>
+   <adapter type="state" lnv="true"/>
+   <adapter type="scalar" attribute="throttle"/>
+</NetCodecCycle>
+<NetCodecCollision>
+   <adapter type="id" attribute="Event_Source_Attribute"/>
+   <adapter type="id" attribute="Event_Target_Attribute"/>
+   <adapter type="position"/>
+   <adapter type="velocity"/>
+</NetCodecCollision>
 </dmz>
