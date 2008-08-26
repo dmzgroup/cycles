@@ -14,7 +14,7 @@
       <event name="Event_Detonation"/>
       <event name="Event_Collision">
          <net>
-            <type enum="3"/>
+            <type enum="4"/>
          </net>
       </event>
       <object name="vehicle">
@@ -70,6 +70,26 @@
          </render>
          <net>
             <type enum="1.1.4"/>
+         </net>
+      </object>
+      <object name="mcp">
+         <net>
+            <type enum="2"/>
+            <local>
+               <rule type="state"/>
+               <rule type="heartbeat" value="1.0"/>
+               <rule type="ratelimit"/>
+            </local>
+         </net>
+      </object>
+      <object name="start_point">
+         <net>
+            <type enum="3"/>
+            <local>
+               <rule type="position"/>
+               <rule type="heartbeat" value="1.0"/>
+               <rule type="ratelimit"/>
+            </local>
          </net>
       </object>
    </types>
