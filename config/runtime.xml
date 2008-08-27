@@ -6,8 +6,14 @@
    </time>
    <states>
       <state name="Engine_On"/>
-      <state name="Deactivate"/>
       <state name="Dead"/>
+      <state name="Game_Waiting"/>
+      <state name="Game_Countdown_5"/>
+      <state name="Game_Countdown_4"/>
+      <state name="Game_Countdown_3"/>
+      <state name="Game_Countdown_2"/>
+      <state name="Game_Countdown_1"/>
+      <state name="Game_Active"/>
    </states>
    <types>
       <event name="Event_Launch"/>
@@ -75,21 +81,25 @@
       <object name="mcp">
          <net>
             <type enum="2"/>
-            <local>
-               <rule type="state"/>
-               <rule type="heartbeat" value="1.0"/>
-               <rule type="ratelimit"/>
-            </local>
+            <state name="Game_Waiting" mask="0x01"/>
+            <state name="Game_Active" mask="0x02"/>
+            <state name="Game_Countdown_5" mask="0x04"/>
+            <state name="Game_Countdown_4" mask="0x08"/>
+            <state name="Game_Countdown_3" mask="0x10"/>
+            <state name="Game_Countdown_2" mask="0x20"/>
+            <state name="Game_Countdown_1" mask="0x40"/>
+            <rule type="state"/>
+            <rule type="heartbeat" value="1.0"/>
+            <rule type="ratelimit"/>
          </net>
       </object>
       <object name="start_point">
          <net>
             <type enum="3"/>
-            <local>
-               <rule type="position"/>
-               <rule type="heartbeat" value="1.0"/>
-               <rule type="ratelimit"/>
-            </local>
+            <rule type="position"/>
+            <rule type="orientation"/>
+            <rule type="heartbeat" value="1.0"/>
+            <rule type="ratelimit"/>
          </net>
       </object>
    </types>
