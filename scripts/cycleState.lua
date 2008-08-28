@@ -1,18 +1,7 @@
-local GameWaiting = dmz.definitions.lookup_state ("Game_Waiting")
-local GameActive = dmz.definitions.lookup_state ("Game_Active")
-local Dead = dmz.definitions.lookup_state ("Dead")
-local Standby = dmz.definitions.lookup_state ("Standby")
-local EngineOn = dmz.definitions.lookup_state ("Engine_On")
-local EmptyState = dmz.mask.new ()
-local TimeStampHandle = dmz.handle.new ("MCP_Running_Time")
-local StartLinkHandle = dmz.handle.new ("Start_Position")
-local CycleType = dmz.object_type.new ("cycle")
-local MCPType = dmz.object_type.new ("mcp")
-local StartPointType = dmz.object_type.new ("start_point")
-local WaitPointType = dmz.object_type.new ("wait_point")
+require "const"
 
 local function create_object (self, Object, Type)
-   if Type:is_of_type (MCPType) then self.mcp = Object end
+   if Type:is_of_type (const.MCPType) then self.mcp = Object end
 end
 
 local function destroy_object (self, Object)
@@ -22,23 +11,25 @@ end
 local function update_object_state (self, Object, Attribute, State, PreviousState)
    if Object == self.mcp and self.active then
       local hil = dmz.object.hil ()
-      if not PreviousState then PreviousState = EmptyState end
-      if State:contains (GameWaiting) and not PreviousState:contains (GameWaiting) then
+      if not PreviousState then PreviousState = const.EmptyState end
+      if State:contains (const.GameWaiting) and
+            not PreviousState:contains (const.GameWaiting) then
          local cycleState = dmz.object.state (hil)
          if cycleState then
-            cycleState:unset (Dead + EngineOn)
-            cycleState = cycleState + Standby
-         else cycleState = Standby
+            cycleState:unset (const.Dead + const.EngineOn)
+            cycleState = cycleState + const.Standby
+         else cycleState = const.Standby
          end
          dmz.object.state (hil, nil, cycleState)
          if self.startPos then dmz.object.position (hil, nil, self.startPos) end
          if self.startOri then dmz.object.orientation (hil, nil, self.startOri) end
-      elseif State:contains (GameActive) and not PreviousState:contains (GameActive) then
+      elseif State:contains (const.GameActive) and
+            not PreviousState:contains (const.GameActive) then
          local cycleState = dmz.object.state (hil, nil)
          if cycleState then
-            cycleState:unset (Dead + Standby)
-            cycleState = cycleState + EngineOn
-         else cycleState = EngineOn
+            cycleState:unset (const.Dead + const.Standby)
+            cycleState = cycleState + const.EngineOn
+         else cycleState = const.EngineOn
          end
          dmz.object.state (hil, nil, cycleState)        
       end
@@ -49,7 +40,7 @@ local function link_objects (self, Link, Attribute, Super, Sub)
    local SuperType = dmz.object.type (Super)
    local hil = dmz.object.hil ()
    if SuperType and Sub == hil then
-      if SuperType:is_of_type (StartPointType) then
+      if SuperType:is_of_type (const.StartPointType) then
          self.active = true
          self.startPos = dmz.object.position (Super)
          self.startOri = dmz.object.orientation (Super)
@@ -57,12 +48,12 @@ local function link_objects (self, Link, Attribute, Super, Sub)
             local mcpState = dmz.object.state (self.mcp)
             if mcpState then update_object_state (self, self.mcp, nil, mcpState) end
          end
-      elseif SuperType:is_of_type (WaitPointType) then
+      elseif SuperType:is_of_type (const.WaitPointType) then
          self.active = false
          local cycleState = dmz.object.state (hil)
          if cycleState then
-            cycleState.unset (Dead + Engine_On)
-            cycleState = cycleState + Standby
+            cycleState.unset (const.Dead + Engine_On)
+            cycleState = cycleState + const.Standby
             dmz.object.state (hil , nil, cycleState)
             local pos = dmz.object.position (Super)
             if pos then dmz.object.position (hil, nil, pos) end
@@ -79,7 +70,7 @@ local function start (self)
    }
    self.objObs:register (nil, callbacks, self)
    callbacks = { link_objects = link_objects, }
-   self.objObs:register (StartLinkHandle, callbacks, self)
+   self.objObs:register (const.StartLinkHandle, callbacks, self)
 end
 
 local function stop (self)

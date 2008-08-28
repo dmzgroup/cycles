@@ -1,26 +1,14 @@
-local GameWaiting = dmz.definitions.lookup_state ("Game_Waiting")
-local GameCountdown5 = dmz.definitions.lookup_state ("Game_Countdown_5")
-local GameCountdown4 = dmz.definitions.lookup_state ("Game_Countdown_4")
-local GameCountdown3 = dmz.definitions.lookup_state ("Game_Countdown_3")
-local GameCountdown2 = dmz.definitions.lookup_state ("Game_Countdown_2")
-local GameCountdown1 = dmz.definitions.lookup_state ("Game_Countdown_1")
-local GameActive = dmz.definitions.lookup_state ("Game_Active")
-local TimeStampHandle = dmz.handle.new ("MCP_Running_Time")
-local StartLinkHandle = dmz.handle.new ("Start_Position")
-local CycleType = dmz.object_type.new ("cycle")
-local MCPType = dmz.object_type.new ("mcp")
-local StartPointType = dmz.object_type.new ("start_point")
-local WaitPointType = dmz.object_type.new ("wait_point")
+require "const"
 
 local function update_time_slice (self, time)
 
 end
 
 local function create_object (self, Object, Type)
-   if Type:is_of_type (CycleType) then
-      local startPoint = { handle = dmz.object.create (StartPointType), }
+   if Type:is_of_type (const.CycleType) then
+      local startPoint = { handle = dmz.object.create (const.StartPointType), }
       dmz.object.position (startPoint.handle, nil, {500, 0, 500})
-      dmz.object.link (StartLinkHandle, startPoint.handle, Object)
+      dmz.object.link (const.StartLinkHandle, startPoint.handle, Object)
       dmz.object.activate (startPoint.handle)
       dmz.object.set_temporary (startPoint.handle)
       self.cycleList[Object] = startPoint
@@ -47,8 +35,8 @@ local function start (self)
       update_object_state = update_object_state,
    }
    self.objObs:register (nil, callbacks, self)
-   self.mcp = dmz.object.create (MCPType)
-   dmz.object.state (self.mcp, nil, GameActive)
+   self.mcp = dmz.object.create (const.MCPType)
+   dmz.object.state (self.mcp, nil, const.GameActive)
    dmz.object.activate (self.mcp)
    dmz.object.set_temporary (self.mcp)
 end

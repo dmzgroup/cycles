@@ -1,7 +1,4 @@
-local Right = dmz.vector.right ()
-local Up = dmz.vector.up ()
-local Forward = dmz.vector.forward ()
-local EngineOn = dmz.definitions.lookup_state ("Engine_On")
+require "const"
 
 local function calculate_orientation (self, ori)
 
@@ -9,13 +6,13 @@ local function calculate_orientation (self, ori)
 
    local result = dmz.matrix.new ()
 
-   local dir = ori:transform (Forward)
+   local dir = ori:transform (const.Forward)
    dir:set_y (0)
 
    if not dir:is_zero () then
       dir = dir:normalize ()
-      local heading = Forward:get_angle (dir)
-      local cross =  Forward:cross (dir)
+      local heading = const.Forward:get_angle (dir)
+      local cross =  const.Forward:cross (dir)
       if cross:get_y () < 0 then heading = dmz.math.TwoPi - heading end
       local remainder = math.fmod (heading, dmz.math.HalfPi)
       if remainder > (dmz.math.HalfPi / 2) then
@@ -35,7 +32,7 @@ local function calculate_orientation (self, ori)
          else self.lastTurn = FrameTime - 0.6
          end
       end
-      result:from_axis_and_angle (Up, heading)
+      result:from_axis_and_angle (const.Up, heading)
    end
 
    return result
@@ -86,7 +83,7 @@ local function update_time_slice (self, time)
 
       local state = dmz.object.state (hil)
 
-      if state and state:contains (EngineOn) then
+      if state and state:contains (const.EngineOn) then
 
          local pos = dmz.object.position (hil)
          local vel = dmz.object.velocity (hil)
