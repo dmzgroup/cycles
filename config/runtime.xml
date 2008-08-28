@@ -5,6 +5,7 @@
       <frequency value="0.0"/>
    </time>
    <states>
+      <state name="Standby"/>
       <state name="Engine_On"/>
       <state name="Dead"/>
       <state name="Game_Waiting"/>
@@ -26,9 +27,9 @@
       <object name="vehicle">
          <net>
             <type enum="1"/>
-            <state name="Dead" mask="0x002"/>
-            <state name="Engine_On" mask="0x004"/>
-            <state name="Deactivate" mask="0x010"/>
+            <state name="Standby" mask="0x001"/>
+            <state name="Engine_On" mask="0x002"/>
+            <state name="Dead" mask="0x004"/>
          </net>
       </object>
       <object name="cycle" parent="vehicle">
@@ -93,13 +94,23 @@
             <rule type="ratelimit"/>
          </net>
       </object>
-      <object name="start_point">
+      <object name="base_point">
          <net>
             <type enum="3"/>
             <rule type="position"/>
             <rule type="orientation"/>
             <rule type="heartbeat" value="1.0"/>
             <rule type="ratelimit"/>
+         </net>
+      </object>
+      <object name="start_point" parent="base_point">
+         <net>
+            <type enum="3.1"/>
+         </net>
+      </object>
+      <object name="wait_point" parent="base_point">
+         <net>
+            <type enum="3.2"/>
          </net>
       </object>
    </types>

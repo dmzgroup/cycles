@@ -3,7 +3,7 @@
 <objects>
    <object type="red_cycle">
       <attributes>
-         <state value="Engine_On"/>
+         <state value="Standby"/>
          <position x="0.0" y="0.0" z="0.0"/>
          <orientation
             v0="1.0" v1="0.0" v2="0.0"

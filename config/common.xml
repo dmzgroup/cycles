@@ -10,8 +10,10 @@
    <plugin name="dmzArchivePluginQuickSave"/>
    <plugin name="dmzArchivePluginObject"/>
    <plugin name="dmzObjectModuleBasic"/>
+   <plugin name="dmzEventModuleBasic"/>
+   <plugin name="dmzEventModuleCommonBasic"/>
    <!-- <plugin name="dmzObjectPluginDump"/> -->
-   <plugin name="dmzEventPluginDump"/>
+   <!-- <plugin name="dmzEventPluginDump"/> -->
    <!-- <plugin name="dmzPluginTermExit"/> -->
 </plugins>
 <dmzArchivePluginObject>

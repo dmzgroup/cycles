@@ -1,6 +1,7 @@
 local Right = dmz.vector.right ()
 local Up = dmz.vector.up ()
 local Forward = dmz.vector.forward ()
+local EngineOn = dmz.definitions.lookup_state ("Engine_On")
 
 local function calculate_orientation (self, ori)
 
@@ -83,37 +84,42 @@ local function update_time_slice (self, time)
 
    if hil and self.active > 0 then
 
-      local pos = dmz.object.position (hil)
-      local vel = dmz.object.velocity (hil)
-      local ori = dmz.object.orientation (hil)
+      local state = dmz.object.state (hil)
 
-      if not pos then pos = dmz.vector.new () end
-      if not vel then vel = dmz.vector.new () end
-      if not ori then ori = dmz.matrix.new () end
+      if state and state:contains (EngineOn) then
 
-      ori = calculate_orientation (self, ori)
+         local pos = dmz.object.position (hil)
+         local vel = dmz.object.velocity (hil)
+         local ori = dmz.object.orientation (hil)
 
-      local dir = ori:transform (dmz.vector.forward ())
+         if not pos then pos = dmz.vector.new () end
+         if not vel then vel = dmz.vector.new () end
+         if not ori then ori = dmz.matrix.new () end
 
-      if self.accel > 0.1 then
-         self.speed = self.speed + (self.Deceleration * time)
-         if self.speed < self.MinSpeed then self.speed = self.MinSpeed end
-      elseif self.accel < -0.1 then
-         self.speed = self.speed + (self.Acceleration * time)
-         if self.speed > self.MaxSpeed then self.speed = self.MaxSpeed end
+         ori = calculate_orientation (self, ori)
+
+         local dir = ori:transform (dmz.vector.forward ())
+
+         if self.accel > 0.1 then
+            self.speed = self.speed + (self.Deceleration * time)
+            if self.speed < self.MinSpeed then self.speed = self.MinSpeed end
+         elseif self.accel < -0.1 then
+            self.speed = self.speed + (self.Acceleration * time)
+            if self.speed > self.MaxSpeed then self.speed = self.MaxSpeed end
+         end
+
+         set_throttle (self, hil)
+
+         vel = dir * (self.speed)
+         local origPos = pos
+         pos = pos + (vel * time)
+
+         test_move (self, hil, origPos, pos)
+
+         dmz.object.position (hil, nil, pos)
+         dmz.object.velocity (hil, nil, vel)
+         dmz.object.orientation (hil, nil, ori)
       end
-
-      set_throttle (self, hil)
-
-      vel = dir * (self.speed)
-      local origPos = pos
-      pos = pos + (vel * time)
-
-      test_move (self, hil, origPos, pos)
-
-      dmz.object.position (hil, nil, pos)
-      dmz.object.velocity (hil, nil, vel)
-      dmz.object.orientation (hil, nil, ori)
    end
 end
 
