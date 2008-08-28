@@ -21,8 +21,8 @@
    <packet handle="2" name="NetCodecMCP">
       <object type="mcp"/>
    </packet>
-   <packet handle="3" name="NetCodecStartPoint">
-      <object type="start_point"/>
+   <packet handle="3" name="NetCodecBasePoint">
+      <object type="base_point"/>
    </packet>
    <packet handle="4" name="NetCodecCollision">
       <event type="Event_Collision"/>
@@ -30,7 +30,7 @@
    <plugins>
       <plugin name="dmzNetExtPacketCodecObjectNative" unique="NetCodecCycle"/>
       <plugin name="dmzNetExtPacketCodecObjectNative" unique="NetCodecMCP"/>
-      <plugin name="dmzNetExtPacketCodecObjectNative" unique="NetCodecStartPoint"/>
+      <plugin name="dmzNetExtPacketCodecObjectNative" unique="NetCodecBasePoint"/>
       <plugin name="dmzNetExtPacketCodecEventNative" unique="NetCodecCollision"/>
    </plugins>
 </dmzNetModulePacketCodecBasic>
@@ -45,11 +45,11 @@
    <adapter type="state" lnv="true"/>
    <adapter type="timestamp" attribute="MCP_Running_Time"/>
 </NetCodecMCP>
-<NetCodecStartPoint>
+<NetCodecBasePoint>
    <adapter type="position" lnv="true"/>
    <adapter type="orientation" lnv="true"/>
    <adapter type="link" attribute="Start_Position"/>
-</NetCodecStartPoint>
+</NetCodecBasePoint>
 <NetCodecCollision>
    <adapter type="id" attribute="Event_Source_Attribute"/>
    <adapter type="id" attribute="Event_Target_Attribute"/>

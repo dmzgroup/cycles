@@ -9,6 +9,16 @@ GameCountdown3 = dmz.definitions.lookup_state ("Game_Countdown_3")
 GameCountdown2 = dmz.definitions.lookup_state ("Game_Countdown_2")
 GameCountdown1 = dmz.definitions.lookup_state ("Game_Countdown_1")
 GameActive = dmz.definitions.lookup_state ("Game_Active")
+
+GameStateMask =
+   GameWaiting +
+   GameActive +
+   GameCountdown1 +
+   GameCountdown2 +
+   GameCountdown3 +
+   GameCountdown4 +
+   GameCountdown5
+
 Dead = dmz.definitions.lookup_state ("Dead")
 Standby = dmz.definitions.lookup_state ("Standby")
 EngineOn = dmz.definitions.lookup_state ("Engine_On")

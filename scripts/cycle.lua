@@ -66,6 +66,12 @@ local function test_move (self, hil, origPos, pos)
          { type = dmz.isect.ClosestPoint, })
       if result and result[1] then
          --print (tostring (origPos) .. " " .. tostring (pos) .. " " .. tostring (result[1].point) .. " " .. tostring (result[1].normal))
+         local state = dmz.object.state (hil)
+         if not state then state = dmz.mask.new () end
+         state:unset (const.EngineOn)
+         state = state + const.Dead
+         dmz.object.state (hil, nil, state)
+         dmz.object.velocity (hil, nil, {0, 0, 0})
          local Event = dmz.event.open_collision (hil, result[1].object)
          dmz.event.position (Event, nil, result[1].point)
          --dmz.event.velocity (Event, nil, {0, 0, 0})

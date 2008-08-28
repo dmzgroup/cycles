@@ -23,9 +23,10 @@ local function update_object_state (self, Object, Attribute, State, PreviousStat
          dmz.object.state (hil, nil, cycleState)
          if self.startPos then dmz.object.position (hil, nil, self.startPos) end
          if self.startOri then dmz.object.orientation (hil, nil, self.startOri) end
+         dmz.object.velocity (hil, nil, {0, 0, 0})
       elseif State:contains (const.GameActive) and
             not PreviousState:contains (const.GameActive) then
-         local cycleState = dmz.object.state (hil, nil)
+         local cycleState = dmz.object.state (hil)
          if cycleState then
             cycleState:unset (const.Dead + const.Standby)
             cycleState = cycleState + const.EngineOn
@@ -71,6 +72,7 @@ local function start (self)
    self.objObs:register (nil, callbacks, self)
    callbacks = { link_objects = link_objects, }
    self.objObs:register (const.StartLinkHandle, callbacks, self)
+   dmz.object.state (dmz.object.hil (), nil, const.Dead)
 end
 
 local function stop (self)
