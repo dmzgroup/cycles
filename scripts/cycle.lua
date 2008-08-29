@@ -54,6 +54,7 @@ local function set_throttle (self, hil)
 end
 
 local function test_move (self, hil, origPos, pos)
+   local result = true
    if hil then
       dmz.isect.disable_isect (hil)
       origPos = dmz.vector.new (origPos)
@@ -61,24 +62,24 @@ local function test_move (self, hil, origPos, pos)
       pos = dmz.vector.new (pos)
       pos:set_y (pos:get_y () + 0.5)
  
-      local result = dmz.isect.do_isect (
+      local isectResults = dmz.isect.do_isect (
          { type = dmz.isect.SegmentTest, start = origPos, vector = pos, },
          { type = dmz.isect.ClosestPoint, })
-      if result and result[1] then
-         --print (tostring (origPos) .. " " .. tostring (pos) .. " " .. tostring (result[1].point) .. " " .. tostring (result[1].normal))
+      if isectResults and isectResults[1] then
          local state = dmz.object.state (hil)
          if not state then state = dmz.mask.new () end
          state:unset (const.EngineOn)
          state = state + const.Dead
          dmz.object.state (hil, nil, state)
-         dmz.object.velocity (hil, nil, {0, 0, 0})
-         local Event = dmz.event.open_collision (hil, result[1].object)
-         dmz.event.position (Event, nil, result[1].point)
+         local Event = dmz.event.open_collision (hil, isectResults[1].object)
+         dmz.event.position (Event, nil, isectResults[1].point)
          --dmz.event.velocity (Event, nil, {0, 0, 0})
          dmz.event.close (Event)
+         result = false
       end
       dmz.isect.enable_isect (hil)
    end
+   return result
 end
 
 local function update_time_slice (self, time)
@@ -117,10 +118,10 @@ local function update_time_slice (self, time)
          local origPos = pos
          pos = pos + (vel * time)
 
-         test_move (self, hil, origPos, pos)
+         local passed = test_move (self, hil, origPos, pos)
 
-         dmz.object.position (hil, nil, pos)
-         dmz.object.velocity (hil, nil, vel)
+         dmz.object.position (hil, nil, (passed and pos or origPos))
+         dmz.object.velocity (hil, nil, (passed and vel or {0, 0, 0}))
          dmz.object.orientation (hil, nil, ori)
       end
    end

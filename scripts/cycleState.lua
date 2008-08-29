@@ -9,8 +9,8 @@ local function destroy_object (self, Object)
 end
 
 local function update_object_state (self, Object, Attribute, State, PreviousState)
-   if Object == self.mcp and self.active then
-      local hil = dmz.object.hil ()
+   local hil = dmz.object.hil ()
+   if hil and Object == self.mcp and self.active then
       if not PreviousState then PreviousState = const.EmptyState end
       if State:contains (const.GameWaiting) and
             not PreviousState:contains (const.GameWaiting) then
@@ -72,7 +72,8 @@ local function start (self)
    self.objObs:register (nil, callbacks, self)
    callbacks = { link_objects = link_objects, }
    self.objObs:register (const.StartLinkHandle, callbacks, self)
-   dmz.object.state (dmz.object.hil (), nil, const.Dead)
+   local hil = dmz.object.hil ()
+   if hil then dmz.object.state (hil, nil, const.Dead) end
 end
 
 local function stop (self)
