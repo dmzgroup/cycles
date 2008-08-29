@@ -51,7 +51,7 @@ end
 local function get_standby_count (self)
    local result = 0
    for object, cycle in pairs (self.cycleList) do
-      if cycle.standby then result = result + 1 end
+      if cycle.point and cycle.standby then result = result + 1 end
    end
    return result
 end
@@ -59,7 +59,7 @@ end
 local function get_dead_count (self)
    local result = 0
    for object, cycle in pairs (self.cycleList) do
-      if cycle.dead then result = result + 1 end
+      if cycle.point and cycle.dead then result = result + 1 end
    end
    return result
 end
@@ -89,8 +89,11 @@ self.log:error ("Move to Countdown 5")
             self.nextStateTime = CTime + 1
          end
       elseif State:contains (const.GameActive) then
-         if get_dead_count (self) >= (self.playerCount - 1) then
+         if self.endTime and self.endTime <= CTime then
             set_game_state (self.mcp, const.GameWaiting)
+            self.endTime = nil
+         elseif not self.endTime and get_dead_count (self) >= (self.playerCount - 1) then
+            self.endTime = CTime + 2
          end
       elseif State:contains (const.GameCountdown5) then
          if CTime >= self.nextStateTime then
