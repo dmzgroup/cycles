@@ -80,6 +80,20 @@
          </net>
       </object>
       <object name="mcp">
+         <audio>
+            <sound state="Game_Waiting" activatefile="../../assets/sounds/gameover.wav"/>
+            <sound state="Game_Active" activatefile="../../assets/sounds/begin.wav"/>
+            <sound state="Game_Countdown_5" activatefile="../../assets/sounds/five.wav"/>
+            <sound state="Game_Countdown_4" activatefile="../../assets/sounds/four.wav"/>
+            <sound state="Game_Countdown_3" activatefile="../../assets/sounds/three.wav"/>
+            <sound state="Game_Countdown_2" activatefile="../../assets/sounds/two.wav"/>
+            <sound state="Game_Countdown_1" activatefile="../../assets/sounds/one.wav"/>
+            <sound
+               state="Engine_On"
+               loopedfile="../../assets/sounds/game_engine_mono.wav"
+               scalar="throttle"
+            />
+         </audio>
          <net>
             <type enum="2"/>
             <state name="Game_Waiting" mask="0x01"/>
