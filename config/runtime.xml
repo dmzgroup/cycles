@@ -92,11 +92,6 @@
             <sound state="Game_Countdown_3" activatefile="../../assets/sounds/three.wav"/>
             <sound state="Game_Countdown_2" activatefile="../../assets/sounds/two.wav"/>
             <sound state="Game_Countdown_1" activatefile="../../assets/sounds/one.wav"/>
-            <sound
-               state="Engine_On"
-               loopedfile="../../assets/sounds/game_engine_mono.wav"
-               scalar="throttle"
-            />
          </audio>
          <net>
             <type enum="2"/>

@@ -81,10 +81,12 @@ local function update_time_slice (self, time)
          if self.assignPoints then
             assign_points_to_cycles (self)
             self.assignPoints = false
+            self.waitTime = CTime + 2
          end
-         if (get_standby_count (self) == self.playerCount) and
+         if (self.waitTime >= CTime) and
+               (get_standby_count (self) == self.playerCount) and
                (self.playerCount >= self.minCycles) then
-self.log:error ("Move to Countdown 5")
+--self.log:error ("Move to Countdown 5")
             set_game_state (self.mcp, const.GameCountdown5)
             self.nextStateTime = CTime + 1
          end
@@ -92,36 +94,37 @@ self.log:error ("Move to Countdown 5")
          if self.endTime and self.endTime <= CTime then
             set_game_state (self.mcp, const.GameWaiting)
             self.endTime = nil
+            self.waitTime = CTime + 1
          elseif not self.endTime and get_dead_count (self) >= (self.playerCount - 1) then
             self.endTime = CTime + 2
          end
       elseif State:contains (const.GameCountdown5) then
          if CTime >= self.nextStateTime then
-self.log:error ("Move to Countdown 4")
+--self.log:error ("Move to Countdown 4")
             set_game_state (self.mcp, const.GameCountdown4)
             self.nextStateTime = CTime + 1
          end
       elseif State:contains (const.GameCountdown4) then
          if CTime >= self.nextStateTime then
-self.log:error ("Move to Countdown 3")
+--self.log:error ("Move to Countdown 3")
             set_game_state (self.mcp, const.GameCountdown3)
             self.nextStateTime = CTime + 1
          end
       elseif State:contains (const.GameCountdown3) then
          if CTime >= self.nextStateTime then
-self.log:error ("Move to Countdown 2")
+--self.log:error ("Move to Countdown 2")
             set_game_state (self.mcp, const.GameCountdown2)
             self.nextStateTime = CTime + 1
          end
       elseif State:contains (const.GameCountdown2) then
          if CTime >= self.nextStateTime then
-self.log:error ("Move to Countdown 1")
+--self.log:error ("Move to Countdown 1")
             set_game_state (self.mcp, const.GameCountdown1)
             self.nextStateTime = CTime + 1
          end
       elseif State:contains (const.GameCountdown1) then
          if CTime >= self.nextStateTime then
-self.log:error ("Move to Active")
+--self.log:error ("Move to Active")
             set_game_state (self.mcp, const.GameActive)
             self.nextStateTime = CTime + 1
          end
@@ -177,6 +180,7 @@ local function start (self)
       update_object_state = update_object_state,
    }
    self.objObs:register (nil, callbacks, self)
+
    self.mcp = dmz.object.create (const.MCPType)
    dmz.object.state (self.mcp, nil, const.GameWaiting)
    dmz.object.activate (self.mcp)
@@ -200,6 +204,7 @@ function new (config, name)
       cycleList = {},
       cycleCount = 0,
       startPoints = {},
+      waitTime = dmz.time.frame_time () + 1,
       maxCycles = config:to_number ("cycles.max", 6),
       minCycles = config:to_number ("cycles.min", 2),
    }
