@@ -85,13 +85,13 @@
       </object>
       <object name="mcp">
          <audio>
-            <sound state="Game_Waiting" activatefile="../../assets/sounds/gameover.wav"/>
-            <sound state="Game_Active" activatefile="../../assets/sounds/begin.wav"/>
-            <sound state="Game_Countdown_5" activatefile="../../assets/sounds/five.wav"/>
-            <sound state="Game_Countdown_4" activatefile="../../assets/sounds/four.wav"/>
-            <sound state="Game_Countdown_3" activatefile="../../assets/sounds/three.wav"/>
-            <sound state="Game_Countdown_2" activatefile="../../assets/sounds/two.wav"/>
-            <sound state="Game_Countdown_1" activatefile="../../assets/sounds/one.wav"/>
+            <sound state="Game_Waiting" activatefile="../../assets/sounds/gameover.wav" relative="true"/>
+            <sound state="Game_Active" activatefile="../../assets/sounds/begin.wav" relative="true"/>
+            <sound state="Game_Countdown_5" activatefile="../../assets/sounds/five.wav" relative="true"/>
+            <sound state="Game_Countdown_4" activatefile="../../assets/sounds/four.wav" relative="true"/>
+            <sound state="Game_Countdown_3" activatefile="../../assets/sounds/three.wav" relative="true"/>
+            <sound state="Game_Countdown_2" activatefile="../../assets/sounds/two.wav" relative="true"/>
+            <sound state="Game_Countdown_1" activatefile="../../assets/sounds/one.wav" relative="true"/>
          </audio>
          <net>
             <type enum="2"/>
@@ -112,6 +112,7 @@
             <type enum="3"/>
             <rule type="position"/>
             <rule type="orientation"/>
+            <rule type="counter" attribute="Start_Position"/>
             <rule type="heartbeat" value="1.0"/>
             <rule type="ratelimit"/>
          </net>

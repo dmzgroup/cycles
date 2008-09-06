@@ -19,6 +19,9 @@ local function create_start_points (self)
       self.startPoints[ix] = point
       dmz.object.position (point.handle, nil, point.pos)
       dmz.object.orientation (point.handle, nil, point.ori)
+      -- Counter is used to trigger a network send
+      dmz.object.counter (point.handle, const.StartLinkHandle, 0)
+      dmz.object.counter_rollover (point.handle, const.StartLinkHandle, true)
       dmz.object.activate (point.handle)
       dmz.object.set_temporary (point.handle)
       if Odd then oddPos[1] = oddPos[1] + Space
@@ -41,6 +44,10 @@ local function assign_points_to_cycles (self)
       if count <= self.maxCycles then
           cycle.point = self.startPoints[count]
           dmz.object.link (const.StartLinkHandle, cycle.point.handle, object)
+          -- Adding to the objects counter will cause the network rules to
+          -- send the packet immediately instead of waiting for the one second
+          -- heartbeat as specified in the net rules for this object type.
+          dmz.object.add_to_counter (cycle.point.handle, const.StartLinkHandle)
           self.playerCount = self.playerCount + 1
       else
       end
@@ -81,9 +88,9 @@ local function update_time_slice (self, time)
          if self.assignPoints then
             assign_points_to_cycles (self)
             self.assignPoints = false
-            self.waitTime = CTime + 2
+            self.waitTime = CTime + 1
          end
-         if (self.waitTime >= CTime) and
+         if (self.waitTime <= CTime) and
                (get_standby_count (self) == self.playerCount) and
                (self.playerCount >= self.minCycles) then
 --self.log:error ("Move to Countdown 5")
@@ -94,7 +101,7 @@ local function update_time_slice (self, time)
          if self.endTime and self.endTime <= CTime then
             set_game_state (self.mcp, const.GameWaiting)
             self.endTime = nil
-            self.waitTime = CTime + 1
+            self.waitTime = CTime + 2
          elseif not self.endTime and get_dead_count (self) >= (self.playerCount - 1) then
             self.endTime = CTime + 2
          end

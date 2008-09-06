@@ -42,7 +42,6 @@ local function link_objects (self, Link, Attribute, Super, Sub)
    local hil = dmz.object.hil ()
    if SuperType and Sub == hil then
       if SuperType:is_of_type (const.StartPointType) then
-         self.log:error ("linking to:", Super)
          self.active = true
          self.startPos = dmz.object.position (Super)
          self.startOri = dmz.object.orientation (Super)
@@ -64,12 +63,6 @@ local function link_objects (self, Link, Attribute, Super, Sub)
    end
 end
 
-local function unlink_objects (self, Link, Attribute, Super, Sub)
-   if Sub == dmz.object.hil () then
-      self.log:error ("Unlinking from:", Super)
-   end
-end
-
 local function start (self)
    local callbacks = {
       create_object = create_object,
@@ -77,7 +70,7 @@ local function start (self)
       update_object_state = update_object_state,
    }
    self.objObs:register (nil, callbacks, self)
-   callbacks = { link_objects = link_objects, unlink_objects = unlink_objects, }
+   callbacks = { link_objects = link_objects, }
    self.objObs:register (const.StartLinkHandle, callbacks, self)
    local hil = dmz.object.hil ()
    if hil then dmz.object.state (hil, nil, const.Dead) end
