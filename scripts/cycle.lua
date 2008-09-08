@@ -142,7 +142,7 @@ local function receive_input_event (self, event)
    end
 
    if event.axis then
-      print ("axis: " .. event.axis.which .. " value: " .. event.axis.value)
+      --print ("axis: " .. event.axis.which .. " value: " .. event.axis.value)
       local value = 0
       if not dmz.math.is_zero (event.axis.value, 0.1) then
          if event.axis.value > 0 then value = 1
@@ -157,7 +157,7 @@ local function receive_input_event (self, event)
    end
 
    if event.button then
-      print ("button: " .. event.button.which .. " value: " .. tostring (event.button.value))
+      --print ("button: " .. event.button.which .. " value: " .. tostring (event.button.value))
    end
 end
 

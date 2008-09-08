@@ -25,4 +25,9 @@
 -->
       <event type="Event_Collision" file="../../assets/sounds/game_crash_mono.wav"/>
    </dmzAudioPluginEventSimple>
+<dmzLuaModuleBasic>
+   <extensions>
+      <plugin name="dmzLuaExtAudio"/>
+   </extensions>
+</dmzLuaModuleBasic>
 </dmz>
