@@ -4,7 +4,10 @@
 #include <dmzObjectObserverUtil.h>
 #include <dmzRuntimeLog.h>
 #include <dmzRuntimePlugin.h>
+#include <dmzRuntimeTimeSlice.h>
 #include <dmzTypesHashTableHandleTemplate.h>
+#include <dmzTypesMask.h>
+#include <dmzTypesVector.h>
 
 #include <osg/Geode>
 #include <osg/Geometry>
@@ -18,6 +21,7 @@ namespace dmz {
 
    class CyclesPluginWallOSG :
          public Plugin,
+         public TimeSlice,
          public ObjectObserverUtil {
 
       public:
@@ -32,6 +36,9 @@ namespace dmz {
          virtual void discover_plugin (
             const PluginDiscoverEnum Mode,
             const Plugin *PluginPtr);
+
+         // Time Slice Interface
+         virtual void update_time_slice (const Float64 DeltaTime);
 
          // Object Observer Interface
          virtual void create_object (
@@ -82,6 +89,10 @@ namespace dmz {
          struct ObjectStruct {
 
             const WallStruct &WallInfo;
+            Vector pos;
+            Vector posPrev;
+            Vector vel;
+            Vector velPrev;
             osg::ref_ptr<osg::MatrixTransform> d;
             osg::ref_ptr<osg::Geode> g;
             osg::ref_ptr<osg::Geometry> wall;
@@ -91,10 +102,13 @@ namespace dmz {
          };
 
          void _create_wall (const Handle ObjectHandle, const WallStruct &Wall);
+         void _remove_wall (ObjectStruct &obj);
          void _init (Config &local);
 
          Log _log;
+         Mask _deadState;
          HashTableHandleTemplate<ObjectStruct> _objectTable;
+         HashTableHandleTemplate<ObjectStruct> _deadTable;
          HashTableHandleTemplate<WallStruct> _wallTable;
          RenderModuleCoreOSG *_core;
 
