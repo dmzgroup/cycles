@@ -29,5 +29,6 @@
    <extensions>
       <plugin name="dmzLuaExtAudio"/>
    </extensions>
+   <instance name="bgmusic"/>
 </dmzLuaModuleBasic>
 </dmz>

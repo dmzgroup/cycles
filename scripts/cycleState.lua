@@ -74,9 +74,19 @@ local function start (self)
    self.objObs:register (const.StartLinkHandle, callbacks, self)
    local hil = dmz.object.hil ()
    if hil then dmz.object.state (hil, nil, const.Dead) end
+--[[
+   self.audio = dmz.audio.create ("../../assets/sounds/scherzo.wav")
+   if self.audio then
+      self.sound = dmz.audio.play (self.audio, {relative=true, looped=true}, {gain=1.0})
+   end
+--]]
 end
 
 local function stop (self)
+--[[
+   if self.sound then dmz.audio.stop (self.sound) self.sound = nil end
+   if self.audio then dmz.audio.destroy (self.audio) self.audio = nil end
+--]]
 end
 
 function new (config, name)
