@@ -2,7 +2,7 @@
 <dmz>
 <runtime>
    <time>
-      <frequency value="0.0"/>
+      <frequency value="60.0"/>
    </time>
    <states>
       <state name="Standby"/>

@@ -76,14 +76,17 @@ namespace dmz {
             const Boolean ColorDefined;
             const osg::Vec4 Color;
             const Float32 Height;
+            const Float32 Offset;
 
             WallStruct (
                   const Boolean IsColorDefined,
                   const osg::Vec4 TheColor,
-                  const Float32 TheHeight) :
+                  const Float32 TheHeight,
+                  const Float32 TheOffset) :
                   ColorDefined (IsColorDefined),
                   Color (TheColor),
-                  Height (TheHeight) {;}
+                  Height (TheHeight),
+                  Offset (TheOffset) {;}
          };
 
          struct ObjectStruct {
@@ -93,12 +96,18 @@ namespace dmz {
             Vector posPrev;
             Vector vel;
             Vector velPrev;
-            osg::ref_ptr<osg::MatrixTransform> d;
-            osg::ref_ptr<osg::Geode> g;
+            Vector lastCorner;
+            Int32 triCount;
+            osg::ref_ptr<osg::MatrixTransform> xform;
+            osg::ref_ptr<osg::Geode> geod;
             osg::ref_ptr<osg::Geometry> wall;
-            osg::ref_ptr<osg::Vec3Array> v;
+            osg::ref_ptr<osg::Vec3Array> verts;
+            osg::ref_ptr<osg::Vec3Array> normals;
+            osg::ref_ptr<osg::DrawArrays> draw;
 
-            ObjectStruct (const WallStruct &TheWallInfo) : WallInfo (TheWallInfo) {;}
+            ObjectStruct (const WallStruct &TheWallInfo) :
+               WallInfo (TheWallInfo),
+               triCount (0) {;}
          };
 
          void _create_wall (const Handle ObjectHandle, const WallStruct &Wall);
@@ -110,6 +119,7 @@ namespace dmz {
          HashTableHandleTemplate<ObjectStruct> _objectTable;
          HashTableHandleTemplate<ObjectStruct> _deadTable;
          HashTableHandleTemplate<WallStruct> _wallTable;
+         Handle _defaultHandle;
          RenderModuleCoreOSG *_core;
 
       private:

@@ -1,5 +1,6 @@
 #include "dmzCyclesPluginWallOSG.h"
 #include <dmzObjectAttributeMasks.h>
+#include <dmzObjectConsts.h>
 #include <dmzObjectModule.h>
 #include <dmzRenderModuleCoreOSG.h>
 #include <dmzRuntimeConfigToBase.h>
@@ -16,6 +17,7 @@ dmz::CyclesPluginWallOSG::CyclesPluginWallOSG (const PluginInfo &Info, Config &l
       TimeSlice (Info),
       ObjectObserverUtil (Info, local),
       _log (Info),
+      _defaultHandle (0),
       _core (0) {
 
    _init (local);
@@ -76,19 +78,25 @@ dmz::CyclesPluginWallOSG::update_time_slice (const Float64 DeltaTime) {
    ObjectStruct *os (_objectTable.get_first (it));
 
    while (os) {
-
-      (*(os->v))[2] = osg::Vec3 (os->pos.get_x (), os->WallInfo.Height, os->pos.get_z ());
-      (*(os->v))[3] = osg::Vec3 (os->pos.get_x (), 0.0f, os->pos.get_z ());
+#if 0
+      (*(os->verts))[2] = osg::Vec3 (os->pos.get_x (), os->WallInfo.Height, os->pos.get_z ());
+      (*(os->verts))[3] = osg::Vec3 (os->pos.get_x (), 0.0f, os->pos.get_z ());
       osg::Vec3Array* normals = (osg::Vec3Array *)os->wall->getNormalArray ();
-      osg::Vec3 v1 = (*(os->v))[1] - (*(os->v))[0];
-      osg::Vec3 v2 = (*(os->v))[3] - (*(os->v))[0];
+      osg::Vec3 v1 = (*(os->verts))[1] - (*(os->verts))[0];
+      osg::Vec3 v2 = (*(os->verts))[3] - (*(os->verts))[0];
       Vector vv1 (v1.x (), v1.y (), v1.z ());
       Vector vv2 (v2.x (), v2.y (), v2.z ());
       Vector cross = vv1.cross (vv2).normalize ();
 //_log.error << vv1 << " " << vv2 << " " << cross << endl;
       (*normals)[0] = osg::Vec3 (cross.get_x (), cross.get_y (), cross.get_z ());
+#endif
+      
+
       os->wall->dirtyDisplayList ();
       os->wall->dirtyBound ();
+
+      os->posPrev = os->pos;
+      os->velPrev = os->vel;
 
       os  = _objectTable.get_next (it);
    }
@@ -127,12 +135,14 @@ dmz::CyclesPluginWallOSG::create_object (
          const Float32 Blue (config_to_float32 ("color.b", wallDef, 1.0));
          const Float32 Alpha (config_to_float32 ("color.a", wallDef, 1.0));
          const Float32 Height (config_to_float32 ("height", wallDef, 2.0));
+         const Float32 Offset (config_to_float32 ("offset", wallDef, 2.0));
 
 _log.error << Red << " " << Green << " " << Blue << " " << Alpha << endl;
          wall = new WallStruct (
             True,
             osg::Vec4 (Red, Green, Blue, Alpha),
-            Height);
+            Height,
+            Offset);
 
          if (wall && !_wallTable.store (Type.get_handle (), wall)) {
 
@@ -148,7 +158,7 @@ _log.error << Red << " " << Green << " " << Blue << " " << Alpha << endl;
    }
    else if (!wall) {
 
-      wall = new WallStruct (False, osg::Vec4 (0.0f, 0.0f, 0.0f, 0.0f), 0.0);
+      wall = new WallStruct (False, osg::Vec4 (0.0f, 0.0f, 0.0f, 0.0f), 0.0f, 0.0f);
 
       if (wall && !_wallTable.store (Type.get_handle (), wall)) {
 
@@ -171,7 +181,7 @@ dmz::CyclesPluginWallOSG::destroy_object (
 
          osg::Group *dgroup (_core->get_dynamic_objects ());
 
-         if (dgroup) { dgroup->removeChild (os->d.get ()); }
+         if (dgroup) { dgroup->removeChild (os->xform.get ()); }
       }
 
       delete os; os = 0;
@@ -188,7 +198,7 @@ dmz::CyclesPluginWallOSG::update_object_state (
       const Mask *PreviousValue) {
 
    const Boolean IsDead (Value.contains (_deadState));  
-   const Boolean WasDead (PreviousValue ? False : PreviousValue->contains (_deadState));  
+   const Boolean WasDead (PreviousValue ? PreviousValue->contains (_deadState) : False);  
 
    if (IsDead && !WasDead) {
 
@@ -240,7 +250,13 @@ dmz::CyclesPluginWallOSG::update_object_velocity (
 
    ObjectStruct *os (_objectTable.lookup (ObjectHandle));
 
-   if (os) { os->vel = Value; os->velPrev = (PreviousValue ? *PreviousValue : Value); }
+   const Vector Normalized (Value.normalize ());
+
+   if (os) {
+
+      os->vel = Normalized;
+      os->velPrev = (PreviousValue ? PreviousValue->normalize () : Normalized);
+   }
 }
 
 
@@ -249,52 +265,62 @@ dmz::CyclesPluginWallOSG::_create_wall (
       const Handle ObjectHandle,
       const WallStruct &Wall) {
 
-   if (_core) {
+   ObjectStruct *os (new ObjectStruct (Wall));
+
+   if (_core && os && _objectTable.store (ObjectHandle, os)) {
+
+      ObjectModule *objMod (get_object_module ());
+
+      if (objMod) {
+
+         objMod->lookup_position (ObjectHandle, _defaultHandle, os->lastCorner);
+         os->pos = os->posPrev = os->lastCorner;
+         objMod->lookup_velocity (ObjectHandle, _defaultHandle, os->vel);
+         os->velPrev = os->vel;
+      }
+
+      os->xform = new osg::MatrixTransform;
+      os->geod = new osg::Geode;
+      os->wall = new osg::Geometry;
+      os->verts = new osg::Vec3Array;
+      os->normals = new osg::Vec3Array;
+      os->draw = new osg::DrawArrays (GL_TRIANGLE_STRIP, 0, 0);
+
+      os->xform->addChild (os->geod.get ());
+
+      osg::ref_ptr<osg::StateSet> set = os->wall->getOrCreateStateSet ();
+      osg::ref_ptr<osg::Material> mat = new osg::Material;
+      mat->setEmission (osg::Material::FRONT_AND_BACK, Wall.Color);
+      set->setAttributeAndModes (mat.get ());
+
+      //const Float32 TheX (os->lastCorner.get_x ());
+      //const Float32 TheZ (os->lastCorner.get_z ());
+      //os->verts->push_back (osg::Vec3 (TheX, 0.0f, TheZ));
+      //os->verts->push_back (osg::Vec3 (TheX, Wall.Height, TheZ));
+      //os->verts->push_back (osg::Vec3 (TheX, Wall.Height, TheZ));
+      //os->verts->push_back (osg::Vec3 (TheX, 0.0f, TheZ));
+      //os->normals->push_back (osg::Vec3 (1.0f, 0.0f, 0.0f));
+      //os->normals->push_back (osg::Vec3 (1.0f, 0.0f, 0.0f));
+
+      os->wall->setNormalArray (os->normals.get ());
+      os->wall->setNormalBinding (osg::Geometry::BIND_PER_PRIMITIVE);
+
+      osg::ref_ptr<osg::Vec4Array> color = new osg::Vec4Array;
+      color->push_back (Wall.Color);
+      os->wall->setColorArray (color.get ());
+      os->wall->setColorBinding (osg::Geometry::BIND_OVERALL);
+
+      os->wall->setVertexArray (os->verts.get ());
+      os->wall->addPrimitiveSet (os->draw.get ());
+
+      os->geod->addDrawable (os->wall.get ());
 
       osg::Group *dgroup (_core->get_dynamic_objects ());
-      ObjectStruct *os (new ObjectStruct (Wall));
+      if (dgroup) { dgroup->addChild (os->xform.get ()); }
+      else { _log.error << "Failed to add geode!" << endl; }
 
-      if (os && _objectTable.store (ObjectHandle, os)) {
-
-         os->d = new osg::MatrixTransform;
-         os->g = new osg::Geode;
-         os->wall = new osg::Geometry;
-         os->d->addChild (os->g.get ());
-
-         os->v = new osg::Vec3Array;
-
-         os->v->push_back (osg::Vec3 (0.0f, 0.0f, 0.0f));
-         os->v->push_back (osg::Vec3 (0.0f, Wall.Height, 0.0f));
-         os->v->push_back (osg::Vec3 (0.0f, Wall.Height, 10.0f));
-         os->v->push_back (osg::Vec3 (0.0f, 0.0f, 10.0f));
-
-         osg::StateSet *set = os->wall->getOrCreateStateSet ();
-         osg::Material *mat = new osg::Material;
-         mat->setEmission (osg::Material::FRONT_AND_BACK, Wall.Color);
-         set->setAttributeAndModes (mat);
-
-         osg::Vec3Array* normals = new osg::Vec3Array;
-         normals->push_back (osg::Vec3 (1.0f, 0.0f, 0.0f));
-         os->wall->setNormalArray (normals);
-         os->wall->setNormalBinding (osg::Geometry::BIND_OVERALL);
-
-         osg::Vec4Array *color = new osg::Vec4Array;
-         //color->push_back (Wall.Color);
-         color->push_back (osg::Vec4 (1.0f, 1.0f, 1.0f, 1.0f));
-         os->wall->setColorArray (color);
-         os->wall->setColorBinding (osg::Geometry::BIND_OVERALL);
-
-         os->wall->setVertexArray (os->v.get ());
-         os->wall->addPrimitiveSet (new osg::DrawArrays (GL_QUADS, 0, 4));
-
-         os->g->addDrawable (os->wall.get ());
-
-         if (dgroup) { dgroup->addChild (os->d.get ()); }
-         else { _log.error << "Failed to add geode!" << endl; }
-
-      }
-      else if (os) { delete os; os = 0; }
    }
+   else if (os) { delete os; os = 0; }
 }
 
 
@@ -305,7 +331,7 @@ dmz::CyclesPluginWallOSG::_remove_wall (ObjectStruct &obj) {
 
       osg::Group *dgroup (_core->get_dynamic_objects ());
 
-      if (dgroup) { dgroup->removeChild (obj.d.get ()); }
+      if (dgroup) { dgroup->removeChild (obj.xform.get ()); }
    }
 }
 
@@ -325,6 +351,8 @@ dmz::CyclesPluginWallOSG::_init (Config &local) {
    defs.lookup_state (
       config_to_string ("state.dead", local, DefaultStateNameDead),
       _deadState);
+
+   _defaultHandle = defs.create_named_handle (ObjectAttributeDefaultName);
 }
 
 
