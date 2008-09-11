@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<dmz>
+<plugins>
+   <plugin name="dmzEntityPluginFreeFly" reserve="true"/>
+   <plugin name="dmzEntityPluginPortalTether" scope="freefly"/>
+   <plugin name="dmzEntityPluginTeleport"/>
+</plugins>
+<dmzLuaModuleBasic>
+   <instance name="dmzEntityPluginFreeFly" scope="freefly"/>
+</dmzLuaModuleBasic>
+<freefly>
+   <movement speed="100" turnRate="2.4"/>
+   <offset x="0.0" y="0.0" z="0.0"/>
+</freefly>
+<objects>
+   <object type="spectator">
+      <attributes>
+         <position x="0.0" y="5.0" z="10.0"/>
+         <orientation
+            v0="1.0" v1="0.0" v2="0.0"
+            v3="0.0" v4="1.0" v5="0.0"
+            v6="0.0" v7="0.0" v8="1.0"
+         />
+         <velocity x="0.0" y="0.0" z="0.0"/>
+         <acceleration x="0.0" y="0.0" z="0.0"/>
+      </attributes>
+      <attributes name="Object_Human_In_The_Loop">
+         <flag value="true"/>
+      </attributes>
+   </object>
+</objects>
+</dmz>
+  

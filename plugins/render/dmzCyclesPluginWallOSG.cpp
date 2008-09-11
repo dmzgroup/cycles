@@ -10,6 +10,8 @@
 #include <dmzRuntimePluginInfo.h>
 #include <dmzTypesVector.h>
 
+#include <math.h>
+
 #include <osg/Material>
 
 dmz::CyclesPluginWallOSG::CyclesPluginWallOSG (const PluginInfo &Info, Config &local) :
@@ -78,22 +80,56 @@ dmz::CyclesPluginWallOSG::update_time_slice (const Float64 DeltaTime) {
    ObjectStruct *os (_objectTable.get_first (it));
 
    while (os) {
-#if 0
-      (*(os->verts))[2] = osg::Vec3 (os->pos.get_x (), os->WallInfo.Height, os->pos.get_z ());
-      (*(os->verts))[3] = osg::Vec3 (os->pos.get_x (), 0.0f, os->pos.get_z ());
-      osg::Vec3Array* normals = (osg::Vec3Array *)os->wall->getNormalArray ();
-      osg::Vec3 v1 = (*(os->verts))[1] - (*(os->verts))[0];
-      osg::Vec3 v2 = (*(os->verts))[3] - (*(os->verts))[0];
-      Vector vv1 (v1.x (), v1.y (), v1.z ());
-      Vector vv2 (v2.x (), v2.y (), v2.z ());
-      Vector cross = vv1.cross (vv2).normalize ();
-//_log.error << vv1 << " " << vv2 << " " << cross << endl;
-      (*normals)[0] = osg::Vec3 (cross.get_x (), cross.get_y (), cross.get_z ());
-#endif
       
+      if (os->triCount <= 0) {
 
-      os->wall->dirtyDisplayList ();
-      os->wall->dirtyBound ();
+         os->verts->push_back (osg::Vec3 (os->pos.get_x (), 0.0, os->pos.get_z ()));
+         os->verts->push_back (
+            osg::Vec3 (os->pos.get_x (), os->WallInfo.Height, os->pos.get_z ()));
+
+         os->verts->push_back (osg::Vec3 (os->pos.get_x (), 0.0, os->pos.get_z ()));
+         os->verts->push_back (
+            osg::Vec3 (os->pos.get_x (), os->WallInfo.Height, os->pos.get_z ()));
+
+         os->triCount = 2;
+
+         os->draw->setCount (os->triCount + 2);
+         osg::Vec3 normal (os->vel.get_z (), 0.0, os->vel.get_x ());
+         os->normals->push_back (normal);
+         os->normals->push_back (normal);
+         os->lastCorner = os->pos;
+      }
+      else if (!os->vel.is_zero ()) {
+
+         const Float64 Dot (os->vel.dot (os->velPrev));
+
+         if (!is_zero64 (Dot - 1.0)) {
+
+            os->verts->push_back (osg::Vec3 (os->posPrev.get_x (), 0.0, os->posPrev.get_z ()));
+            os->verts->push_back (
+               osg::Vec3 (os->posPrev.get_x (), os->WallInfo.Height, os->posPrev.get_z ()));
+
+            os->triCount += 2;
+
+            os->draw->setCount (os->triCount + 2);
+            osg::Vec3 normal (os->vel.get_z (), 0.0, os->vel.get_x ());
+            os->normals->push_back (normal);
+            os->normals->push_back (normal);
+            os->lastCorner = os->pos;
+         }
+      }
+
+      if ((os->pos - os->lastCorner).magnitude () > os->WallInfo.Offset) {
+
+         Vector pos (os->pos - (os->vel * os->WallInfo.Offset));
+         (*(os->verts))[os->triCount] =
+            osg::Vec3 (pos.get_x (), 0.0f, pos.get_z ());
+         (*(os->verts))[os->triCount + 1] =
+            osg::Vec3 (pos.get_x (), os->WallInfo.Height, pos.get_z ());
+
+         os->wall->dirtyDisplayList ();
+         os->wall->dirtyBound ();
+      }
 
       os->posPrev = os->pos;
       os->velPrev = os->vel;
@@ -105,69 +141,14 @@ dmz::CyclesPluginWallOSG::update_time_slice (const Float64 DeltaTime) {
 
    while (os) {
 
+      ObjectStruct *tmp = _deadTable.remove (it.get_hash_key ());
+      if (tmp) { _remove_wall (*tmp); delete tmp; tmp = 0; }
       os  = _deadTable.get_next (it);
    }
 }
 
 
 // Object Observer Interface
-void
-dmz::CyclesPluginWallOSG::create_object (
-      const UUID &Identity,
-      const Handle ObjectHandle,
-      const ObjectType &Type,
-      const ObjectLocalityEnum Locality) {
-
-   WallStruct *wall (0);
-
-   ObjectType current (Type);
-
-   while (current && !wall) {
-
-      wall = _wallTable.lookup (Type.get_handle ());
-
-      Config wallDef;
-
-      if (!wall && current.get_config ().lookup_all_config_merged ("wall", wallDef)) {
-
-         const Float32 Red (config_to_float32 ("color.r", wallDef, 1.0));
-         const Float32 Green (config_to_float32 ("color.g", wallDef, 1.0));
-         const Float32 Blue (config_to_float32 ("color.b", wallDef, 1.0));
-         const Float32 Alpha (config_to_float32 ("color.a", wallDef, 1.0));
-         const Float32 Height (config_to_float32 ("height", wallDef, 2.0));
-         const Float32 Offset (config_to_float32 ("offset", wallDef, 2.0));
-
-_log.error << Red << " " << Green << " " << Blue << " " << Alpha << endl;
-         wall = new WallStruct (
-            True,
-            osg::Vec4 (Red, Green, Blue, Alpha),
-            Height,
-            Offset);
-
-         if (wall && !_wallTable.store (Type.get_handle (), wall)) {
-
-            delete wall; wall = 0;
-         }
-      }
-      else { current.become_parent (); }
-   }
-
-   if (wall && wall->ColorDefined) {
-
-      _create_wall (ObjectHandle, *wall);
-   }
-   else if (!wall) {
-
-      wall = new WallStruct (False, osg::Vec4 (0.0f, 0.0f, 0.0f, 0.0f), 0.0f, 0.0f);
-
-      if (wall && !_wallTable.store (Type.get_handle (), wall)) {
-
-         delete wall; wall = 0;
-      }
-   }
-}
-
-
 void
 dmz::CyclesPluginWallOSG::destroy_object (
       const UUID &Identity,
@@ -198,9 +179,12 @@ dmz::CyclesPluginWallOSG::update_object_state (
       const Mask *PreviousValue) {
 
    const Boolean IsDead (Value.contains (_deadState));  
-   const Boolean WasDead (PreviousValue ? PreviousValue->contains (_deadState) : False);  
+   const Boolean WasDead (PreviousValue ? PreviousValue->contains (_deadState) : False);
 
-   if (IsDead && !WasDead) {
+   const Boolean IsOn (Value.contains (_engineOnState));  
+   const Boolean WasOn (PreviousValue ? PreviousValue->contains (_engineOnState) : False);
+
+   if ((IsDead && !WasDead) || (!IsOn && WasOn)) {
 
       ObjectStruct *os (_objectTable.remove (ObjectHandle));
 
@@ -210,17 +194,13 @@ dmz::CyclesPluginWallOSG::update_object_state (
          delete os; os = 0;
       }
    }
-   else if (WasDead && !IsDead) {
+   else if (IsOn && !WasOn) {
 
       ObjectModule *objMod (get_object_module ());
 
       if (objMod) {
 
-         create_object (
-            Identity,
-            ObjectHandle,
-            objMod->lookup_object_type (ObjectHandle),
-            objMod->lookup_locality (ObjectHandle));
+         _create_object_wall (ObjectHandle, objMod->lookup_object_type (ObjectHandle));
       }
    }
 }
@@ -261,6 +241,68 @@ dmz::CyclesPluginWallOSG::update_object_velocity (
 
 
 void
+dmz::CyclesPluginWallOSG::_create_object_wall (
+      const Handle ObjectHandle,
+      const ObjectType &Type) {
+
+   WallStruct *wall (0);
+
+   ObjectType current (Type);
+
+   while (current && !wall) {
+
+      wall = _wallTable.lookup (Type.get_handle ());
+
+      Config wallDef;
+
+      if (!wall && current.get_config ().lookup_all_config_merged ("wall", wallDef)) {
+
+         const Float32 Red (config_to_float32 ("color.r", wallDef, 1.0));
+         const Float32 Green (config_to_float32 ("color.g", wallDef, 1.0));
+         const Float32 Blue (config_to_float32 ("color.b", wallDef, 1.0));
+         const Float32 Alpha (config_to_float32 ("color.a", wallDef, 1.0));
+         const Float32 Height (config_to_float32 ("height", wallDef, 1.8));
+         const Float32 Offset (config_to_float32 ("offset", wallDef, 3.0));
+
+         _log.info << " " << Type.get_name () << " wall information." << endl
+            << "\t   Red : " << Red << endl
+            << "\t Green : " << Green << endl
+            << "\t  Blue : " << Blue << endl
+            << "\t Alpha : " << Alpha << endl
+            << "\tHeight : " << Height << endl
+            << "\tOffset : " << Offset << endl;
+
+         wall = new WallStruct (
+            True,
+            osg::Vec4 (Red, Green, Blue, Alpha),
+            Height,
+            Offset);
+
+         if (wall && !_wallTable.store (Type.get_handle (), wall)) {
+
+            delete wall; wall = 0;
+         }
+      }
+      else { current.become_parent (); }
+   }
+
+   if (wall && wall->ColorDefined) {
+
+      _create_wall (ObjectHandle, *wall);
+   }
+   else if (!wall) {
+
+      wall = new WallStruct (False, osg::Vec4 (0.0f, 0.0f, 0.0f, 0.0f), 0.0f, 0.0f);
+
+      if (wall && !_wallTable.store (Type.get_handle (), wall)) {
+
+         delete wall; wall = 0;
+      }
+   }
+}
+
+
+void
 dmz::CyclesPluginWallOSG::_create_wall (
       const Handle ObjectHandle,
       const WallStruct &Wall) {
@@ -276,7 +318,7 @@ dmz::CyclesPluginWallOSG::_create_wall (
          objMod->lookup_position (ObjectHandle, _defaultHandle, os->lastCorner);
          os->pos = os->posPrev = os->lastCorner;
          objMod->lookup_velocity (ObjectHandle, _defaultHandle, os->vel);
-         os->velPrev = os->vel;
+         os->velPrev = os->vel = os->vel.normalize ();
       }
 
       os->xform = new osg::MatrixTransform;
@@ -292,15 +334,6 @@ dmz::CyclesPluginWallOSG::_create_wall (
       osg::ref_ptr<osg::Material> mat = new osg::Material;
       mat->setEmission (osg::Material::FRONT_AND_BACK, Wall.Color);
       set->setAttributeAndModes (mat.get ());
-
-      //const Float32 TheX (os->lastCorner.get_x ());
-      //const Float32 TheZ (os->lastCorner.get_z ());
-      //os->verts->push_back (osg::Vec3 (TheX, 0.0f, TheZ));
-      //os->verts->push_back (osg::Vec3 (TheX, Wall.Height, TheZ));
-      //os->verts->push_back (osg::Vec3 (TheX, Wall.Height, TheZ));
-      //os->verts->push_back (osg::Vec3 (TheX, 0.0f, TheZ));
-      //os->normals->push_back (osg::Vec3 (1.0f, 0.0f, 0.0f));
-      //os->normals->push_back (osg::Vec3 (1.0f, 0.0f, 0.0f));
 
       os->wall->setNormalArray (os->normals.get ());
       os->wall->setNormalBinding (osg::Geometry::BIND_PER_PRIMITIVE);
@@ -340,7 +373,6 @@ void
 dmz::CyclesPluginWallOSG::_init (Config &local) {
 
    activate_default_object_attribute (
-      ObjectCreateMask |
       ObjectDestroyMask |
       ObjectPositionMask |
       ObjectVelocityMask |
@@ -351,6 +383,10 @@ dmz::CyclesPluginWallOSG::_init (Config &local) {
    defs.lookup_state (
       config_to_string ("state.dead", local, DefaultStateNameDead),
       _deadState);
+
+   defs.lookup_state (
+      config_to_string ("state.engine_on", local, "Engine_On"),
+      _engineOnState);
 
    _defaultHandle = defs.create_named_handle (ObjectAttributeDefaultName);
 }

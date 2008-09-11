@@ -41,12 +41,6 @@ namespace dmz {
          virtual void update_time_slice (const Float64 DeltaTime);
 
          // Object Observer Interface
-         virtual void create_object (
-            const UUID &Identity,
-            const Handle ObjectHandle,
-            const ObjectType &Type,
-            const ObjectLocalityEnum Locality);
-
          virtual void destroy_object (const UUID &Identity, const Handle ObjectHandle);
 
          virtual void update_object_state (
@@ -110,12 +104,14 @@ namespace dmz {
                triCount (0) {;}
          };
 
+         void _create_object_wall (const Handle ObjectHandle, const ObjectType &Type);
          void _create_wall (const Handle ObjectHandle, const WallStruct &Wall);
          void _remove_wall (ObjectStruct &obj);
          void _init (Config &local);
 
          Log _log;
          Mask _deadState;
+         Mask _engineOnState;
          HashTableHandleTemplate<ObjectStruct> _objectTable;
          HashTableHandleTemplate<ObjectStruct> _deadTable;
          HashTableHandleTemplate<WallStruct> _wallTable;

@@ -56,11 +56,17 @@ end
 local function test_move (self, hil, origPos, pos)
    local result = true
    if hil then
+      local offset = const.Forward * 0.8
+      local rot = dmz.matrix.new (const.Forward, pos - origPos)
+      rot:transform (offset)
       dmz.isect.disable_isect (hil)
       origPos = dmz.vector.new (origPos)
       origPos:set_y (origPos:get_y () + 0.5)
+      origPos:set_z (origPos:get_z ())
+      origPos = origPos - offset
       pos = dmz.vector.new (pos)
       pos:set_y (pos:get_y () + 0.5)
+      pos = pos - offset
  
       local isectResults = dmz.isect.do_isect (
          { type = dmz.isect.SegmentTest, start = origPos, vector = pos, },
