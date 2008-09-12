@@ -3,6 +3,7 @@
 #include <dmzObjectConsts.h>
 #include <dmzObjectModule.h>
 #include <dmzRenderModuleCoreOSG.h>
+#include <dmzRenderObjectDataOSG.h>
 #include <dmzRenderUtilOSG.h>
 #include <dmzRuntimeConfigToBase.h>
 #include <dmzRuntimeDefinitions.h>
@@ -351,6 +352,7 @@ dmz::CyclesPluginWallOSG::_create_wall (
       }
 
       os->xform = new osg::MatrixTransform;
+      os->xform->setUserData (new RenderObjectDataOSG (ObjectHandle));
       os->geod = new osg::Geode;
       os->wall = new osg::Geometry;
       os->verts = new osg::Vec3Array;

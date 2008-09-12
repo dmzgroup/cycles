@@ -4,12 +4,12 @@ lmkOSG.set_name "dmzCyclesPluginWallOSG"
 lmk.set_type "plugin"
 lmk.add_files {"dmzCyclesPluginWallOSG.cpp",}
 lmk.add_libs {
+   "dmzRenderUtilOSG",
    "dmzObjectUtil",
    "dmzKernel",
 }
 lmk.add_preqs {
    "dmzObjectFramework",
-   "dmzRenderUtilOSG",
    "dmzRenderModuleCoreOSG",
 }
 lmkOSG.add_libs {"osg",}
