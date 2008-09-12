@@ -55,6 +55,8 @@
          </net>
          <wall>
             <color r="1.0" g="0.0" b="0.0"/>
+            <height value="1.81"/>
+            <offset value="4.4"/>
          </wall>
       </object>
       <object name="orange_cycle" parent="cycle">
@@ -67,6 +69,8 @@
          </net>
          <wall>
             <color r="1.0" g="0.5" b="0.0"/>
+            <height value="1.81"/>
+            <offset value="4.4"/>
          </wall>
       </object>
       <object name="yellow_cycle" parent="cycle">
@@ -79,6 +83,8 @@
          </net>
          <wall>
             <color r="1.0" g="1.0" b="0.0"/>
+            <height value="1.81"/>
+            <offset value="4.4"/>
          </wall>
       </object>
       <object name="blue_cycle" parent="cycle">
@@ -91,6 +97,8 @@
          </net>
          <wall>
             <color r="0.0" g="0.0" b="1.0"/>
+            <height value="1.81"/>
+            <offset value="4.4"/>
          </wall>
       </object>
       <object name="mcp">

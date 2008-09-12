@@ -291,8 +291,8 @@ dmz::CyclesPluginWallOSG::_create_object_wall (
          const Float32 Green (config_to_float32 ("color.g", wallDef, 1.0));
          const Float32 Blue (config_to_float32 ("color.b", wallDef, 1.0));
          const Float32 Alpha (config_to_float32 ("color.a", wallDef, 1.0));
-         const Float32 Height (config_to_float32 ("height", wallDef, 1.8));
-         const Float32 Offset (config_to_float32 ("offset", wallDef, 3.0));
+         const Float32 Height (config_to_float32 ("height.value", wallDef, 1.0));
+         const Float32 Offset (config_to_float32 ("offset.value", wallDef, 1.0));
 
          _log.info << " " << Type.get_name () << " wall information." << endl
             << "\t   Red : " << Red << endl

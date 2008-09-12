@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <dmz>
    <plugins>
-      <plugin name="dmzRenderModuleCoreOSGBasic"/>
       <plugin name="dmzRenderModuleIsectOSG"/>
       <plugin name="dmzRenderModulePortalOSG"/>
       <plugin name="dmzRenderPluginObjectOSG"/>
       <plugin name="dmzRenderPluginLogoOSG"/>
       <plugin name="dmzCyclesPluginGridOSG"/>
       <plugin name="dmzCyclesPluginWallOSG"/>
+      <plugin name="dmzRenderModuleCoreOSGBasic"/>
    </plugins>
    <dmzRenderModuleCoreOSGBasic>
       <search>

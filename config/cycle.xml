@@ -9,6 +9,7 @@
 </plugins>
 <dmzLuaModuleBasic>
    <instance name="cycle"/>
+   <instance name="status"/>
    <instance name="dmzEntityPluginFreeFly" scope="freefly"/>
 </dmzLuaModuleBasic>
 <cycle>
