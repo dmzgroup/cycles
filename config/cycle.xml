@@ -2,29 +2,16 @@
 <dmz>
 <plugins>
    <plugin name="cycle" reserve="true"/>
-   <plugin name="dmzEntityPluginFreeFly" reserve="true"/>
    <plugin name="dmzEntityPluginPortalFollow" scope="cycle"/>
-   <plugin name="dmzEntityPluginPortalTether" scope="freefly"/>
    <plugin name="dmzEntityPluginTeleport"/>
 </plugins>
 <dmzLuaModuleBasic>
    <instance name="cycle"/>
    <instance name="status"/>
-   <instance name="dmzEntityPluginFreeFly" scope="freefly"/>
 </dmzLuaModuleBasic>
 <cycle>
-   <input>
-      <channel name="cycle"/>
-   </input>
    <offset x="0.0" y="2.5" z="8.5"/>
 </cycle>
-<freefly>
-   <movement speed="100" turnRate="2.4"/>
-   <input>
-      <channel name="freefly"/>
-   </input>
-   <offset x="0.0" y="2.5" z="8.5"/>
-</freefly>
 <dmzEntityPluginDeadTimer>
    <timer value="5.0"/>
 </dmzEntityPluginDeadTimer>
