@@ -9,6 +9,7 @@ lmk.add_libs {
 }
 lmk.add_preqs {
    "dmzObjectFramework",
+   "dmzRenderUtilOSG",
    "dmzRenderModuleCoreOSG",
 }
 lmkOSG.add_libs {"osg",}

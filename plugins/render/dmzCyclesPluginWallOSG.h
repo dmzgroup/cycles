@@ -88,10 +88,11 @@ namespace dmz {
             const WallStruct &WallInfo;
             Vector pos;
             Vector posPrev;
-            Vector vel;
-            Vector velPrev;
+            Vector dir;
+            Vector dirPrev;
             Vector lastCorner;
             Int32 triCount;
+            Float64 wallYOffset;
             osg::ref_ptr<osg::MatrixTransform> xform;
             osg::ref_ptr<osg::Geode> geod;
             osg::ref_ptr<osg::Geometry> wall;
@@ -101,7 +102,8 @@ namespace dmz {
 
             ObjectStruct (const WallStruct &TheWallInfo) :
                WallInfo (TheWallInfo),
-               triCount (0) {;}
+               triCount (0),
+               wallYOffset (0.0) {;}
          };
 
          void _create_object_wall (const Handle ObjectHandle, const ObjectType &Type);

@@ -3,6 +3,7 @@
 #include <dmzObjectConsts.h>
 #include <dmzObjectModule.h>
 #include <dmzRenderModuleCoreOSG.h>
+#include <dmzRenderUtilOSG.h>
 #include <dmzRuntimeConfigToBase.h>
 #include <dmzRuntimeDefinitions.h>
 #include <dmzRuntimeObjectType.h>
@@ -81,58 +82,75 @@ dmz::CyclesPluginWallOSG::update_time_slice (const Float64 DeltaTime) {
 
    while (os) {
       
-      if (os->triCount <= 0) {
+      if (!os->dir.is_zero () && !os->dirPrev.is_zero ()) {
 
-         os->verts->push_back (osg::Vec3 (os->pos.get_x (), 0.0, os->pos.get_z ()));
-         os->verts->push_back (
-            osg::Vec3 (os->pos.get_x (), os->WallInfo.Height, os->pos.get_z ()));
+         if (os->triCount <= 0) {
 
-         os->verts->push_back (osg::Vec3 (os->pos.get_x (), 0.0, os->pos.get_z ()));
-         os->verts->push_back (
-            osg::Vec3 (os->pos.get_x (), os->WallInfo.Height, os->pos.get_z ()));
-
-         os->triCount = 2;
-
-         os->draw->setCount (os->triCount + 2);
-         osg::Vec3 normal (os->vel.get_z (), 0.0, os->vel.get_x ());
-         os->normals->push_back (normal);
-         os->normals->push_back (normal);
-         os->lastCorner = os->pos;
-      }
-      else if (!os->vel.is_zero ()) {
-
-         const Float64 Dot (os->vel.dot (os->velPrev));
-
-         if (!is_zero64 (Dot - 1.0)) {
-
-            os->verts->push_back (osg::Vec3 (os->posPrev.get_x (), 0.0, os->posPrev.get_z ()));
+            os->verts->push_back (osg::Vec3 (os->pos.get_x (), 0.0, os->pos.get_z ()));
             os->verts->push_back (
-               osg::Vec3 (os->posPrev.get_x (), os->WallInfo.Height, os->posPrev.get_z ()));
+               osg::Vec3 (os->pos.get_x (), os->WallInfo.Height, os->pos.get_z ()));
 
-            os->triCount += 2;
+            os->verts->push_back (osg::Vec3 (os->pos.get_x (), 0.0, os->pos.get_z ()));
+            os->verts->push_back (
+               osg::Vec3 (os->pos.get_x (), os->WallInfo.Height, os->pos.get_z ()));
+
+            os->triCount = 2;
 
             os->draw->setCount (os->triCount + 2);
-            osg::Vec3 normal (os->vel.get_z (), 0.0, os->vel.get_x ());
+            osg::Vec3 normal (os->dir.get_z (), 0.0, os->dir.get_x ());
             os->normals->push_back (normal);
             os->normals->push_back (normal);
             os->lastCorner = os->pos;
          }
+         else {
+
+            const Float64 Dot (os->dir.dot (os->dirPrev));
+
+            if (!is_zero64 (Dot - 1.0)) {
+
+               const Vector Previous (os->dirPrev * os->dirPrev);
+               const Vector Current (os->dir * os->dir);
+
+               osg::Vec3 pos (
+                  (os->pos.get_x () * Previous.get_x ()) +
+                     (os->posPrev.get_x () * Current.get_x ()),
+                  0.0f,
+                  (os->pos.get_z () * Previous.get_z ()) +
+                     (os->posPrev.get_z () * Current.get_z ()));
+
+               (*(os->verts))[os->triCount] = pos;
+               os->verts->push_back (pos);
+
+               pos.y () = os->WallInfo.Height;
+
+               (*(os->verts))[os->triCount + 1] = pos;
+               os->verts->push_back (pos);
+
+               os->triCount += 2;
+
+               os->draw->setCount (os->triCount + 2);
+               osg::Vec3 normal (os->dir.get_z (), 0.0, os->dir.get_x ());
+               os->normals->push_back (normal);
+               os->normals->push_back (normal);
+               os->lastCorner.set_xyz (pos.x (), 0.0, pos.z ());
+            }
+         }
+
+         if ((os->pos - os->lastCorner).magnitude () > os->WallInfo.Offset) {
+
+            Vector pos (os->pos - (os->dir * os->WallInfo.Offset));
+            (*(os->verts))[os->triCount] =
+               osg::Vec3 (pos.get_x (), 0.0f, pos.get_z ());
+            (*(os->verts))[os->triCount + 1] =
+               osg::Vec3 (pos.get_x (), os->WallInfo.Height, pos.get_z ());
+
+            os->wall->dirtyDisplayList ();
+            os->wall->dirtyBound ();
+         }
+
+         os->posPrev = os->pos;
+         os->dirPrev = os->dir;
       }
-
-      if ((os->pos - os->lastCorner).magnitude () > os->WallInfo.Offset) {
-
-         Vector pos (os->pos - (os->vel * os->WallInfo.Offset));
-         (*(os->verts))[os->triCount] =
-            osg::Vec3 (pos.get_x (), 0.0f, pos.get_z ());
-         (*(os->verts))[os->triCount + 1] =
-            osg::Vec3 (pos.get_x (), os->WallInfo.Height, pos.get_z ());
-
-         os->wall->dirtyDisplayList ();
-         os->wall->dirtyBound ();
-      }
-
-      os->posPrev = os->pos;
-      os->velPrev = os->vel;
 
       os  = _objectTable.get_next (it);
    }
@@ -141,8 +159,18 @@ dmz::CyclesPluginWallOSG::update_time_slice (const Float64 DeltaTime) {
 
    while (os) {
 
-      ObjectStruct *tmp = _deadTable.remove (it.get_hash_key ());
-      if (tmp) { _remove_wall (*tmp); delete tmp; tmp = 0; }
+      if (os->wallYOffset < (-os->WallInfo.Height)) {
+
+         ObjectStruct *tmp = _deadTable.remove (it.get_hash_key ());
+         if (tmp) { _remove_wall (*tmp); delete tmp; tmp = 0; }
+      }
+      else {
+
+         os->wallYOffset -= 2.0 * DeltaTime;
+         os->xform->setMatrix (
+            to_osg_matrix (Matrix (), Vector (0.0, os->wallYOffset, 0.0)));
+      }
+
       os  = _deadTable.get_next (it);
    }
 }
@@ -234,8 +262,9 @@ dmz::CyclesPluginWallOSG::update_object_velocity (
 
    if (os) {
 
-      os->vel = Normalized;
-      os->velPrev = (PreviousValue ? PreviousValue->normalize () : Normalized);
+      os->dir = Normalized;
+      os->dirPrev = (PreviousValue ? PreviousValue->normalize () : Normalized);
+      if (os->dirPrev.is_zero ()) { os->dirPrev = os->dir; }
    }
 }
 
@@ -317,8 +346,8 @@ dmz::CyclesPluginWallOSG::_create_wall (
 
          objMod->lookup_position (ObjectHandle, _defaultHandle, os->lastCorner);
          os->pos = os->posPrev = os->lastCorner;
-         objMod->lookup_velocity (ObjectHandle, _defaultHandle, os->vel);
-         os->velPrev = os->vel = os->vel.normalize ();
+         objMod->lookup_velocity (ObjectHandle, _defaultHandle, os->dir);
+         os->dirPrev = os->dir = os->dir.normalize ();
       }
 
       os->xform = new osg::MatrixTransform;
