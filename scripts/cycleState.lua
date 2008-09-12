@@ -16,6 +16,7 @@ local function update_object_state (self, Object, Attribute, State, PreviousStat
             not PreviousState:contains (const.GameWaiting) then
          local cycleState = dmz.object.state (hil)
          if cycleState then
+            if not cycleState:contains (const.Dead) then self.wins = self.wins + 1 end
             cycleState:unset (const.Dead + const.EngineOn)
             cycleState = cycleState + const.Standby
          else cycleState = const.Standby
@@ -24,6 +25,9 @@ local function update_object_state (self, Object, Attribute, State, PreviousStat
          if self.startPos then dmz.object.position (hil, nil, self.startPos) end
          if self.startOri then dmz.object.orientation (hil, nil, self.startOri) end
          dmz.object.velocity (hil, nil, {0, 0, 0})
+         self.log:error (" Kills: " .. tostring (self.kills))
+         self.log:warn ("Deaths: " .. tostring (self.deaths))
+         self.log:info ("  Wins: " .. tostring (self.wins))
       elseif State:contains (const.GameActive) and
             not PreviousState:contains (const.GameActive) then
          local cycleState = dmz.object.state (hil)
@@ -63,6 +67,17 @@ local function link_objects (self, Link, Attribute, Super, Sub)
    end
 end
 
+local function close_event (self, EventHandle)
+   local hil = dmz.object.hil ()
+   if hil then
+      local Target = dmz.event.object_handle (EventHandle, dmz.event.TargetHandle)
+      local Source = dmz.event.object_handle (EventHandle, dmz.event.SourceHandle)
+      if hil == Source then self.deaths = self.deaths + 1
+      elseif hil == Target then self.kills = self.kills + 1
+      end
+   end
+end
+
 local function start (self)
    local callbacks = {
       create_object = create_object,
@@ -72,21 +87,13 @@ local function start (self)
    self.objObs:register (nil, callbacks, self)
    callbacks = { link_objects = link_objects, }
    self.objObs:register (const.StartLinkHandle, callbacks, self)
+   callbacks = { close_event = close_event, }
+   self.eventObs:register ("Event_Collision", callbacks, self)
    local hil = dmz.object.hil ()
    if hil then dmz.object.state (hil, nil, const.Dead) end
---[[
-   self.audio = dmz.audio.create ("../../assets/sounds/scherzo.wav")
-   if self.audio then
-      self.sound = dmz.audio.play (self.audio, {relative=true, looped=true}, {gain=1.0})
-   end
---]]
 end
 
 local function stop (self)
---[[
-   if self.sound then dmz.audio.stop (self.sound) self.sound = nil end
-   if self.audio then dmz.audio.destroy (self.audio) self.audio = nil end
---]]
 end
 
 function new (config, name)
@@ -95,8 +102,12 @@ function new (config, name)
       stop_plugin = stop,
       log = dmz.log.new ("lua." .. name),
       objObs = dmz.object_observer.new (),
+      eventObs = dmz.event_observer.new (),
       config = config,
       name = name,
+      kills = 0,
+      deaths = 0,
+      wins = 0,
    }
 
    self.log:info ("Creating plugin: " .. name)
