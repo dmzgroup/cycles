@@ -124,7 +124,7 @@ local function update_time_slice (self, time)
          local origPos = pos
          pos = pos + (vel * time)
 
-         local passed = test_move (self, hil, origPos, pos)
+         local passed = ((self.speed > 0) and test_move (self, hil, origPos, pos) or true)
 
          dmz.object.position (hil, nil, (passed and pos or origPos))
          dmz.object.velocity (hil, nil, (passed and vel or {0, 0, 0}))
