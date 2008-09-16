@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dmz>
-<objects>
+<archive>
    <object type="orange_cycle">
       <attributes>
          <state value="Dead"/>
@@ -20,5 +20,5 @@
          <flag value="true"/>
       </attributes>
    </object>
-</objects>
+</archive>
 </dmz>

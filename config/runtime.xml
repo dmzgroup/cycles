@@ -4,147 +4,141 @@
    <time>
       <frequency value="60.0"/>
    </time>
-   <states>
-      <state name="Standby"/>
-      <state name="Engine_On"/>
-      <state name="Dead"/>
-      <state name="Game_Waiting"/>
-      <state name="Game_Countdown_5"/>
-      <state name="Game_Countdown_4"/>
-      <state name="Game_Countdown_3"/>
-      <state name="Game_Countdown_2"/>
-      <state name="Game_Countdown_1"/>
-      <state name="Game_Active"/>
-   </states>
-   <types>
-      <event name="Event_Launch"/>
-      <event name="Event_Detonation"/>
-      <event name="Event_Collision">
-         <net>
-            <type enum="4"/>
-         </net>
-      </event>
-      <object name="spectator"/>
-      <object name="vehicle">
-         <net>
-            <type enum="1"/>
-            <state name="Standby" mask="0x001"/>
-            <state name="Engine_On" mask="0x002"/>
-            <state name="Dead" mask="0x004"/>
-         </net>
-      </object>
-      <object name="cycle" parent="vehicle">
-         <net>
-            <type enum="1.1"/>
-         </net>
-         <audio>
-            <sound
-               state="Engine_On"
-               loopedfile="../../assets/sounds/game_engine_mono.wav"
-               scalar="throttle"
-            />
-         </audio>
-      </object>
-      <object name="red_cycle" parent="cycle">
-         <render>
-            <model file="red.obj"/>
-            <model state="Dead" none="true"/>
-         </render>
-         <net>
-            <type enum="1.1.1"/>
-         </net>
-         <wall>
-            <color r="1.0" g="0.0" b="0.0"/>
-            <height value="1.81"/>
-            <offset value="3.46"/>
-         </wall>
-      </object>
-      <object name="orange_cycle" parent="cycle">
-         <render>
-            <model file="orange.obj"/>
-            <model state="Dead" none="true"/>
-         </render>
-         <net>
-            <type enum="1.1.2"/>
-         </net>
-         <wall>
-            <color r="1.0" g="0.5" b="0.0"/>
-            <height value="1.81"/>
-            <offset value="3.46"/>
-         </wall>
-      </object>
-      <object name="yellow_cycle" parent="cycle">
-         <render>
-            <model file="yellow.obj"/>
-            <model state="Dead" none="true"/>
-         </render>
-         <net>
-            <type enum="1.1.3"/>
-         </net>
-         <wall>
-            <color r="1.0" g="1.0" b="0.0"/>
-            <height value="1.81"/>
-            <offset value="3.46"/>
-         </wall>
-      </object>
-      <object name="blue_cycle" parent="cycle">
-         <render>
-            <model file="blue.obj"/>
-            <model state="Dead" none="true"/>
-         </render>
-         <net>
-            <type enum="1.1.4"/>
-         </net>
-         <wall>
-            <color r="0.0" g="0.0" b="1.0"/>
-            <height value="1.81"/>
-            <offset value="3.46"/>
-         </wall>
-      </object>
-      <object name="mcp">
-         <audio>
-            <sound state="Game_Waiting" activatefile="../../assets/sounds/gameover.wav" relative="true"/>
-            <sound state="Game_Active" activatefile="../../assets/sounds/begin.wav" relative="true"/>
-            <sound state="Game_Countdown_5" activatefile="../../assets/sounds/five.wav" relative="true"/>
-            <sound state="Game_Countdown_4" activatefile="../../assets/sounds/four.wav" relative="true"/>
-            <sound state="Game_Countdown_3" activatefile="../../assets/sounds/three.wav" relative="true"/>
-            <sound state="Game_Countdown_2" activatefile="../../assets/sounds/two.wav" relative="true"/>
-            <sound state="Game_Countdown_1" activatefile="../../assets/sounds/one.wav" relative="true"/>
-         </audio>
-         <net>
-            <type enum="2"/>
-            <state name="Game_Waiting" mask="0x01"/>
-            <state name="Game_Active" mask="0x02"/>
-            <state name="Game_Countdown_5" mask="0x04"/>
-            <state name="Game_Countdown_4" mask="0x08"/>
-            <state name="Game_Countdown_3" mask="0x10"/>
-            <state name="Game_Countdown_2" mask="0x20"/>
-            <state name="Game_Countdown_1" mask="0x40"/>
-            <rule type="state"/>
-            <rule type="heartbeat" value="1.0"/>
-            <rule type="ratelimit"/>
-         </net>
-      </object>
-      <object name="base_point">
-         <net>
-            <type enum="3"/>
-            <rule type="position"/>
-            <rule type="orientation"/>
-            <rule type="counter" attribute="Start_Position"/>
-            <rule type="heartbeat" value="1.0"/>
-            <rule type="ratelimit"/>
-         </net>
-      </object>
-      <object name="start_point" parent="base_point">
-         <net>
-            <type enum="3.1"/>
-         </net>
-      </object>
-      <object name="wait_point" parent="base_point">
-         <net>
-            <type enum="3.2"/>
-         </net>
-      </object>
-   </types>
+   <state name="Standby"/>
+   <state name="Engine_On"/>
+   <state name="Dead"/>
+   <state name="Game_Waiting"/>
+   <state name="Game_Countdown_5"/>
+   <state name="Game_Countdown_4"/>
+   <state name="Game_Countdown_3"/>
+   <state name="Game_Countdown_2"/>
+   <state name="Game_Countdown_1"/>
+   <state name="Game_Active"/>
+   <event-type name="Event_Collision">
+      <net>
+         <enum value="4"/>
+      </net>
+   </event-type>
+   <object-type name="spectator"/>
+   <object-type name="vehicle">
+      <net>
+         <enum value="1"/>
+         <state name="Standby" mask="0x001"/>
+         <state name="Engine_On" mask="0x002"/>
+         <state name="Dead" mask="0x004"/>
+      </net>
+   </object-type>
+   <object-type name="cycle" parent="vehicle">
+      <net>
+         <enum value="1.1"/>
+      </net>
+      <audio>
+         <state
+            name="Engine_On"
+            loopedfile="../../assets/sounds/game_engine_mono.wav"
+            scalar="throttle"
+         />
+      </audio>
+   </object-type>
+   <object-type name="red_cycle" parent="cycle">
+      <render>
+         <model file="red.obj"/>
+         <model state="Dead" none="true"/>
+      </render>
+      <net>
+         <enum value="1.1.1"/>
+      </net>
+      <wall>
+         <color r="1.0" g="0.0" b="0.0"/>
+         <height value="1.81"/>
+         <offset value="3.46"/>
+      </wall>
+   </object-type>
+   <object-type name="orange_cycle" parent="cycle">
+      <render>
+         <model file="orange.obj"/>
+         <model state="Dead" none="true"/>
+      </render>
+      <net>
+         <enum value="1.1.2"/>
+      </net>
+      <wall>
+         <color r="1.0" g="0.5" b="0.0"/>
+         <height value="1.81"/>
+         <offset value="3.46"/>
+      </wall>
+   </object-type>
+   <object-type name="yellow_cycle" parent="cycle">
+      <render>
+         <model file="yellow.obj"/>
+         <model state="Dead" none="true"/>
+      </render>
+      <net>
+         <enum value="1.1.3"/>
+      </net>
+      <wall>
+         <color r="1.0" g="1.0" b="0.0"/>
+         <height value="1.81"/>
+         <offset value="3.46"/>
+      </wall>
+   </object-type>
+   <object-type name="blue_cycle" parent="cycle">
+      <render>
+         <model file="blue.obj"/>
+         <model state="Dead" none="true"/>
+      </render>
+      <net>
+         <enum value="1.1.4"/>
+      </net>
+      <wall>
+         <color r="0.0" g="0.0" b="1.0"/>
+         <height value="1.81"/>
+         <offset value="3.46"/>
+      </wall>
+   </object-type>
+   <object-type name="mcp">
+      <audio>
+         <state name="Game_Waiting" activatefile="../../assets/sounds/gameover.wav" relative="true"/>
+         <state name="Game_Active" activatefile="../../assets/sounds/begin.wav" relative="true"/>
+         <state name="Game_Countdown_5" activatefile="../../assets/sounds/five.wav" relative="true"/>
+         <state name="Game_Countdown_4" activatefile="../../assets/sounds/four.wav" relative="true"/>
+         <state name="Game_Countdown_3" activatefile="../../assets/sounds/three.wav" relative="true"/>
+         <state name="Game_Countdown_2" activatefile="../../assets/sounds/two.wav" relative="true"/>
+         <state name="Game_Countdown_1" activatefile="../../assets/sounds/one.wav" relative="true"/>
+      </audio>
+      <net>
+         <enum value="2"/>
+         <state name="Game_Waiting" mask="0x01"/>
+         <state name="Game_Active" mask="0x02"/>
+         <state name="Game_Countdown_5" mask="0x04"/>
+         <state name="Game_Countdown_4" mask="0x08"/>
+         <state name="Game_Countdown_3" mask="0x10"/>
+         <state name="Game_Countdown_2" mask="0x20"/>
+         <state name="Game_Countdown_1" mask="0x40"/>
+         <rule type="state"/>
+         <rule type="heartbeat" value="1.0"/>
+         <rule type="ratelimit"/>
+      </net>
+   </object-type>
+   <object-type name="base_point">
+      <net>
+         <enum value="3"/>
+         <rule type="position"/>
+         <rule type="orientation"/>
+         <rule type="counter" attribute="Start_Position"/>
+         <rule type="heartbeat" value="1.0"/>
+         <rule type="ratelimit"/>
+      </net>
+   </object-type>
+   <object-type name="start_point" parent="base_point">
+      <net>
+         <enum value="3.1"/>
+      </net>
+   </object-type>
+   <object-type name="wait_point" parent="base_point">
+      <net>
+         <enum value="3.2"/>
+      </net>
+   </object-type>
 </runtime>
 </dmz>

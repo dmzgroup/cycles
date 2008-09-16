@@ -12,8 +12,8 @@
    <movement speed="100" turnRate="2.4"/>
    <offset x="0.0" y="0.0" z="0.0"/>
 </freefly>
-<objects>
-   <object type="spectator">
+<archive>
+   <object-type name="spectator">
       <attributes>
          <position x="0.0" y="5.0" z="10.0"/>
          <orientation
@@ -28,6 +28,6 @@
          <flag value="true"/>
       </attributes>
    </object>
-</objects>
+</archive>
 </dmz>
   

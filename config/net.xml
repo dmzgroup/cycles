@@ -16,16 +16,16 @@
       <size type="uint32"/>
    </header>
    <packet handle="1" name="NetCodecCycle">
-      <object type="cycle"/>
+      <object-type name="cycle"/>
    </packet>
    <packet handle="2" name="NetCodecMCP">
-      <object type="mcp"/>
+      <object-type name="mcp"/>
    </packet>
    <packet handle="3" name="NetCodecBasePoint">
-      <object type="base_point"/>
+      <object-type name="base_point"/>
    </packet>
    <packet handle="4" name="NetCodecCollision">
-      <event type="Event_Collision"/>
+      <event-type name="Event_Collision"/>
    </packet>
    <plugins>
       <plugin name="dmzNetExtPacketCodecObjectNative" unique="NetCodecCycle"/>
