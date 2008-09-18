@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dmz>
+<runtime>
+<resource-map>
+   <search>
+      <path value="../../assets/cycles"/>
+      <path value="../../assets/images"/>
+   </search>
+   <search name="audio">
+      <path value="../../assets/sounds"/>
+   </search>
+   <resource name="logo" file="DMZ.png"/>
+   <resource name="red" file="red.obj"/>
+   <resource name="orange" file="orange.obj"/>
+   <resource name="yellow" file="yellow.obj"/>
+   <resource name="blue" file="blue.obj"/>
+   <resource name="engine-sound" file="game_engine_mono.wav" path="audio"/>
+   <resource name="crash-sound" file="game_crash_mono.wav" path="audio"/>
+   <resource name="gameover-sound" file="gameover.wav" path="audio"/>
+   <resource name="begin-sound" file="begin.wav" path="audio"/>
+   <resource name="five-sound" file="five.wav" path="audio"/>
+   <resource name="four-sound" file="four.wav" path="audio"/>
+   <resource name="three-sound" file="three.wav" path="audio"/>
+   <resource name="two-sound" file="two.wav" path="audio"/>
+   <resource name="one-sound" file="one.wav" path="audio"/>
+</resource-map>
+</runtime>
+</dmz>

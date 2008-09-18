@@ -35,14 +35,14 @@
       <audio>
          <state
             name="Engine_On"
-            loopedfile="../../assets/sounds/game_engine_mono.wav"
+            looped-resource="engine-sound"
             scalar="throttle"
          />
       </audio>
    </object-type>
    <object-type name="red_cycle" parent="cycle">
       <render>
-         <model file="red.obj"/>
+         <model resource="red"/>
          <model state="Dead" none="true"/>
       </render>
       <net>
@@ -56,7 +56,7 @@
    </object-type>
    <object-type name="orange_cycle" parent="cycle">
       <render>
-         <model file="orange.obj"/>
+         <model resource="orange"/>
          <model state="Dead" none="true"/>
       </render>
       <net>
@@ -70,7 +70,7 @@
    </object-type>
    <object-type name="yellow_cycle" parent="cycle">
       <render>
-         <model file="yellow.obj"/>
+         <model resource="yellow"/>
          <model state="Dead" none="true"/>
       </render>
       <net>
@@ -84,7 +84,7 @@
    </object-type>
    <object-type name="blue_cycle" parent="cycle">
       <render>
-         <model file="blue.obj"/>
+         <model resource="blue"/>
          <model state="Dead" none="true"/>
       </render>
       <net>
@@ -98,13 +98,13 @@
    </object-type>
    <object-type name="mcp">
       <audio>
-         <state name="Game_Waiting" activatefile="../../assets/sounds/gameover.wav" relative="true"/>
-         <state name="Game_Active" activatefile="../../assets/sounds/begin.wav" relative="true"/>
-         <state name="Game_Countdown_5" activatefile="../../assets/sounds/five.wav" relative="true"/>
-         <state name="Game_Countdown_4" activatefile="../../assets/sounds/four.wav" relative="true"/>
-         <state name="Game_Countdown_3" activatefile="../../assets/sounds/three.wav" relative="true"/>
-         <state name="Game_Countdown_2" activatefile="../../assets/sounds/two.wav" relative="true"/>
-         <state name="Game_Countdown_1" activatefile="../../assets/sounds/one.wav" relative="true"/>
+         <state name="Game_Waiting" activate-resource="gameover-sound" relative="true"/>
+         <state name="Game_Active" activate-resource="begin-sound" relative="true"/>
+         <state name="Game_Countdown_5" activate-resource="five-sound" relative="true"/>
+         <state name="Game_Countdown_4" activate-resource="four-sound" relative="true"/>
+         <state name="Game_Countdown_3" activate-resource="three-sound" relative="true"/>
+         <state name="Game_Countdown_2" activate-resource="two-sound" relative="true"/>
+         <state name="Game_Countdown_1" activate-resource="one-sound" relative="true"/>
       </audio>
       <net>
          <enum value="2"/>

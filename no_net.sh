@@ -6,4 +6,4 @@ if [ "$1" = "" ] ; then
    export EXTRA_FILE=config/cycle_red.xml ;
 fi
 
-$BIN_HOME/dmzAppQt -f config/runtime.xml config/common.xml config/audio.xml config/input.xml config/render.xml config/cycle.xml config/game.xml config/lua.xml $* $EXTRA_FILE
+$BIN_HOME/dmzAppQt -f config/resource.xml config/runtime.xml config/common.xml config/audio.xml config/input.xml config/render.xml config/cycle.xml config/game.xml config/lua.xml $* $EXTRA_FILE

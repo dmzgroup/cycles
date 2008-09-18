@@ -19,7 +19,7 @@
       <forceFullDirectSoundHRTF value="True"/>
    </dmzAudioModuleFMOD>
    <dmzAudioPluginEventSimple>
-      <event-type name="Event_Collision" file="../../assets/sounds/game_crash_mono.wav"/>
+      <event-type name="Event_Collision" resource="crash-sound"/>
    </dmzAudioPluginEventSimple>
 <dmzLuaModuleBasic>
    <extensions>
