@@ -58,7 +58,7 @@ local function test_move (self, hil, origPos, pos)
    if hil then
       local offset = const.Forward * 0.4
       local rot = dmz.matrix.new (const.Forward, pos - origPos)
-      rot:transform (offset)
+      offset = rot:transform (offset)
       dmz.isect.disable_isect (hil)
       origPos = dmz.vector.new (origPos)
       origPos:set_y (origPos:get_y () + 0.5)

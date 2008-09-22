@@ -13,7 +13,7 @@
    <offset x="0.0" y="0.0" z="0.0"/>
 </freefly>
 <archive>
-   <object-type name="spectator">
+   <object type="spectator">
       <attributes>
          <position x="0.0" y="5.0" z="10.0"/>
          <orientation

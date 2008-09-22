@@ -57,7 +57,7 @@ local function link_objects (self, Link, Attribute, Super, Sub)
          self.active = false
          local cycleState = dmz.object.state (hil)
          if cycleState then
-            cycleState.unset (const.Dead + Engine_On)
+            cycleState.unset (const.CycleState)
             cycleState = cycleState + const.Standby
             dmz.object.state (hil , nil, cycleState)
             local pos = dmz.object.position (Super)

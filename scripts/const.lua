@@ -22,6 +22,7 @@ GameStateMask =
 Dead = dmz.definitions.lookup_state ("Dead")
 Standby = dmz.definitions.lookup_state ("Standby")
 EngineOn = dmz.definitions.lookup_state ("Engine_On")
+CycleState = Dead + Standby + EngineOn
 EmptyState = dmz.mask.new ()
 
 TimeStampHandle = dmz.handle.new ("MCP_Running_Time")
@@ -31,8 +32,10 @@ CycleType = dmz.object_type.new ("cycle")
 MCPType = dmz.object_type.new ("mcp")
 StartPointType = dmz.object_type.new ("start_point")
 WaitPointType = dmz.object_type.new ("wait_point")
+DroneType = dmz.object_type.new ("blue_drone")
 
 Right = dmz.vector.right ()
+Left = dmz.vector.left ()
 Up = dmz.vector.up ()
 Forward = dmz.vector.forward ()
 
