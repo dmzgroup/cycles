@@ -4,6 +4,6 @@
    <instance name="drone"/>
 </dmzLuaModuleBasic>
 <drone>
-   <count value="5"/>
+   <count value="3"/>
 </drone>
 </dmz>

@@ -1,5 +1,9 @@
 require "const"
 
+local function random_speed (self)
+   return self.NormalSpeed + (-5 + (10 * math.random ()))
+end
+
 local function test_distance (object, pos, heading)
    local result = nil
    pos = dmz.vector.new (pos:get_x (), pos:get_y () + 0.2, pos:get_z ())
@@ -58,15 +62,15 @@ local function calculate_orientation (self, object, info, pos, ori)
    return result
 end
 
-local function set_throttle (self, object)
+local function set_throttle (self, object, info)
    if object then
       local throttle = 1
-      if (self.speed < self.NormalSpeed) and (self.MinSpeed > 0) then
+      if (info.speed < self.NormalSpeed) and (self.MinSpeed > 0) then
          throttle = throttle -
-            (((self.NormalSpeed - self.speed) / (self.NormalSpeed - self.MinSpeed)) * 0.4)
-      elseif self.speed > self.NormalSpeed then
+            (((self.NormalSpeed - info.speed) / (self.NormalSpeed - self.MinSpeed)) * 0.4)
+      elseif info.speed > self.NormalSpeed then
          throttle = throttle +
-            (((self.speed - self.NormalSpeed) / (self.MaxSpeed - self.NormalSpeed)) * 0.6)
+            (((info.speed - self.NormalSpeed) / (self.MaxSpeed - self.NormalSpeed)) * 0.6)
       end
       dmz.object.scalar (object, self.throttleHandle, throttle)
    end
@@ -144,14 +148,14 @@ local function update_time_slice (self, time)
 
          local dir = ori:transform (dmz.vector.forward ())
 
-         set_throttle (self, object)
+         set_throttle (self, object, info)
 
          vel = dir * (info.speed)
          local origPos = pos
          pos = pos + (vel * time)
 
          local passed =
-            ((self.speed > 0) and test_move (self, object, origPos, pos, ori) or true)
+            ((info.speed > 0) and test_move (self, object, origPos, pos, ori) or true)
 
          dmz.object.position (object, nil, (passed and pos or origPos))
          dmz.object.velocity (object, nil, (passed and vel or {0, 0, 0}))
@@ -179,6 +183,8 @@ local function update_object_state (self, Object, Attribute, State, PreviousStat
          if info.pos and info.ori then
             dmz.object.position (Object, nil, info.pos)
             dmz.object.orientation (Object, nil, info.ori)
+            dmz.object.velocity (Object, nil, {0, 0, 0})
+            info.speed = random_speed (self)
          end
       end
    elseif Object == self.mcp then
@@ -244,7 +250,7 @@ local function start (self)
    for ix = 1, self.droneCount do
       local object = dmz.object.create (const.DroneType)
       if object then
-         self.objects[object] = { speed = self.NormalSpeed, }
+         self.objects[object] = { speed = random_speed (self), }
          dmz.object.state (object, nil, const.Dead)
          dmz.object.position (object, nil, {0, 0, 0})
          dmz.object.activate (object)
@@ -292,8 +298,6 @@ function new (config, name)
       droneCount = config:to_number ("count.value", 1),
       objects = {},
    }
-
-   self.speed = self.NormalSpeed
 
    if self.MinSpeed > self.MaxSpeed then
       self.log:warn ("Max Speed is less than Minimum Speed")
