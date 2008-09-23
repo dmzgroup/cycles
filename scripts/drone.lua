@@ -1,11 +1,15 @@
 require "const"
 
+local function next_turn (FrameTime)
+   return FrameTime + (math.random () * 4) + 0.5
+end
+
 local function random_speed (self)
    return self.NormalSpeed + (-5 + (10 * math.random ()))
 end
 
 local function test_distance (object, pos, heading)
-   local result = nil
+   local result = 0
    pos = dmz.vector.new (pos:get_x (), pos:get_y () + 0.2, pos:get_z ())
    local ori = dmz.matrix.new (const.Up, heading)
    local dir = dmz.vector.new (const.Forward)
@@ -26,9 +30,15 @@ local function calculate_orientation (self, object, info, pos, ori)
 
    local result = dmz.matrix.new (ori)
 
-   if not info.lastTurnTime then info.lastTurnTime = FrameTime
+   if not info.lastTurnTime then
+      info.lastTurnTime = FrameTime
+      info.nextTurnTime = next_turn (FrameTime)
    elseif (FrameTime - info.lastTurnTime) > 0.2 then
 
+      local forceTurn = false
+      if info.nextTurnTime <  FrameTime then
+         forceTurn = true
+      end
       local dir = ori:transform (const.Forward)
       dir:set_y (0)
 
@@ -45,14 +55,14 @@ local function calculate_orientation (self, object, info, pos, ori)
          end
 
          local forward = test_distance (object, pos, heading)
-         if forward and forward < 2 then
+         if forceTurn or (forward < 2) then
             info.lastTurnTime = FrameTime
+            info.nextTurnTime = next_turn (FrameTime)
             local right = test_distance (object, pos, heading - dmz.math.HalfPi)
             local left = test_distance (object, pos, heading + dmz.math.HalfPi)
-            if not right then heading = heading - dmz.math.HalfPi
-            elseif not left then heading = heading + dmz.math.HalfPi
-            elseif right > left then heading = heading - dmz.math.HalfPi
-            else heading = heading + dmz.math.HalfPi
+            if right > left then
+               if right > forward then heading = heading - dmz.math.HalfPi end
+            elseif left > forward then heading = heading + dmz.math.HalfPi
             end
          end
          result:from_axis_and_angle (const.Up, heading)
@@ -197,7 +207,10 @@ local function update_object_state (self, Object, Attribute, State, PreviousStat
          newState = const.EngineOn
       end
       if newState then
+         local FrameTime = dmz.time.frame_time ()
          for obj, info in pairs (self.objects) do
+            info.lastTurnTime = FrameTime
+            info.nextTurnTime = next_turn (FrameTime)
             if info.startObject then
                local cycleState = dmz.object.state (obj)
                if not cycleState then cycleState = dmz.mask.new () end

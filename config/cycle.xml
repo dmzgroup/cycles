@@ -2,18 +2,17 @@
 <dmz>
 <plugins>
    <plugin name="cycle" reserve="true"/>
-   <plugin name="dmzEntityPluginPortalFollow" scope="cycle"/>
-   <plugin name="dmzEntityPluginTeleport"/>
+   <plugin name="camera" reserve="true"/>
 </plugins>
 <dmzLuaModuleBasic>
    <instance name="cycle"/>
+   <instance name="camera"/>
+   <extensions>
+      <plugin name="dmzLuaExtPortal"/>
+   </extensions>
 </dmzLuaModuleBasic>
 <cycle>
-   <offset x="0.0" y="2.5" z="8.5"/>
    <speed min="0.0"/>
 </cycle>
-<dmzEntityPluginDeadTimer>
-   <timer value="5.0"/>
-</dmzEntityPluginDeadTimer>
 </dmz>
   

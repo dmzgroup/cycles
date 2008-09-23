@@ -22,8 +22,8 @@ dmz::CyclesPluginGridOSG::CyclesPluginGridOSG (const PluginInfo &Info, Config &l
       Plugin (Info),
       _log (Info),
       _tileSize (250.0),
-      _minGrid (-225.0),
-      _maxGrid (225.0),
+      _minGrid (-250.0),
+      _maxGrid (250.0),
       _core (0) {
 
    _init (local);
