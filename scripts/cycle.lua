@@ -53,41 +53,6 @@ local function set_throttle (self, hil)
    end
 end
 
-local function test_move (self, hil, origPos, pos)
-   local result = true
-   if hil then
-      local offset = const.Forward * 0.4
-      local rot = dmz.matrix.new (const.Forward, pos - origPos)
-      offset = rot:transform (offset)
-      dmz.isect.disable_isect (hil)
-      origPos = dmz.vector.new (origPos)
-      origPos:set_y (origPos:get_y () + 0.5)
-      origPos:set_z (origPos:get_z ())
-      origPos = origPos - offset
-      pos = dmz.vector.new (pos)
-      pos:set_y (pos:get_y () + 0.5)
-      pos = pos - offset
- 
-      local isectResults = dmz.isect.do_isect (
-         { type = dmz.isect.SegmentTest, start = origPos, vector = pos, },
-         { type = dmz.isect.ClosestPoint, })
-      if isectResults and isectResults[1] then
-         local state = dmz.object.state (hil)
-         if not state then state = dmz.mask.new () end
-         state:unset (const.EngineOn)
-         state = state + const.Dead
-         dmz.object.state (hil, nil, state)
-         local Event = dmz.event.open_collision (hil, isectResults[1].object)
-         dmz.event.position (Event, nil, isectResults[1].point)
-         --dmz.event.velocity (Event, nil, {0, 0, 0})
-         dmz.event.close (Event)
-         result = false
-      end
-      dmz.isect.enable_isect (hil)
-   end
-   return result
-end
-
 local function update_time_slice (self, time)
 
    local hil = dmz.object.get_human_in_the_loop ()
@@ -124,7 +89,8 @@ local function update_time_slice (self, time)
          local origPos = pos
          pos = pos + (vel * time)
 
-         local passed = ((self.speed > 0) and test_move (self, hil, origPos, pos) or true)
+         local passed =
+            ((self.speed > 0) and const.test_move (self, hil, origPos, pos, ori) or true)
 
          dmz.object.position (hil, nil, (passed and pos or origPos))
          dmz.object.velocity (hil, nil, (passed and vel or {0, 0, 0}))

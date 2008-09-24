@@ -39,3 +39,52 @@ Left = dmz.vector.left ()
 Up = dmz.vector.up ()
 Forward = dmz.vector.forward ()
 
+function test_move (self, object, origPos, pos, ori)
+   local result = true
+   if object then
+      dmz.isect.disable_isect (object)
+      local deathPoint = nil
+      local target = nil
+      local left = ori:transform (Left * 0.6) + pos
+      local right = ori:transform (Right * 0.6) + pos
+      local wiskerResults = dmz.isect.do_isect (
+         { type = dmz.isect.SegmentTest, start = right, vector = left, },
+         { type = dmz.isect.ClosestPoint, })
+      if wiskerResults and wiskerResults[1] then
+         deathPoint = wiskerResults[1].point
+         target = wiskerResults[1].object
+         result = false
+      else
+         origPos = dmz.vector.new (origPos)
+         origPos:set_y (origPos:get_y () + 0.5)
+         origPos:set_z (origPos:get_z ())
+         origPos = origPos
+         pos = dmz.vector.new (pos)
+         pos:set_y (pos:get_y () + 0.5)
+         pos = pos
+         local isectResults = dmz.isect.do_isect (
+            { type = dmz.isect.SegmentTest, start = origPos, vector = pos, },
+            { type = dmz.isect.ClosestPoint, })
+         if isectResults and isectResults[1] then
+            deathPoint = isectResults[1].point
+            target = isectResults[1].object
+            result = false
+         end
+      end
+      if deathPoint then
+         local state = dmz.object.state (object)
+         if not state then state = dmz.mask.new () end
+         state:unset (CycleState)
+         state = state + Dead
+         dmz.object.state (object, nil, state)
+         dmz.object.velocity (object, nil, {0, 0, 0})
+         local Event = dmz.event.open_collision (object, target)
+         dmz.event.position (Event, nil, deathPoint)
+         dmz.event.close (Event)
+      end
+      dmz.isect.enable_isect (object)
+   end
+   return result
+end
+
+

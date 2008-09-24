@@ -86,58 +86,6 @@ local function set_throttle (self, object, info)
    end
 end
 
-local function test_move (self, object, origPos, pos, ori)
-   local result = true
-   if object then
-      dmz.isect.disable_isect (object)
-      local deathPoint = nil
-      local target = nil
-      local left = ori:transform (const.Left * 0.5) + pos
-      local right = ori:transform (const.Right * 0.5) + pos
-      local wiskerResults = dmz.isect.do_isect (
-         { type = dmz.isect.SegmentTest, start = right, vector = left, },
-         { type = dmz.isect.ClosestPoint, })
-      if wiskerResults and wiskerResults[1] then
-         deathPoint = wiskerResults[1].point
-         target = wiskerResults[1].object
-         result = false
-      else
-         local offset = const.Forward * 0.4
-         local rot = dmz.matrix.new (const.Forward, pos - origPos)
-         offset = rot:transform (offset)
-         origPos = dmz.vector.new (origPos)
-         origPos:set_y (origPos:get_y () + 0.5)
-         origPos:set_z (origPos:get_z ())
-         origPos = origPos - offset
-         pos = dmz.vector.new (pos)
-         pos:set_y (pos:get_y () + 0.5)
-         pos = pos - offset
- 
-         local isectResults = dmz.isect.do_isect (
-            { type = dmz.isect.SegmentTest, start = origPos, vector = pos, },
-            { type = dmz.isect.ClosestPoint, })
-         if isectResults and isectResults[1] then
-            deathPoint = isectResults[1].point
-            target = isectResults[1].object
-            result = false
-         end
-      end
-      if deathPoint then
-         local state = dmz.object.state (object)
-         if not state then state = dmz.mask.new () end
-         state:unset (const.CycleState)
-         state = state + const.Dead
-         dmz.object.state (object, nil, state)
-         dmz.object.velocity (object, nil, {0, 0, 0})
-         local Event = dmz.event.open_collision (object, target)
-         dmz.event.position (Event, nil, deathPoint)
-         dmz.event.close (Event)
-      end
-      dmz.isect.enable_isect (object)
-   end
-   return result
-end
-
 local function update_time_slice (self, time)
 
    for object, info in pairs (self.objects) do
@@ -165,7 +113,8 @@ local function update_time_slice (self, time)
          pos = pos + (vel * time)
 
          local passed =
-            ((info.speed > 0) and test_move (self, object, origPos, pos, ori) or true)
+            ((info.speed > 0) and const.test_move (self, object, origPos, pos, ori)
+               or true)
 
          dmz.object.position (object, nil, (passed and pos or origPos))
          dmz.object.velocity (object, nil, (passed and vel or {0, 0, 0}))

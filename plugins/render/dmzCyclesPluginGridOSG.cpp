@@ -251,6 +251,10 @@ void
 dmz::CyclesPluginGridOSG::_init (Config &local) {
 
    _imageFile = config_to_string ("image.file", local, "grid2.png");
+
+   _tileSize = config_to_float64 ("tile.size", local, _tileSize);
+   _minGrid = config_to_float64 ("tile.min", local, _minGrid);
+   _maxGrid = config_to_float64 ("tile.max", local, _maxGrid);
 }
 
 
