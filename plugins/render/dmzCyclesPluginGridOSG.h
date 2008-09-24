@@ -3,6 +3,7 @@
 
 #include <dmzRuntimeLog.h>
 #include <dmzRuntimePlugin.h>
+#include <dmzRuntimeResources.h>
 
 #include <osg/Camera>
 
@@ -30,8 +31,9 @@ namespace dmz {
          void _init (Config &local);
 
          Log _log;
+         Resources _rc;
 
-         String _imageFile;
+         String _imageResource;
          Float32 _tileSize;
          Float32 _minGrid;
          Float32 _maxGrid;

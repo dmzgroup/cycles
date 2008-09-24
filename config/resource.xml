@@ -10,6 +10,7 @@
       <path value="../../assets/sounds"/>
    </search>
    <resource name="logo" file="DMZ.png"/>
+   <resource name="grid" file="grid2.png"/>
    <resource name="red" file="red.obj"/>
    <resource name="orange" file="orange.obj"/>
    <resource name="yellow" file="yellow.obj"/>

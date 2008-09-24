@@ -21,6 +21,7 @@
 dmz::CyclesPluginGridOSG::CyclesPluginGridOSG (const PluginInfo &Info, Config &local) :
       Plugin (Info),
       _log (Info),
+      _rc (Info),
       _tileSize (250.0),
       _minGrid (-250.0),
       _maxGrid (250.0),
@@ -80,7 +81,7 @@ dmz::CyclesPluginGridOSG::discover_plugin (
 void
 dmz::CyclesPluginGridOSG::_create_grid () {
 
-   const String FoundFile (_core ? _core->find_file (_imageFile) : "");
+   const String FoundFile (_rc.find_file (_imageResource));
 
    osg::ref_ptr<osg::Image> img =
       (FoundFile ? osgDB::readImageFile (FoundFile.get_buffer ()) : 0);
@@ -250,7 +251,7 @@ dmz::CyclesPluginGridOSG::_create_grid () {
 void
 dmz::CyclesPluginGridOSG::_init (Config &local) {
 
-   _imageFile = config_to_string ("image.file", local, "grid2.png");
+   _imageResource = config_to_string ("image.resource", local, "grid");
 
    _tileSize = config_to_float64 ("tile.size", local, _tileSize);
    _minGrid = config_to_float64 ("tile.min", local, _minGrid);

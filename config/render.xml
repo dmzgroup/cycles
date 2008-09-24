@@ -5,15 +5,11 @@
       <plugin name="dmzRenderModulePortalOSG"/>
       <plugin name="dmzRenderPluginObjectOSG"/>
       <plugin name="dmzRenderPluginLogoOSG"/>
-      <plugin name="dmzCyclesPluginGridOSG"/>
+      <plugin name="dmzCyclesPluginGridOSG" scope="grid"/>
       <plugin name="dmzCyclesPluginWallOSG"/>
       <plugin name="dmzRenderModuleCoreOSGBasic"/>
    </plugins>
    <dmzRenderModuleCoreOSGBasic>
-      <search>
-         <path value="../../assets/cycles"/>
-         <path value="../../assets/images"/>
-      </search>
       <plugins>
          <plugin name="dmzRenderExtViewerOSG"/>
       </plugins>
@@ -25,4 +21,9 @@
    <dmzRenderModulePortalOSG>
       <visibility fov="60.0" near="1.0" far="32000.0"/>
    </dmzRenderModulePortalOSG>
+<!--
+   <grid>
+      <tile size="100" min="-50" max="50"/>
+   </grid>
+-->
 </dmz>
