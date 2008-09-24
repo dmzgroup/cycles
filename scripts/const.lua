@@ -87,4 +87,3 @@ function test_move (self, object, origPos, pos, ori)
    return result
 end
 
-
