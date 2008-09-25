@@ -40,6 +40,7 @@
    <adapter type="orientation" lnv="true"/>
    <adapter type="state" lnv="true"/>
    <adapter type="scalar" attribute="throttle"/>
+   <adapter type="flag" attribute="Drone_Flag"/>
 </NetCodecCycle>
 <NetCodecMCP>
    <adapter type="state" lnv="true"/>

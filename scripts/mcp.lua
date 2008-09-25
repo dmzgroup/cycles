@@ -71,6 +71,14 @@ local function get_dead_count (self)
    return result
 end
 
+local function is_all_drones (self)
+   local result = true
+   for object, cycle in pairs (self.cycleList) do
+      if cycle.point and not cycle.dead and not cycle.drone then result = false end
+   end
+   return result
+end
+
 local function set_game_state (mcp, State)
    local newState = dmz.object.state (mcp)
    newState:unset (const.GameStateMask)
@@ -93,7 +101,6 @@ local function update_time_slice (self, time)
          if (self.waitTime <= CTime) and
                (get_standby_count (self) == self.playerCount) and
                (self.playerCount >= self.minCycles) then
---self.log:error ("Move to Countdown 5")
             set_game_state (self.mcp, const.GameCountdown5)
             self.nextStateTime = CTime + 1
          end
@@ -102,36 +109,32 @@ local function update_time_slice (self, time)
             set_game_state (self.mcp, const.GameWaiting)
             self.endTime = nil
             self.waitTime = CTime + 2
-         elseif not self.endTime and get_dead_count (self) >= (self.playerCount - 1) then
+         elseif not self.endTime and (get_dead_count (self) >= (self.playerCount - 1)
+                 or is_all_drones (self))  then
             self.endTime = CTime + 2
          end
       elseif State:contains (const.GameCountdown5) then
          if CTime >= self.nextStateTime then
---self.log:error ("Move to Countdown 4")
             set_game_state (self.mcp, const.GameCountdown4)
             self.nextStateTime = CTime + 1
          end
       elseif State:contains (const.GameCountdown4) then
          if CTime >= self.nextStateTime then
---self.log:error ("Move to Countdown 3")
             set_game_state (self.mcp, const.GameCountdown3)
             self.nextStateTime = CTime + 1
          end
       elseif State:contains (const.GameCountdown3) then
          if CTime >= self.nextStateTime then
---self.log:error ("Move to Countdown 2")
             set_game_state (self.mcp, const.GameCountdown2)
             self.nextStateTime = CTime + 1
          end
       elseif State:contains (const.GameCountdown2) then
          if CTime >= self.nextStateTime then
---self.log:error ("Move to Countdown 1")
             set_game_state (self.mcp, const.GameCountdown1)
             self.nextStateTime = CTime + 1
          end
       elseif State:contains (const.GameCountdown1) then
          if CTime >= self.nextStateTime then
---self.log:error ("Move to Active")
             set_game_state (self.mcp, const.GameActive)
             self.nextStateTime = CTime + 1
          end
@@ -144,7 +147,7 @@ end
 
 local function create_object (self, Object, Type)
    if Type:is_of_type (const.CycleType) then
-      self.cycleList[Object] = {}
+      self.cycleList[Object] = { drone = dmz.object.flag (Object, const.DroneHandle), }
       self.cycleCount = self.cycleCount + 1
       self.assignPoints = true
    end
@@ -217,7 +220,11 @@ function new (config, name)
    }
 
    self.log:info ("Creating plugin: " .. name)
-   
+
+   if config:to_boolean ("drone-free-play.value", false) then
+      is_all_drones = function () return false end
+   end
+
    return self
 end
 

@@ -11,4 +11,9 @@
 <dmzLuaModuleBasic>
    <instance name="mcp"/>
 </dmzLuaModuleBasic>
+<!--
+<mcp>
+   <drone-free-play value="true"/>
+</mcp>
+-->
 </dmz>

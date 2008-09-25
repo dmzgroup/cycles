@@ -96,11 +96,6 @@
          <offset value="3.46"/>
       </wall>
    </object-type>
-   <object-type name="blue_drone" parent="blue_cycle">
-      <net>
-         <enum value="1.1.4.1"/>
-      </net>
-   </object-type>
    <object-type name="mcp">
       <audio>
          <state name="Game_Waiting" activate-resource="gameover-sound" relative="true"/>

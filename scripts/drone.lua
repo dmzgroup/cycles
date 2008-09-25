@@ -124,9 +124,7 @@ local function update_time_slice (self, time)
 end
 
 local function create_object (self, Object, Type)
-   if Type:is_of_type (const.MCPType) then self.mcp = Object
-   elseif Type:is_of_type (const.DroneType) then
-   end
+   if Type:is_of_type (const.MCPType) then self.mcp = Object end
 end
 
 local function destroy_object (self, Object)
@@ -210,11 +208,13 @@ local function start (self)
    self.handle = self.timeSlice:create (update_time_slice, self, self.name)
 
    for ix = 1, self.droneCount do
-      local object = dmz.object.create (const.DroneType)
+      local object = dmz.object.create (
+         const.CycleTypeList[math.random (1, #(const.CycleTypeList))])
       if object then
          self.objects[object] = { speed = random_speed (self), }
          dmz.object.state (object, nil, const.Dead)
          dmz.object.position (object, nil, {0, 0, 0})
+         dmz.object.flag (object, const.DroneHandle, true)
          dmz.object.activate (object)
          dmz.object.set_temporary (object)
       end

@@ -27,12 +27,23 @@ EmptyState = dmz.mask.new ()
 
 TimeStampHandle = dmz.handle.new ("MCP_Running_Time")
 StartLinkHandle = dmz.handle.new ("Start_Position")
+DroneHandle = dmz.handle.new ("Drone_Flag")
 
 CycleType = dmz.object_type.new ("cycle")
 MCPType = dmz.object_type.new ("mcp")
 StartPointType = dmz.object_type.new ("start_point")
 WaitPointType = dmz.object_type.new ("wait_point")
-DroneType = dmz.object_type.new ("blue_drone")
+RedType = dmz.object_type.new ("red_cycle")
+OrangeType = dmz.object_type.new ("orange_cycle")
+YellowType = dmz.object_type.new ("yellow_cycle")
+BlueType = dmz.object_type.new ("blue_cycle")
+
+CycleTypeList = {
+   RedType,
+   OrangeType,
+   YellowType,
+   BlueType,
+}
 
 Right = dmz.vector.right ()
 Left = dmz.vector.left ()
