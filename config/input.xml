@@ -13,6 +13,9 @@
          <converter key="L">
             <target name="dmzQtExtLuaConsole" message="DMZ_Show_Lua_Console"/>
          </converter>
+         <converter key="P">
+            <target name="dmzQtPluginLuaProfiler" message="DMZ_Show_Lua_Profiler"/>
+         </converter>
       </channel>
    </dmzInputPluginKeyEventToMessage>
    <dmzInputPluginControllerMacOS>
