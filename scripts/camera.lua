@@ -2,7 +2,7 @@ require "const"
 
 local function update_time_slice (self, time)
 
-   local hil = dmz.object.get_human_in_the_loop ()
+   local hil = dmz.object.hil ()
 
    if hil and self.active > 0 then
 
@@ -16,7 +16,7 @@ local function update_time_slice (self, time)
          end
       else
          self.watch = false
-         local MaxTurn = (dmz.math.Pi * time)
+         local MaxTurn = (dmz.math.TwoPi * time)
          local pos = dmz.object.position (hil)
          local ori = dmz.object.orientation (hil)
          local dir = dmz.object.velocity (hil)

@@ -55,7 +55,7 @@ end
 
 local function update_time_slice (self, time)
 
-   local hil = dmz.object.get_human_in_the_loop ()
+   local hil = dmz.object.hil ()
 
    if hil and self.active > 0 then
 
