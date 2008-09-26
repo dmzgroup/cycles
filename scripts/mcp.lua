@@ -139,7 +139,7 @@ local function update_time_slice (self, time)
             self.nextStateTime = CTime + 1
          end
       else
-         self.log.error ("Game in unknown state. Changing to a waiting state")
+         self.log:error ("Game in unknown state. Changing to a waiting state")
          set_game_state (self.mcp, const.GameWaiting)
       end
    end
