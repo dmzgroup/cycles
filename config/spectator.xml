@@ -9,7 +9,7 @@
    <instance name="dmzEntityPluginFreeFly" scope="freefly"/>
 </dmzLuaModuleBasic>
 <freefly>
-   <movement speed="100" turnRate="2.4"/>
+   <movement speed="100" turn-rate="2.4"/>
    <offset x="0.0" y="0.0" z="0.0"/>
 </freefly>
 <archive>
