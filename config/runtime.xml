@@ -127,7 +127,7 @@
          <rule type="orientation"/>
          <rule type="counter" attribute="Start_Position"/>
          <rule type="heartbeat" value="1.0"/>
-         <rule type="ratelimit"/>
+         <rule type="rate-limit"/>
       </net>
    </object-type>
    <object-type name="start_point" parent="base_point">
