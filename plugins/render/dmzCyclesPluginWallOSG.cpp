@@ -5,7 +5,7 @@
 #include <dmzRenderModuleCoreOSG.h>
 #include <dmzRenderObjectDataOSG.h>
 #include <dmzRenderUtilOSG.h>
-#include <dmzRuntimeConfigToBase.h>
+#include <dmzRuntimeConfigToTypesBase.h>
 #include <dmzRuntimeDefinitions.h>
 #include <dmzRuntimeObjectType.h>
 #include <dmzRuntimePluginFactoryLinkSymbol.h>

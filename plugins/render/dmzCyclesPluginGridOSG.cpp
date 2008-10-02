@@ -1,6 +1,6 @@
 #include <dmzRenderModuleCoreOSG.h>
 #include "dmzCyclesPluginGridOSG.h"
-#include <dmzRuntimeConfigToBase.h>
+#include <dmzRuntimeConfigToTypesBase.h>
 #include <dmzRuntimePluginFactoryLinkSymbol.h>
 #include <dmzRuntimePluginInfo.h>
 
