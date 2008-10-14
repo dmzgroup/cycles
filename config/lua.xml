@@ -3,7 +3,7 @@
 <plugins>
    <plugin name="dmzLuaModuleBasic"/>
    <plugin name="dmzLuaPluginReset"/>
-   <plugin name="dmzQtPluginLuaProfiler"/>
+<!--   <plugin name="dmzQtPluginLuaProfiler"/> -->
 </plugins>
 <dmzLuaPluginTimedReset>
    <time value="0.5"/>
@@ -15,7 +15,7 @@
       <plugin name="dmzLuaExtIsect"/>
       <plugin name="dmzLuaExtObject"/>
       <plugin name="dmzLuaExtEvent"/>
-      <plugin name="dmzQtExtLuaConsole"/>
+<!--      <plugin name="dmzQtExtLuaConsole"/> -->
    </extensions>
 </dmzLuaModuleBasic>
 </dmz>

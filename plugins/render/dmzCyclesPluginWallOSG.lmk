@@ -12,4 +12,4 @@ lmk.add_preqs {
    "dmzObjectFramework",
    "dmzRenderModuleCoreOSG",
 }
-lmkOSG.add_libs {"osg",}
+lmkOSG.add_libs {"osg", "OpenThreads",}
