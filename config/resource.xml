@@ -5,9 +5,11 @@
    <search>
       <path value="../../assets/cycles"/>
       <path value="../../assets/images"/>
+      <path value="./assets"/>
    </search>
    <search name="audio">
       <path value="../../assets/sounds"/>
+      <path value="./assets"/>
    </search>
    <resource name="logo" file="DMZ.png"/>
    <resource name="grid" file="grid2.png"/>

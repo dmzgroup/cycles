@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest>
+   <config file="config/resource.xml"/>
+   <config file="config/runtime.xml"/>
+   <config file="config/common.xml"/>
+   <config file="config/audio.xml"/>
+   <config file="config/input.xml"/>
+   <config file="config/net.xml"/>
+   <config file="config/render.xml"/>
+   <config file="config/cycle.xml"/>
+   <config file="config/game.xml"/>
+   <config file="config/lua.xml"/>
+   <config file="config/mcp.xml"/>
+   <config file="config/drone.xml"/>
+   <config file="config/cycle_blue.xml"/>
+</manifest>

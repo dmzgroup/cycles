@@ -13,6 +13,9 @@
       <plugins>
          <plugin name="dmzRenderExtViewerOSG"/>
       </plugins>
+      <loader>
+         <path value="../Frameworks/osg"/>
+      </loader>
       <dmzRenderExtViewerOSG>
          <window left="50" top="50" width="800" height="600" screen="0"/>
          <!-- <fullscreen screen="0"/> -->
