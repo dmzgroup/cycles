@@ -5,7 +5,7 @@ lmk.add_vars {
    majorVersion = "1",
    minorVersion = "0",
    bugVersion = "0",
-   releaseType = "alpha 1",
+   releaseType = "test 2",
    aboutImage = "./assets/DMZ-Icon.png",
 }
 lmk.add_files ({"version.xml",}, {src="version",})
@@ -78,6 +78,7 @@ lmk.add_preqs {
 }
 app.set_app ("dmzQtAppShell", "cycles")
 app.set_plist ("Info.plist")
+app.add_icons {"AppIcon.icns"}
 app.add_config {
    "$(localTmpDir)/version.xml",
    "config/manifest.xml",

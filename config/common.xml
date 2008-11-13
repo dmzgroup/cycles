@@ -12,11 +12,16 @@
    <plugin name="dmzObjectModuleBasic"/>
    <plugin name="dmzEventModuleBasic"/>
    <plugin name="dmzEventModuleCommonBasic"/>
-   <!-- <plugin name="dmzPluginTermExit"/> -->
+   <plugin name="dmzQtModuleMainWindowBasic"/>
+<!--
+   <plugin name="dmzPluginTermExit"/> -->
 </plugins>
 <dmzArchivePluginObject>
    <archive>
       <attribute name="Last_Network_Value" contains="True"/>
    </archive>
 </dmzArchivePluginObject>
+<dmzQtModuleMainWindowBasic>
+   <hide value="true"/>
+</dmzQtModuleMainWindowBasic>
 </dmz>

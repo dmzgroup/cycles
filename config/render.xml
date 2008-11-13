@@ -2,17 +2,20 @@
 <dmz>
    <plugins>
       <plugin name="dmzRenderModuleIsectOSG"/>
-      <plugin name="dmzRenderModulePortalOSG"/>
       <plugin name="dmzRenderPluginObjectOSG"/>
       <plugin name="dmzRenderPluginLogoOSG"/>
       <plugin name="dmzCyclesPluginGridOSG" scope="grid"/>
       <plugin name="dmzCyclesPluginWallOSG"/>
+      <plugin name="dmzQtPluginViewerOSG"/>
+      <plugin name="dmzRenderModulePortalOSG"/>
       <plugin name="dmzRenderModuleCoreOSGBasic"/>
    </plugins>
    <dmzRenderModuleCoreOSGBasic>
+<!--
       <plugins>
-         <plugin name="dmzRenderExtViewerOSG"/>
+         <plugin name="dmzRenderExtViewerOSG"/> 
       </plugins>
+-->
       <loader>
          <path value="../Frameworks/osg"/>
       </loader>
