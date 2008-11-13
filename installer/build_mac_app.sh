@@ -10,8 +10,8 @@ cp $DEPTH/depend/Qt/QtSvg $DEPTH/cycles.app/Contents/Frameworks/Qt
 cp $DEPTH/depend/Qt/QtOpenGL $DEPTH/cycles.app/Contents/Frameworks/Qt
 OSGDIR=$DEPTH/cycles.app/Contents/Frameworks/osg
 OSGPLUGINDIRPRE=$DEPTH/cycles.app/Contents/PlugIns/
-OSGPLUGINDIR=$DEPTH/cycles.app/Contents/PlugIns/osgPlugins-2.6.0
-#OSGPLUGINDIR=$OSGDIR/osgPlugins-2.6.0
+OSGPLUGINDIR=$DEPTH/cycles.app/Contents/PlugIns/osgPlugins-2.6.1
+#OSGPLUGINDIR=$OSGDIR/osgPlugins-2.6.1
 mkdir $OSGDIR
 mkdir $OSGPLUGINDIRPRE
 mkdir $OSGPLUGINDIR
@@ -23,8 +23,8 @@ cp $DEPTH/depend/osg/lib/libosgUtil.dylib $OSGDIR
 cp $DEPTH/depend/osg/lib/libOpenThreads.dylib $OSGDIR
 cp $DEPTH/depend/osg/lib/libosgText.dylib $OSGDIR
 cp $DEPTH/depend/osg/lib/libosgDB.dylib $OSGDIR
-#cp $DEPTH/depend/osg/lib/osgdb_qt.so $OSGPLUGINDIR
-#cp $DEPTH/depend/osg/lib/osgdb_obj.so $OSGPLUGINDIR
+cp $DEPTH/depend/osg/lib/osgdb_qt.so $OSGPLUGINDIR
+cp $DEPTH/depend/osg/lib/osgdb_obj.so $OSGPLUGINDIR
 hdiutil create -srcfolder $DEPTH/cycles.app $DEPTH/cycles-`cat $DEPTH/tmp/macos-opt/mbraapp/buildnumber.txt`.dmg
 hdiutil internet-enable -yes -verbose $DEPTH/cycles-`cat $DEPTH/tmp/macos-opt/mbraapp/buildnumber.txt`.dmg
 rm -rf $DEPTH/cycles.app/
