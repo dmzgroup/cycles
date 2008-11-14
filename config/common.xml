@@ -12,9 +12,10 @@
    <plugin name="dmzObjectModuleBasic"/>
    <plugin name="dmzEventModuleBasic"/>
    <plugin name="dmzEventModuleCommonBasic"/>
-   <plugin name="dmzQtModuleMainWindowBasic"/>
 <!--
-   <plugin name="dmzPluginTermExit"/> -->
+   <plugin name="dmzQtModuleMainWindowBasic"/>
+   <plugin name="dmzPluginTermExit"/>
+-->
 </plugins>
 <dmzArchivePluginObject>
    <archive>
