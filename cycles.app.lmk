@@ -105,7 +105,6 @@ app.add_config {
 app.add_data {
    "../../assets/cycles/blue.mtl",
    "../../assets/cycles/blue.obj",
-   "../../assets/cycles/cycles.tgz",
    "../../assets/cycles/grid.png",
    "../../assets/cycles/grid2.png",
    "../../assets/cycles/orange.mtl",
