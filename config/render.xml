@@ -6,16 +6,19 @@
       <plugin name="dmzRenderPluginLogoOSG"/>
       <plugin name="dmzCyclesPluginGridOSG" scope="grid"/>
       <plugin name="dmzCyclesPluginWallOSG"/>
-      <plugin name="dmzRenderModulePortalOSG"/>
 <!--
+      <plugin name="dmzQtModuleMainWindowBasic"/>
       <plugin name="dmzQtPluginViewerOSG"/>
 -->
+      <plugin name="dmzRenderModulePortalOSG"/>
       <plugin name="dmzRenderModuleCoreOSGBasic"/>
    </plugins>
    <dmzRenderModuleCoreOSGBasic>
       <plugins>
          <plugin name="dmzRenderExtViewerOSG"/> 
       </plugins>
+<!--
+-->
       <loader>
          <path value="../Frameworks/osg"/>
       </loader>
