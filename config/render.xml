@@ -3,7 +3,8 @@
    <plugins>
       <plugin name="dmzRenderModuleIsectOSG"/>
       <plugin name="dmzRenderPluginObjectOSG"/>
-      <plugin name="dmzRenderPluginLogoOSG"/>
+		<plugin name="dmzRenderPluginLogoOSG"/>
+      <plugin name="dmzRenderPluginLightingOSG"/>
       <plugin name="dmzCyclesPluginGridOSG" scope="grid"/>
       <plugin name="dmzCyclesPluginWallOSG"/>
 <!--
