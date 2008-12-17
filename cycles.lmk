@@ -1,0 +1,4 @@
+require "qtshell"
+
+qtshell.set_up ("cycles")
+--lmk.add_files ({"cycles.rc"},{win32 = true})

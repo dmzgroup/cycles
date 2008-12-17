@@ -76,7 +76,7 @@ lmk.add_preqs {
    "dmzQtPluginLuaProfiler",
    "dmzPluginTermExit",
 }
-app.set_app ("dmzQtAppShell", "cycles")
+app.set_app ("cycles")
 app.set_plist ("Info.plist")
 app.add_icons {"AppIcon.icns"}
 app.add_config {
