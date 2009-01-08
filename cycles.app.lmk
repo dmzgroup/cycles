@@ -5,15 +5,15 @@ lmk.add_vars {
    majorVersion = "1",
    minorVersion = "0",
    bugVersion = "0",
-   releaseType = "test 2",
+   releaseType = "test 3",
    aboutImage = "./assets/DMZ-Icon.png",
 }
 lmk.add_files ({"version.xml",}, {src="version",})
 lmk.add_files {"cycles.app"}
 lmk.add_preqs {
+   "cycles",
    "dmzKernel",
    "dmzFileCacheLocal",
-   "dmzQtAppShell",
    "dmzQtLogObserver",
    "dmzQtUtil",
    "dmzApplication",
@@ -103,6 +103,7 @@ app.add_config {
    "config/spectator.xml",
 }
 app.add_data {
+   "assets/DMZ-Splash.png",
    "../../assets/cycles/blue.mtl",
    "../../assets/cycles/blue.obj",
    "../../assets/cycles/grid.png",
