@@ -5,7 +5,7 @@
    <config file="config/common.xml"/>
    <config file="config/audio.xml"/>
    <config file="config/input.xml"/>
-   <config file="config/net.xml"/>
+   <!-- <config file="config/net.xml"/> -->
    <config file="config/render.xml"/>
    <config file="config/cycle.xml"/>
    <config file="config/game.xml"/>
