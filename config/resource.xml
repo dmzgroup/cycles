@@ -3,12 +3,12 @@
 <runtime>
 <resource-map>
    <search>
-      <path value="../../assets/cycles"/>
-      <path value="../../assets/images"/>
+      <path value="../../assets/cycles/images"/>
+      <path value="../../assets/cycles/models"/>
       <path value="./assets"/>
    </search>
    <search name="audio">
-      <path value="../../assets/sounds"/>
+      <path value="../../assets/cycles/sounds"/>
       <path value="./assets"/>
    </search>
    <resource name="logo" file="DMZ.png"/>
