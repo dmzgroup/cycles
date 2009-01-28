@@ -1,6 +1,11 @@
 require "lmkQt"
 
--- lmkQt.set_name "cyclesInit"
+lmkQt.set_name "cyclesInit"
 lmk.set_type "plugin"
+lmk.add_files {"cyclesInit.ui",}
+lmk.add_files ({"cyclesInit.h",}, {src="moc",})
 lmk.add_files {"cyclesInit.cpp",}
-lmk.add_libs { "dmzKernel", }
+lmk.add_libs { "dmzApplication", "dmzKernel", }
+lmk.add_preqs { "dmzAppShell", }
+lmkQt.add_libs {"QtCore","QtGui",}
+
