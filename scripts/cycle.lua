@@ -63,6 +63,8 @@ local function update_time_slice (self, time)
 
       if state and state:contains (const.EngineOn) then
 
+         self.wasAlive = true
+
          local pos = dmz.object.position (hil)
          local vel = dmz.object.velocity (hil)
          local ori = dmz.object.orientation (hil)
@@ -95,6 +97,13 @@ local function update_time_slice (self, time)
          dmz.object.position (hil, nil, (passed and pos or origPos))
          dmz.object.velocity (hil, nil, (passed and vel or {0, 0, 0}))
          dmz.object.orientation (hil, nil, ori)
+      elseif self.wasAlive and state and state:contains (const.Dead) then
+         self.wasAlive = nil
+         local ori = dmz.object.orientation (hil)
+         if not ori then ori = dmz.matrix.new () end
+         local dir = ori:transform (dmz.vector.forward ())
+         self.speed = self.NormalSpeed
+         dmz.object.velocity (hil, nil, dir * self.speed)
       end
    end
 end
