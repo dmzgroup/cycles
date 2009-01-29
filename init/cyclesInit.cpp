@@ -163,8 +163,6 @@ extern "C" {
 DMZ_PLUGIN_FACTORY_LINK_SYMBOL void
 dmz_init_cycles (AppShellInitStruct &init) {
 
-   init.app.log.error << "Inside of the init function!" << endl;
-
    CyclesInit ci (init);
 
    FileTable colorTable;
