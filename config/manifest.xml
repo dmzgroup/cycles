@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest>
+   <help url="http://dmzdev.org/wiki/cycles"/>
    <config file="config/resource.xml"/>
    <config file="config/runtime.xml"/>
    <config file="config/common.xml"/>
@@ -12,5 +13,25 @@
    <config file="config/lua.xml"/>
    <config file="config/mcp.xml"/>
    <config file="config/drone.xml"/>
-   <config file="config/cycle_blue.xml"/>
+   <color>
+      <config text="Red" file="config/cycle_red.xml"/>
+      <config text="Orange" file="config/cycle_orange.xml"/>
+      <config text="Yellow" file="config/cycle_yellow.xml"/>
+      <config text="Blue" file="config/cycle_blue.xml"/>
+   </color>
+   <screen scope="dmz.render.view.window.screen">
+      <resolution text="Full Screen">
+         <attribute scope="dmz.render.view.window.fullscreen" value="true"/>
+      </resolution>
+      <resolution text="800x600">
+         <attribute scope="dmz.render.view.window.center" value="true"/>
+         <attribute scope="dmz.render.view.window.width" value="800"/>
+         <attribute scope="dmz.render.view.window.height" value="600"/>
+      </resolution>
+      <resolution text="1024x768">
+         <attribute scope="dmz.render.view.window.center" value="true"/>
+         <attribute scope="dmz.render.view.window.width" value="1024"/>
+         <attribute scope="dmz.render.view.window.height" value="768"/>
+      </resolution>
+   </screen>
 </manifest>
