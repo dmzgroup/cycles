@@ -156,10 +156,7 @@ local_set_drone_count (const Int32 DroneCount, AppShellInitStruct &init) {
 
    if (DroneScope) {
 
-      String CountStr;
-      CountStr << DroneCount;
-
-      global.store_attribute (DroneScope, CountStr);
+      global.store_attribute (DroneScope, String::number (DroneCount));
    }
 }
 
@@ -178,12 +175,10 @@ local_set_port (const Int32 Port, AppShellInitStruct &init) {
 
    if (PortScope) {
 
-      String PortStr;
-      PortStr << Port;
-
-      global.store_attribute (PortScope, PortStr);
+      global.store_attribute (PortScope, String::number (Port));
    }
 }
+
 };
 
 CyclesInit::CyclesInit (AppShellInitStruct &theInit) : init (theInit) {
