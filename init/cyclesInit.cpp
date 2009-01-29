@@ -70,6 +70,7 @@ local_populate_resolution_table (
          if (value) {
 
             ci.ui.resolutionCombo->addItem (value.get_buffer ());
+
             Config *ptr = new Config (rez);
 
             if (!rezTable.store (value, ptr) && ptr) {
@@ -144,7 +145,7 @@ CyclesInit::on_buttonBox_rejected () {
 
 
 void
-CyclesInit::on_helpButton_clicked () {
+CyclesInit::on_buttonBox_helpRequested () {
 
    const String UrlValue =
       config_to_string ("help.url", init.manifest, "http://dmzdev.org/wiki/cycles");
