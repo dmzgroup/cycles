@@ -17,7 +17,7 @@ namespace {
 typedef HashTableStringTemplate<String> FileTable;
 typedef HashTableStringTemplate<Config> ConfigTable;
 
-void
+static void
 local_populate_color_table (
       AppShellInitStruct &init,
       CyclesInit &ci,
@@ -50,7 +50,7 @@ local_populate_color_table (
 }
 
 
-void
+static void
 local_populate_resolution_table (
       AppShellInitStruct &init,
       CyclesInit &ci,
@@ -78,6 +78,26 @@ local_populate_resolution_table (
                delete ptr; ptr = 0;
             }
          }
+      }
+   }
+}
+
+
+static void
+local_add_config (const String &Scope, AppShellInitStruct &init) {
+
+   Config configList;
+
+   if (init.manifest.lookup_all_config (Scope, configList)) {
+
+      ConfigIterator it;
+      Config config;
+
+      while (configList.get_next_config (it, config)) {
+
+         const String Value = config_to_string ("file", config);
+
+         if (Value) { init.files.append_arg (Value); }
       }
    }
 }
@@ -123,6 +143,47 @@ local_setup_resolution (
    }
 }
 
+
+static void
+local_set_drone_count (const Int32 DroneCount, AppShellInitStruct &init) {
+
+   Config global;
+
+   init.app.get_global_config (global);
+
+   String DroneScope =
+      config_to_string ("drone.scope", init.manifest, "dmz.drone.count.value");
+
+   if (DroneScope) {
+
+      String CountStr;
+      CountStr << DroneCount;
+
+      global.store_attribute (DroneScope, CountStr);
+   }
+}
+
+
+static void
+local_set_port (const Int32 Port, AppShellInitStruct &init) {
+
+   Config global;
+
+   init.app.get_global_config (global);
+
+   String PortScope = config_to_string (
+      "port.scope",
+      init.manifest,
+      "dmz.dmzNetModulePacketIOHawkNL.socket.port");
+
+   if (PortScope) {
+
+      String PortStr;
+      PortStr << Port;
+
+      global.store_attribute (PortScope, PortStr);
+   }
+}
 };
 
 CyclesInit::CyclesInit (AppShellInitStruct &theInit) : init (theInit) {
@@ -186,32 +247,44 @@ dmz_init_cycles (AppShellInitStruct &init) {
 
    if (init.app.is_running ()) {
 
-      Config configList;
+      local_add_config ("config", init);
 
-      if (init.manifest.lookup_all_config ("config", configList)) {
+      Boolean multiplayer = False;
+      Int32 droneCount = 0;
 
-         ConfigIterator it;
-         Config config;
+      if (ci.ui.netBox->checkState () == Qt::Checked) {
 
-         while (configList.get_next_config (it, config)) {
+         multiplayer = True;
+         local_add_config ("multi-player.config", init);
 
-            const String Value = config_to_string ("file", config);
+         if (ci.ui.mcpBox->checkState () == Qt::Checked) {
 
-            if (Value) { init.files.append_arg (Value); }
+            local_add_config ("multi-player.mcp.config", init);
          }
 
-         String *colorPtr = colorTable.lookup (
-            qPrintable (ci.ui.colorCombo->currentText ()));
+         droneCount = ci.ui.droneBox->value ();
 
-         if (colorPtr) { init.files.append_arg (*colorPtr); }
+         if (droneCount > 0) { local_add_config ("multi-player.drone.config", init); }
+      }
+      else { local_add_config ("single-player.config", init); }
 
-         CommandLine cl;
-         cl.add_args (init.files);
-         init.app.process_command_line (cl);
+      String *colorPtr = colorTable.lookup (
+         qPrintable (ci.ui.colorCombo->currentText ()));
 
-         if (!init.app.is_error ()) {
+      if (colorPtr) { init.files.append_arg (*colorPtr); }
 
-            local_setup_resolution (init, ci, rezTable);
+      CommandLine cl;
+      cl.add_args (init.files);
+      init.app.process_command_line (cl);
+
+      if (!init.app.is_error ()) {
+
+         local_setup_resolution (init, ci, rezTable);
+
+         if (multiplayer) {
+
+            local_set_drone_count (droneCount, init);
+            local_set_port (ci.ui.portBox->value (), init);
          }
       }
    }
