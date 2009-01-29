@@ -227,7 +227,7 @@
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_5" >
             <item>
-             <widget class="QSpinBox" name="spinBox" >
+             <widget class="QSpinBox" name="droneBox" >
               <property name="maximum" >
                <number>5</number>
               </property>
@@ -258,7 +258,7 @@
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_7" >
             <item>
-             <widget class="QSpinBox" name="spinBox_2" >
+             <widget class="QSpinBox" name="portBox" >
               <property name="minimum" >
                <number>1</number>
               </property>
@@ -346,7 +346,7 @@
   <tabstop>screenBox</tabstop>
   <tabstop>resolutionCombo</tabstop>
   <tabstop>mcpBox</tabstop>
-  <tabstop>spinBox</tabstop>
+  <tabstop>droneBox</tabstop>
  </tabstops>
  <resources>
   <include location="cyclesInit.qrc" />
