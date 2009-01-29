@@ -20,7 +20,7 @@ class CyclesInit : public QWidget {
 
    protected slots:
       void on_buttonBox_rejected ();
-      void on_helpButton_clicked ();
+      void on_buttonBox_helpRequested ();
 };
 
 };

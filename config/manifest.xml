@@ -18,6 +18,7 @@
       <config text="Orange" file="config/cycle_orange.xml"/>
       <config text="Yellow" file="config/cycle_yellow.xml"/>
       <config text="Blue" file="config/cycle_blue.xml"/>
+      <config text="Spectator" file="config/spectator.xml"/>
    </color>
    <screen scope="dmz.render.view.window.screen">
       <resolution text="Full Screen">

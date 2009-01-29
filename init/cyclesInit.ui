@@ -6,7 +6,7 @@
     <x>0</x>
     <y>0</y>
     <width>623</width>
-    <height>555</height>
+    <height>551</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -320,7 +320,7 @@
      <property name="sizeHint" stdset="0" >
       <size>
        <width>20</width>
-       <height>13</height>
+       <height>0</height>
       </size>
      </property>
     </spacer>
@@ -333,35 +333,11 @@
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout" >
-     <item>
-      <widget class="QPushButton" name="helpButton" >
-       <property name="text" >
-        <string>Help</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer" >
-       <property name="orientation" >
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0" >
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QDialogButtonBox" name="buttonBox" >
-       <property name="standardButtons" >
-        <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-       </property>
-      </widget>
-     </item>
-    </layout>
+    <widget class="QDialogButtonBox" name="buttonBox" >
+     <property name="standardButtons" >
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Help|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>
@@ -399,8 +375,8 @@
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>562</x>
-     <y>503</y>
+     <x>568</x>
+     <y>546</y>
     </hint>
     <hint type="destinationlabel" >
      <x>187</x>

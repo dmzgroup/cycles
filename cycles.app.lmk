@@ -14,6 +14,7 @@ lmk.add_preqs ({"dmzAudioModuleOpenAL",}, { macos = true })
 lmk.add_preqs ({"dmzAudioModuleFMOD",}, { win32 = true })
 lmk.add_preqs {
    "cycles",
+   "cyclesInit",
    "dmzKernel",
    "dmzFileCacheLocal",
    "dmzQtLogObserver",
