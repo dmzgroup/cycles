@@ -31,6 +31,8 @@ lmk.add_preqs {
    "dmzObjectUtil",
    "dmzArchiveUtil",
    "dmzObjectModuleBasic",
+   "dmzEntityPluginPortalTether",
+   "dmzEntityPluginTeleport",
    "dmzEventModuleBasic",
    "dmzEventModuleCommonBasic",
    "dmzAudioWave",
@@ -76,7 +78,6 @@ lmk.add_preqs {
    "dmzQtExtLuaConsole",
    "dmzLuaPluginReset",
    "dmzQtPluginLuaProfiler",
-   "dmzPluginTermExit",
 }
 app.set_app ("cycles")
 app.set_plist ("Info.plist")
@@ -127,7 +128,7 @@ app.add_data {
    "../../assets/cycles/sounds/one.wav",
 }
 app.add_scripts {
-   "scripts/bgmusic.lua",
+   "../dmz/scripts/entity/dmzEntityPluginFreeFly.lua",
    "scripts/camera.lua",
    "scripts/const.lua",
    "scripts/cycle.lua",

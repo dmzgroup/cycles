@@ -6,7 +6,6 @@
    </time>
 </runtime>
 <plugins>
-   <plugin name="dmzPluginTermExit"/>
    <plugin name="mcp" reserve="true"/>
 </plugins>
 <dmzLuaModuleBasic>
