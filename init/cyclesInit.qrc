@@ -1,0 +1,5 @@
+<RCC>
+  <qresource prefix="cycles" >
+    <file>Cycles-Banner.png</file>
+  </qresource>
+</RCC>

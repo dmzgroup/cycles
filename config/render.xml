@@ -7,33 +7,23 @@
       <plugin name="dmzRenderPluginLightingOSG"/>
       <plugin name="dmzCyclesPluginGridOSG" scope="grid"/>
       <plugin name="dmzCyclesPluginWallOSG"/>
-<!--
-      <plugin name="dmzQtModuleMainWindowBasic"/>
-      <plugin name="dmzQtPluginViewerOSG"/>
--->
       <plugin name="dmzRenderModulePortalOSG"/>
-      <plugin name="dmzRenderModuleCoreOSGBasic"/>
+      <plugin name="dmzRenderModuleCoreOSGBasic" scope="render"/>
    </plugins>
-   <dmzRenderModuleCoreOSGBasic>
+   <render>
       <plugins>
-         <plugin name="dmzRenderExtViewerOSG"/> 
+         <plugin name="dmzRenderExtViewerOSG" scope="view"/> 
       </plugins>
-<!--
--->
       <loader>
          <path value="../Frameworks/osg"/>
       </loader>
-      <dmzRenderExtViewerOSG>
-         <window left="50" top="50" width="800" height="600" screen="0"/>
-         <!-- <fullscreen screen="0"/> -->
-      </dmzRenderExtViewerOSG>
-   </dmzRenderModuleCoreOSGBasic>
+<!--
+      <view>
+         <window fullscreen="true" center="true" width="500" height="200" screen="0"/>
+      </view>
+-->
+   </render>
    <dmzRenderModulePortalOSG>
       <visibility fov="60.0" near="1.0" far="32000.0"/>
    </dmzRenderModulePortalOSG>
-<!--
-   <grid>
-      <tile size="100" min="-50" max="50"/>
-   </grid>
--->
 </dmz>

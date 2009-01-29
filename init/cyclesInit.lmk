@@ -2,6 +2,7 @@ require "lmkQt"
 
 lmkQt.set_name "cyclesInit"
 lmk.set_type "plugin"
+lmk.add_files {"cyclesInit.qrc",}
 lmk.add_files {"cyclesInit.ui",}
 lmk.add_files ({"cyclesInit.h",}, {src="moc",})
 lmk.add_files {"cyclesInit.cpp",}
