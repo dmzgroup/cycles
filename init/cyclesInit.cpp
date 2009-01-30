@@ -9,6 +9,7 @@
 
 #include <QtCore/QUrl>
 #include <QtGui/QDesktopServices>
+#include <QtGui/QCloseEvent>
 
 using namespace dmz;
 
@@ -181,7 +182,7 @@ local_set_port (const Int32 Port, AppShellInitStruct &init) {
 
 };
 
-CyclesInit::CyclesInit (AppShellInitStruct &theInit) : init (theInit) {
+CyclesInit::CyclesInit (AppShellInitStruct &theInit) : init (theInit), _start (False) {
 
    ui.setupUi (this);
 }
@@ -193,9 +194,16 @@ CyclesInit::~CyclesInit () {
 
 
 void
+CyclesInit::on_buttonBox_accepted () {
+
+   _start = True;
+   close ();
+}
+
+
+void
 CyclesInit::on_buttonBox_rejected () {
 
-   init.app.quit ("Cancel Button Pressed");
    close ();
 }
 
@@ -212,6 +220,17 @@ CyclesInit::on_buttonBox_helpRequested () {
 
       QDesktopServices::openUrl (Url);
    }
+}
+
+void
+CyclesInit::closeEvent (QCloseEvent * event) {
+
+   if (!_start) {
+
+      init.app.quit ("Cancel Button Pressed");
+   }
+
+   event->accept ();
 }
 
 
