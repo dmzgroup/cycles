@@ -34,6 +34,11 @@
       <resolution text="Full Screen">
          <attribute scope="dmz.render.view.window.fullscreen" value="true"/>
       </resolution>
+      <resolution text="640x480">
+         <attribute scope="dmz.render.view.window.center" value="true"/>
+         <attribute scope="dmz.render.view.window.width" value="640"/>
+         <attribute scope="dmz.render.view.window.height" value="480"/>
+      </resolution>
       <resolution text="800x600">
          <attribute scope="dmz.render.view.window.center" value="true"/>
          <attribute scope="dmz.render.view.window.width" value="800"/>
