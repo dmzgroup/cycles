@@ -19,8 +19,14 @@ class CyclesInit : public QWidget {
       Ui::cyclesSetupForm ui;
 
    protected slots:
+      void on_buttonBox_accepted ();
       void on_buttonBox_rejected ();
       void on_buttonBox_helpRequested ();
+
+   protected:
+      virtual void closeEvent (QCloseEvent * event);
+
+      Boolean _start;
 };
 
 };

@@ -368,21 +368,5 @@
     </hint>
    </hints>
   </connection>
-  <connection>
-   <sender>buttonBox</sender>
-   <signal>accepted()</signal>
-   <receiver>cyclesSetupForm</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>568</x>
-     <y>546</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>187</x>
-     <y>497</y>
-    </hint>
-   </hints>
-  </connection>
  </connections>
 </ui>
