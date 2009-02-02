@@ -6,13 +6,13 @@
     <x>0</x>
     <y>0</y>
     <width>623</width>
-    <height>551</height>
+    <height>541</height>
    </rect>
   </property>
   <property name="windowTitle" >
    <string>Cycles Launch Control Panel</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_4" >
+  <layout class="QVBoxLayout" name="verticalLayout_2" >
    <item>
     <widget class="QLabel" name="label_3" >
      <property name="text" >
@@ -31,7 +31,7 @@
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_11" >
+    <layout class="QHBoxLayout" name="horizontalLayout" >
      <item>
       <spacer name="horizontalSpacer_10" >
        <property name="orientation" >
@@ -46,7 +46,7 @@
       </spacer>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_3" >
+      <layout class="QVBoxLayout" name="verticalLayout" >
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_2" >
          <item>
@@ -94,62 +94,38 @@
            <property name="title" >
             <string> Screen Settings</string>
            </property>
-           <layout class="QVBoxLayout" name="verticalLayout_2" >
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_9" >
-              <item>
-               <widget class="QLabel" name="label_5" >
-                <property name="text" >
-                 <string>Screen Resolution:</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QComboBox" name="resolutionCombo" />
-              </item>
-              <item>
-               <spacer name="horizontalSpacer_9" >
-                <property name="orientation" >
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0" >
-                 <size>
-                  <width>40</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-             </layout>
+           <layout class="QGridLayout" name="gridLayout" >
+            <item row="2" column="2" >
+             <widget class="QSpinBox" name="screenBox" />
             </item>
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_6" >
-              <item>
-               <widget class="QLabel" name="label_6" >
-                <property name="text" >
-                 <string>Screen:</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QSpinBox" name="screenBox" />
-              </item>
-              <item>
-               <spacer name="horizontalSpacer_6" >
-                <property name="orientation" >
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0" >
-                 <size>
-                  <width>115</width>
-                  <height>17</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-             </layout>
+            <item row="2" column="1" >
+             <widget class="QLabel" name="label_6" >
+              <property name="text" >
+               <string>Screen:</string>
+              </property>
+              <property name="alignment" >
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="2" >
+             <widget class="QComboBox" name="resolutionCombo" />
+            </item>
+            <item row="0" column="1" >
+             <widget class="QLabel" name="label_5" >
+              <property name="text" >
+               <string>Screen Resolution:</string>
+              </property>
+              <property name="alignment" >
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
             </item>
            </layout>
+           <zorder>screenBox</zorder>
+           <zorder>label_6</zorder>
+           <zorder>resolutionCombo</zorder>
+           <zorder>label_5</zorder>
           </widget>
          </item>
         </layout>
@@ -199,98 +175,60 @@
          <property name="title" >
           <string>Multiplayer Settings</string>
          </property>
-         <layout class="QVBoxLayout" name="verticalLayout" >
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_4" >
-            <item>
-             <widget class="QCheckBox" name="mcpBox" >
-              <property name="text" >
-               <string>Enable MCP</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="horizontalSpacer_4" >
-              <property name="orientation" >
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0" >
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-           </layout>
+         <layout class="QGridLayout" name="gridLayout_2" >
+          <item row="2" column="2" >
+           <widget class="QSpinBox" name="droneBox" >
+            <property name="maximum" >
+             <number>5</number>
+            </property>
+           </widget>
           </item>
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_5" >
-            <item>
-             <widget class="QLabel" name="label_2" >
-              <property name="text" >
-               <string>Drone Cycles:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QSpinBox" name="droneBox" >
-              <property name="maximum" >
-               <number>5</number>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="horizontalSpacer_5" >
-              <property name="orientation" >
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0" >
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-           </layout>
+          <item row="5" column="2" >
+           <widget class="QSpinBox" name="portBox" >
+            <property name="minimum" >
+             <number>1</number>
+            </property>
+            <property name="maximum" >
+             <number>50000</number>
+            </property>
+            <property name="value" >
+             <number>3001</number>
+            </property>
+           </widget>
           </item>
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_7" >
-            <item>
-             <widget class="QLabel" name="label_4" >
-              <property name="text" >
-               <string>Port:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QSpinBox" name="portBox" >
-              <property name="minimum" >
-               <number>1</number>
-              </property>
-              <property name="maximum" >
-               <number>50000</number>
-              </property>
-              <property name="value" >
-               <number>3001</number>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="horizontalSpacer_7" >
-              <property name="orientation" >
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0" >
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-           </layout>
+          <item row="5" column="1" >
+           <widget class="QLabel" name="label_4" >
+            <property name="text" >
+             <string>Port:</string>
+            </property>
+            <property name="alignment" >
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1" >
+           <widget class="QLabel" name="label_2" >
+            <property name="text" >
+             <string>Drone Cycles:</string>
+            </property>
+            <property name="alignment" >
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="1" >
+           <widget class="QCheckBox" name="mcpBox" >
+            <property name="text" >
+             <string>Enable MCP</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="1" colspan="2" >
+           <widget class="Line" name="line_3" >
+            <property name="orientation" >
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>
@@ -319,8 +257,8 @@
      </property>
      <property name="sizeHint" stdset="0" >
       <size>
-       <width>20</width>
-       <height>0</height>
+       <width>596</width>
+       <height>21</height>
       </size>
      </property>
     </spacer>
@@ -343,10 +281,6 @@
  </widget>
  <tabstops>
   <tabstop>colorCombo</tabstop>
-  <tabstop>screenBox</tabstop>
-  <tabstop>resolutionCombo</tabstop>
-  <tabstop>mcpBox</tabstop>
-  <tabstop>droneBox</tabstop>
  </tabstops>
  <resources>
   <include location="cyclesInit.qrc" />
