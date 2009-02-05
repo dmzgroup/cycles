@@ -11,7 +11,4 @@
       <plugin name="dmzLuaExtPortal"/>
    </extensions>
 </dmzLuaModuleBasic>
-<cycle>
-   <speed min="0.0"/>
-</cycle>
 </dmz>
