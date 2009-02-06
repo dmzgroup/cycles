@@ -5,7 +5,9 @@
 #include <dmzRuntimeConfig.h>
 #include <dmzRuntimeConfigToTypesBase.h>
 #include <dmzRuntimePluginFactoryLinkSymbol.h>
+#include <dmzRuntimeVersion.h>
 #include <dmzTypesHashTableStringTemplate.h>
+#include <dmzXMLUtil.h>
 
 #include <QtCore/QUrl>
 #include <QtGui/QDesktopServices>
@@ -240,6 +242,23 @@ DMZ_PLUGIN_FACTORY_LINK_SYMBOL void
 dmz_init_cycles (AppShellInitStruct &init) {
 
    CyclesInit ci (init);
+
+   if (init.VersionFile) {
+
+      Version version;
+
+      if (xml_to_version (init.VersionFile, version, &init.app.log)) {
+
+         QString vs = ci.windowTitle ();
+         vs += " (";
+         const String Tmp = version.get_version ().get_buffer ();
+         if (Tmp) { vs += Tmp.get_buffer (); }
+         else { vs += "Unknown"; }
+         vs += ")";
+
+         ci.setWindowTitle (vs);
+      }
+   }
 
    FileTable colorTable;
 

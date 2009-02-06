@@ -8,8 +8,7 @@
       <plugin name="dmzCyclesPluginGridOSG" scope="grid"/>
       <plugin name="dmzCyclesPluginWallOSG"/>
       <plugin name="dmzRenderModulePortalOSG"/>
-      <plugin name="dmzRenderModuleCoreOSGBasic" scope="render" platform="win32"/>
-      <plugin name="dmzRenderModuleCoreOSGBasic" scope="render" platform="macos"/>
+      <plugin name="dmzRenderModuleCoreOSGBasic" scope="render" platform="win32|macos"/>
       <plugin name="dmzRenderModuleCoreOSGBasic" scope="render" platform="linux" unload="false"/>
    </plugins>
    <render>
