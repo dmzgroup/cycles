@@ -250,7 +250,7 @@ dmz_init_cycles (AppShellInitStruct &init) {
       if (xml_to_version (init.VersionFile, version, &init.app.log)) {
 
          QString vs = ci.windowTitle ();
-         vs += " (";
+         vs += " (v";
          const String Tmp = version.get_version ().get_buffer ();
          if (Tmp) { vs += Tmp.get_buffer (); }
          else { vs += "Unknown"; }
