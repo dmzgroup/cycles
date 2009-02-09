@@ -67,8 +67,8 @@ Source: {#DependDir}\bin\osg48-osgViewer.dll; DestDir: {app}\bin
 Source: {#DependDir}\bin\ot11-OpenThreads.dll; DestDir: {app}\bin
 Source: {#DependDir}\bin\libpng13.dll; DestDir: {app}\bin
 Source: {#DependDir}\bin\zlib1.dll; DestDir: {app}\bin
-Source: {#DependDir}\bin\osgplugins-2.6.0\osgdb_png.dll; DestDir: {app}\bin
-Source: {#DependDir}\bin\osgplugins-2.6.0\osgdb_obj.dll; DestDir: {app}\bin
+Source: {#DependDir}\bin\osgplugins-2.6.1\osgdb_png.dll; DestDir: {app}\bin
+Source: {#DependDir}\bin\osgplugins-2.6.1\osgdb_obj.dll; DestDir: {app}\bin
 Source: {#DependDir}\bin\fmodex.dll; DestDir: {app}\bin
 Source: {#DependDir}\bin\fmodexL.dll; DestDir: {app}\bin
 Source: {#DependDir}\bin\fmodexp.dll; DestDir: {app}\bin
