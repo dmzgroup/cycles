@@ -8,7 +8,13 @@
       <plugin name="dmzCyclesPluginGridOSG" scope="grid"/>
       <plugin name="dmzCyclesPluginWallOSG"/>
       <plugin name="dmzRenderModulePortalOSG"/>
-      <plugin name="dmzRenderModuleCoreOSGBasic" scope="render"/>
+      <!--
+         Note: Setting this module to unload="false" stops the crash on exit
+               under Linux. This seems to be cause by an "on exit" call in
+               OSG.
+      -->
+      <plugin name="dmzRenderModuleCoreOSGBasic" scope="render" platform="win32|macos"/>
+      <plugin name="dmzRenderModuleCoreOSGBasic" scope="render" platform="linux" unload="false"/>
    </plugins>
    <render>
       <plugins>
