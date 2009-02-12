@@ -18,6 +18,10 @@
       <net>
          <enum value="4"/>
       </net>
+      <audio>
+         <attribute source="true"/>
+         <object-type name="cycle" resource="crash-sound"/>
+      </audio>
    </event-type>
    <object-type name="spectator"/>
    <object-type name="vehicle">
