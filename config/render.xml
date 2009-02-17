@@ -23,11 +23,9 @@
       <loader>
          <path value="../Frameworks/osg"/>
       </loader>
-<!--
       <view>
-         <window fullscreen="true" center="true" width="500" height="200" screen="0"/>
+         <window-title value="DMZ: Cycles"/>
       </view>
--->
    </render>
    <dmzRenderModulePortalOSG>
       <visibility fov="60.0" near="1.0" far="32000.0"/>
