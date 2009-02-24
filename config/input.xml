@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <dmz>
-   <plugins>
+   <plugin-list>
       <plugin name="dmzInputModuleBasic"/>
       <plugin name="dmzInputPluginControllerKey"/>
       <plugin name="dmzInputPluginControllerMacOS" platform="macos"/>
       <plugin name="dmzInputPluginControllerWin32" platform="win32"/>
       <plugin name="dmzInputPluginExit"/>
       <plugin name="dmzInputPluginKeyEventToMessage"/>
-   </plugins>
+   </plugin-list>
    <dmzInputPluginKeyEventToMessage>
       <channel>
          <converter key="L">

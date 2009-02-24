@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <dmz>
-<plugins>
+<plugin-list>
    <plugin name="dmzEntityPluginFreeFly" reserve="true"/>
    <plugin name="dmzEntityPluginPortalTether" scope="freefly"/>
    <plugin name="dmzEntityPluginTeleport"/>
-</plugins>
+</plugin-list>
 <dmzLuaModuleBasic>
    <instance name="dmzEntityPluginFreeFly" scope="freefly"/>
 </dmzLuaModuleBasic>

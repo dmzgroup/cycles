@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <dmz>
-<plugins>
+<plugin-list>
    <plugin name="drone" reserve="true"/>
-</plugins>
+</plugin-list>
 <dmzLuaModuleBasic>
    <instance name="drone"/>
 </dmzLuaModuleBasic>

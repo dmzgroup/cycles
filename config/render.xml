@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <dmz>
-   <plugins>
+   <plugin-list>
       <plugin name="dmzRenderModuleIsectOSG"/>
       <plugin name="dmzRenderPluginObjectOSG"/>
 		<plugin name="dmzRenderPluginLogoOSG"/>
@@ -15,11 +15,11 @@
       -->
       <plugin name="dmzRenderModuleCoreOSGBasic" scope="render" platform="win32|macos"/>
       <plugin name="dmzRenderModuleCoreOSGBasic" scope="render" platform="linux" unload="false"/>
-   </plugins>
+   </plugin-list>
    <render>
-      <plugins>
+      <plugin-list>
          <plugin name="dmzRenderExtViewerOSG" scope="view"/> 
-      </plugins>
+      </plugin-list>
       <loader>
          <path value="../Frameworks/osg"/>
       </loader>

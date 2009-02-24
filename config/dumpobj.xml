@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dmz>
-<plugins>
+<plugin-list>
    <plugin name="dmzObjectPluginDump"/>
-</plugins>
+</plugin-list>
 </dmz>

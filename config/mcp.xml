@@ -5,9 +5,9 @@
       <frequency value="60.0"/>
    </time>
 </runtime>
-<plugins>
+<plugin-list>
    <plugin name="mcp" reserve="true"/>
-</plugins>
+</plugin-list>
 <dmzLuaModuleBasic>
    <instance name="mcp"/>
 </dmzLuaModuleBasic>

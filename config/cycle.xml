@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <dmz>
-<plugins>
+<plugin-list>
    <plugin name="cycle" reserve="true"/>
    <plugin name="camera" reserve="true"/>
-</plugins>
+</plugin-list>
 <dmzLuaModuleBasic>
    <instance name="cycle"/>
    <instance name="camera"/>
