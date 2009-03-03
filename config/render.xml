@@ -51,12 +51,64 @@
          <node type="clone" name="digit1" template="digit"/>
       </node>
    </node>
+   <node type="transform" name="countdown transform">
+      <node type="switch" name="countdown switch">
+         <node type="group"/> <!-- blank node -->
+         <node type="transform" name="one">
+            <node type="box">
+               <color name="countdown green"/>
+               <min x="-64" y="-64"/>
+               <max x="64" y="64"/>
+               <texture resource="one"/>
+            </node>
+         </node>
+         <node type="transform" name="two">
+            <node type="box">
+               <color name="countdown yellow"/>
+               <min x="-64" y="-64"/>
+               <max x="64" y="64"/>
+               <texture resource="two"/>
+            </node>
+         </node>
+         <node type="transform" name="three">
+            <node type="box">
+               <color name="countdown red"/>
+               <min x="-64" y="-64"/>
+               <max x="64" y="64"/>
+               <texture resource="three"/>
+            </node>
+         </node>
+         <node type="transform" name="four">
+            <node type="box">
+               <color name="countdown red"/>
+               <min x="-64" y="-64"/>
+               <max x="64" y="64"/>
+               <texture resource="four"/>
+            </node>
+         </node>
+         <node type="transform" name="five">
+            <node type="box">
+               <color name="countdown red"/>
+               <min x="-64" y="-64"/>
+               <max x="64" y="64"/>
+               <texture resource="five"/>
+            </node>
+         </node>
+      </node>
+   </node>
    <layout node="dashboard">
       <x type="absolute" value="254" flip="true"/>
       <y type="absolute" value="254" flip="true"/>
    </layout>
+   <layout node="countdown transform">
+      <x type="relative" value="0.5"/>
+      <y type="relative" value="0.5"/>
+   </layout>
    <!-- Colors -->
    <color name="digit color" r="1" g="0" b="0"/>
+   <color name="countdown red" r="1" g="0" b="0"/>
+   <color name="countdown yellow" r="1" g="1" b="0"/>
+   <color name="countdown green" r="0" g="0.8" b="0"/>
    <!-- Templates -->
    <template name="digit">
       <node type="switch" which="10" name="switch">
