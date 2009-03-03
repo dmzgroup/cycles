@@ -1,33 +1,187 @@
 <?xml version="1.0" encoding="utf-8"?>
 <dmz>
+<plugin-list>
+   <plugin name="dmzRenderModuleIsectOSG"/>
+   <plugin name="dmzRenderPluginObjectOSG"/>
+   <plugin name="dmzRenderModuleOverlayOSG" scope="overlay"/>
+   <plugin name="dmzRenderPluginLightingOSG"/>
+   <plugin name="dmzCyclesPluginGridOSG" scope="grid"/>
+   <plugin name="dmzCyclesPluginWallOSG"/>
+   <plugin name="dmzRenderModulePortalOSG" scope="render"/>
+   <!--
+      Note: Setting the core render  module to unload="false" stops the crash on exit
+            under Linux. This seems to be cause by an "on exit" call in
+            OSG.
+   -->
+   <plugin name="dmzRenderModuleCoreOSGBasic" scope="render" platform="win32|macos"/>
+   <plugin name="dmzRenderModuleCoreOSGBasic" scope="render" platform="linux" unload="false"/>
+</plugin-list>
+<render>
    <plugin-list>
-      <plugin name="dmzRenderModuleIsectOSG"/>
-      <plugin name="dmzRenderPluginObjectOSG"/>
-		<plugin name="dmzRenderPluginLogoOSG"/>
-      <plugin name="dmzRenderPluginLightingOSG"/>
-      <plugin name="dmzCyclesPluginGridOSG" scope="grid"/>
-      <plugin name="dmzCyclesPluginWallOSG"/>
-      <plugin name="dmzRenderModulePortalOSG"/>
-      <!--
-         Note: Setting this module to unload="false" stops the crash on exit
-               under Linux. This seems to be cause by an "on exit" call in
-               OSG.
-      -->
-      <plugin name="dmzRenderModuleCoreOSGBasic" scope="render" platform="win32|macos"/>
-      <plugin name="dmzRenderModuleCoreOSGBasic" scope="render" platform="linux" unload="false"/>
+      <plugin name="dmzRenderExtViewerOSG" scope="view"/> 
    </plugin-list>
-   <render>
-      <plugin-list>
-         <plugin name="dmzRenderExtViewerOSG" scope="view"/> 
-      </plugin-list>
-      <loader>
-         <path value="../Frameworks/osg"/>
-      </loader>
-      <view>
-         <window-title value="DMZ: Cycles"/>
-      </view>
-   </render>
-   <dmzRenderModulePortalOSG>
-      <visibility fov="60.0" near="1.0" far="32000.0"/>
-   </dmzRenderModulePortalOSG>
+   <loader>
+      <path value="../Frameworks/osg"/>
+   </loader>
+   <view>
+      <window-title value="DMZ: Cycles"/>
+   </view>
+   <visibility fov="60.0" near="1.0" far="32000.0"/>
+</render>
+<overlay>
+   <node type="box">
+      <texture resource="logo"/>
+   </node>
+   <node type="transform" name="dashboard">
+      <node type="box">
+         <min x="0" y="0"/>
+         <max x="256" y="256"/>
+         <texture resource="dashboard"/>
+      </node>
+      <node type="transform">
+         <position x="74" y="96"/>
+         <node type="clone" name="digit3" template="digit"/>
+      </node>
+      <node type="transform">
+         <position x="112" y="96"/>
+         <node type="clone" name="digit2" template="digit"/>
+      </node>
+      <node type="transform">
+         <position x="150" y="96"/>
+         <node type="clone" name="digit1" template="digit"/>
+      </node>
+   </node>
+   <layout node="dashboard">
+      <x type="absolute" value="254" flip="true"/>
+      <y type="absolute" value="254" flip="true"/>
+   </layout>
+   <!-- Colors -->
+   <color name="digit color" r="1" g="0" b="0"/>
+   <!-- Templates -->
+   <template name="digit">
+      <node type="switch" which="10" name="switch">
+         <!-- 0 -->
+         <node type="box">
+            <min x="0" y="0"/>
+            <max x="32" y="64"/>
+            <depth value="1"/>
+            <color name="digit color"/>
+            <texture resource="digits">
+               <min x="0" y="0.9375"/>
+               <max x="1" y="1"/>
+            </texture>
+         </node>
+         <!-- 1 -->
+         <node type="box">
+            <min x="0" y="0"/>
+            <max x="32" y="64"/>
+            <depth value="1"/>
+            <color name="digit color"/>
+            <texture resource="digits">
+               <min x="0" y="0.875"/>
+               <max x="1" y="0.9375"/>
+            </texture>
+         </node>
+         <!-- 2 -->
+         <node type="box">
+            <min x="0" y="0"/>
+            <max x="32" y="64"/>
+            <depth value="1"/>
+            <color name="digit color"/>
+            <texture resource="digits">
+               <min x="0" y="0.8125"/>
+               <max x="1" y="0.875"/>
+            </texture>
+         </node>
+         <!-- 3 -->
+         <node type="box">
+            <min x="0" y="0"/>
+            <max x="32" y="64"/>
+            <depth value="1"/>
+            <color name="digit color"/>
+            <texture resource="digits">
+               <min x="0" y="0.75"/>
+               <max x="1" y="0.8125"/>
+            </texture>
+         </node>
+         <!-- 4 -->
+         <node type="box">
+            <min x="0" y="0"/>
+            <max x="32" y="64"/>
+            <depth value="1"/>
+            <color name="digit color"/>
+            <texture resource="digits">
+               <min x="0" y="0.6875"/>
+               <max x="1" y="0.75"/>
+            </texture>
+         </node>
+         <!-- 5 -->
+         <node type="box">
+            <min x="0" y="0"/>
+            <max x="32" y="64"/>
+            <depth value="1"/>
+            <color name="digit color"/>
+            <texture resource="digits">
+               <min x="0" y="0.625"/>
+               <max x="1" y="0.6875"/>
+            </texture>
+         </node>
+         <!-- 6 -->
+         <node type="box">
+            <min x="0" y="0"/>
+            <max x="32" y="64"/>
+            <depth value="1"/>
+            <color name="digit color"/>
+            <texture resource="digits">
+               <min x="0" y="0.5625"/>
+               <max x="1" y="0.625"/>
+            </texture>
+         </node>
+         <!-- 7 -->
+         <node type="box">
+            <min x="0" y="0"/>
+            <max x="32" y="64"/>
+            <depth value="1"/>
+            <color name="digit color"/>
+            <texture resource="digits">
+               <min x="0" y="0.5"/>
+               <max x="1" y="0.5625"/>
+            </texture>
+         </node>
+         <!-- 8 -->
+         <node type="box">
+            <min x="0" y="0"/>
+            <max x="32" y="64"/>
+            <depth value="1"/>
+            <color name="digit color"/>
+            <texture resource="digits">
+               <min x="0" y="0.4375"/>
+               <max x="1" y="0.5"/>
+            </texture>
+         </node>
+         <!-- 9 -->
+         <node type="box">
+            <min x="0" y="0"/>
+            <max x="32" y="64"/>
+            <depth value="1"/>
+            <color name="digit color"/>
+            <texture resource="digits">
+               <min x="0" y="0.375"/>
+               <max x="1" y="0.4375"/>
+            </texture>
+         </node>
+         <!-- Blank - 10 -->
+         <node type="box">
+            <min x="0" y="0"/>
+            <max x="32" y="64"/>
+            <depth value="1"/>
+            <color name="digit color"/>
+            <texture resource="digits">
+               <min x="0" y="0.3125"/>
+               <max x="1" y="0.375"/>
+            </texture>
+         </node>
+      </node>
+   </template>
+</overlay>
 </dmz>
