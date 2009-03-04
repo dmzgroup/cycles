@@ -16,7 +16,9 @@ local function update_object_state (self, Object, Attribute, State, PreviousStat
             not PreviousState:contains (const.GameWaiting) then
          local cycleState = dmz.object.state (hil)
          if cycleState then
-            if not cycleState:contains (const.Dead) then self.wins = self.wins + 1 end
+            if not cycleState:contains (const.Dead) then
+               dmz.object.add_to_counter (hil, const.WinsHandle)
+            end
             cycleState:unset (const.Dead + const.EngineOn)
             cycleState = cycleState + const.Standby
          else cycleState = const.Standby
@@ -25,9 +27,6 @@ local function update_object_state (self, Object, Attribute, State, PreviousStat
          if self.startPos then dmz.object.position (hil, nil, self.startPos) end
          if self.startOri then dmz.object.orientation (hil, nil, self.startOri) end
          dmz.object.velocity (hil, nil, {0, 0, 0})
-         self.log:error (" Kills: " .. tostring (self.kills))
-         self.log:warn ("Deaths: " .. tostring (self.deaths))
-         self.log:info ("  Wins: " .. tostring (self.wins))
       elseif State:contains (const.GameActive) and
             not PreviousState:contains (const.GameActive) then
          local cycleState = dmz.object.state (hil)
@@ -72,8 +71,8 @@ local function close_event (self, EventHandle)
    if hil then
       local Target = dmz.event.object_handle (EventHandle, dmz.event.TargetHandle)
       local Source = dmz.event.object_handle (EventHandle, dmz.event.SourceHandle)
-      if hil == Source then self.deaths = self.deaths + 1
-      elseif hil == Target then self.kills = self.kills + 1
+      if hil == Source then dmz.object.add_to_counter (hil, const.DeathsHandle)
+      elseif hil == Target then dmz.object.add_to_counter (hil, const.KillsHandle)
       end
    end
 end
@@ -105,9 +104,6 @@ function new (config, name)
       eventObs = dmz.event_observer.new (),
       config = config,
       name = name,
-      kills = 0,
-      deaths = 0,
-      wins = 0,
    }
 
    self.log:info ("Creating plugin: " .. name)

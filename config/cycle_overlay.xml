@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dmz>
+<overlay>
+   <node type="transform" name="dashboard">
+      <node type="transform" name="dashboard slider">
+         <position x="500" y="0"/>
+         <node type="box">
+            <min x="0" y="0"/>
+            <max x="256" y="256"/>
+            <texture resource="dashboard"/>
+         </node>
+         <node type="transform">
+            <position x="74" y="96"/>
+            <node type="clone" name="digit3" template="digit"/>
+         </node>
+         <node type="transform">
+            <position x="112" y="96"/>
+            <node type="clone" name="digit2" template="digit"/>
+         </node>
+         <node type="transform">
+            <position x="150" y="96"/>
+            <node type="clone" name="digit1" template="digit"/>
+         </node>
+      </node>
+   </node>
+   <node type="transform" name="waiting">
+      <node type="switch" name="waiting switch" which="0">
+<!--
+         <node type="box">
+            <color r="0" g="0" b="1"/>
+            <min x="-256" y="0"/>
+            <max x="0" y="64"/>
+         </node>
+-->
+      </node>
+   </node>
+   <node type="transform" name="countdown transform">
+      <node type="switch" name="countdown switch">
+         <node type="group"/> <!-- blank node -->
+         <node type="transform" name="one">
+            <node type="box">
+               <color name="countdown green"/>
+               <min x="-64" y="-64"/>
+               <max x="64" y="64"/>
+               <texture resource="one"/>
+            </node>
+         </node>
+         <node type="transform" name="two">
+            <node type="box">
+               <color name="countdown yellow"/>
+               <min x="-64" y="-64"/>
+               <max x="64" y="64"/>
+               <texture resource="two"/>
+            </node>
+         </node>
+         <node type="transform" name="three">
+            <node type="box">
+               <color name="countdown red"/>
+               <min x="-64" y="-64"/>
+               <max x="64" y="64"/>
+               <texture resource="three"/>
+            </node>
+         </node>
+         <node type="transform" name="four">
+            <node type="box">
+               <color name="countdown red"/>
+               <min x="-64" y="-64"/>
+               <max x="64" y="64"/>
+               <texture resource="four"/>
+            </node>
+         </node>
+         <node type="transform" name="five">
+            <node type="box">
+               <color name="countdown red"/>
+               <min x="-64" y="-64"/>
+               <max x="64" y="64"/>
+               <texture resource="five"/>
+            </node>
+         </node>
+      </node>
+   </node>
+   <layout node="dashboard">
+      <x type="absolute" value="254" flip="true"/>
+      <y type="absolute" value="254" flip="true"/>
+   </layout>
+   <layout node="countdown transform">
+      <x type="relative" value="0.5"/>
+      <y type="relative" value="0.5"/>
+   </layout>
+   <layout node="waiting">
+      <x type="relative" value="1.0"/>
+      <y type="relative" value="0.0"/>
+   </layout>
+   <!-- Colors -->
+   <color name="digit color" r="1" g="0" b="0"/>
+   <color name="countdown red" r="1" g="0" b="0"/>
+   <color name="countdown yellow" r="1" g="1" b="0"/>
+   <color name="countdown green" r="0" g="0.8" b="0"/>
+   <!-- Templates -->
+   <template name="digit">
+      <node type="switch" which="10" name="switch">
+         <!-- 0 -->
+         <node type="box">
+            <min x="0" y="0"/>
+            <max x="32" y="64"/>
+            <depth value="1"/>
+            <color name="digit color"/>
+            <texture resource="digits">
+               <min x="0" y="0.9375"/>
+               <max x="1" y="1"/>
+            </texture>
+         </node>
+         <!-- 1 -->
+         <node type="box">
+            <min x="0" y="0"/>
+            <max x="32" y="64"/>
+            <depth value="1"/>
+            <color name="digit color"/>
+            <texture resource="digits">
+               <min x="0" y="0.875"/>
+               <max x="1" y="0.9375"/>
+            </texture>
+         </node>
+         <!-- 2 -->
+         <node type="box">
+            <min x="0" y="0"/>
+            <max x="32" y="64"/>
+            <depth value="1"/>
+            <color name="digit color"/>
+            <texture resource="digits">
+               <min x="0" y="0.8125"/>
+               <max x="1" y="0.875"/>
+            </texture>
+         </node>
+         <!-- 3 -->
+         <node type="box">
+            <min x="0" y="0"/>
+            <max x="32" y="64"/>
+            <depth value="1"/>
+            <color name="digit color"/>
+            <texture resource="digits">
+               <min x="0" y="0.75"/>
+               <max x="1" y="0.8125"/>
+            </texture>
+         </node>
+         <!-- 4 -->
+         <node type="box">
+            <min x="0" y="0"/>
+            <max x="32" y="64"/>
+            <depth value="1"/>
+            <color name="digit color"/>
+            <texture resource="digits">
+               <min x="0" y="0.6875"/>
+               <max x="1" y="0.75"/>
+            </texture>
+         </node>
+         <!-- 5 -->
+         <node type="box">
+            <min x="0" y="0"/>
+            <max x="32" y="64"/>
+            <depth value="1"/>
+            <color name="digit color"/>
+            <texture resource="digits">
+               <min x="0" y="0.625"/>
+               <max x="1" y="0.6875"/>
+            </texture>
+         </node>
+         <!-- 6 -->
+         <node type="box">
+            <min x="0" y="0"/>
+            <max x="32" y="64"/>
+            <depth value="1"/>
+            <color name="digit color"/>
+            <texture resource="digits">
+               <min x="0" y="0.5625"/>
+               <max x="1" y="0.625"/>
+            </texture>
+         </node>
+         <!-- 7 -->
+         <node type="box">
+            <min x="0" y="0"/>
+            <max x="32" y="64"/>
+            <depth value="1"/>
+            <color name="digit color"/>
+            <texture resource="digits">
+               <min x="0" y="0.5"/>
+               <max x="1" y="0.5625"/>
+            </texture>
+         </node>
+         <!-- 8 -->
+         <node type="box">
+            <min x="0" y="0"/>
+            <max x="32" y="64"/>
+            <depth value="1"/>
+            <color name="digit color"/>
+            <texture resource="digits">
+               <min x="0" y="0.4375"/>
+               <max x="1" y="0.5"/>
+            </texture>
+         </node>
+         <!-- 9 -->
+         <node type="box">
+            <min x="0" y="0"/>
+            <max x="32" y="64"/>
+            <depth value="1"/>
+            <color name="digit color"/>
+            <texture resource="digits">
+               <min x="0" y="0.375"/>
+               <max x="1" y="0.4375"/>
+            </texture>
+         </node>
+         <!-- Blank - 10 -->
+         <node type="box">
+            <min x="0" y="0"/>
+            <max x="32" y="64"/>
+            <depth value="1"/>
+            <color name="digit color"/>
+            <texture resource="digits">
+               <min x="0" y="0.3125"/>
+               <max x="1" y="0.375"/>
+            </texture>
+         </node>
+      </node>
+   </template>
+</overlay>
+</dmz>

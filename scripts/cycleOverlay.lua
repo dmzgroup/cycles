@@ -1,38 +1,82 @@
 require "const"
 
+local CountScale = 3.0
+
 local function update_time_slice (self, time)
+
+   local v1 = 10
+   local v2 = 10
+   local v3 = 10
 
    local hil = dmz.object.hil ()
 
-   if hil and self.active > 0 then
+   if hil then
+      if self.digitstate == 1 then
+         if self.active > 0 then
 
-      local state = dmz.object.state (hil)
+            local state = dmz.object.state (hil)
 
-      if state and state:contains (const.EngineOn) then
+            if state and state:contains (const.EngineOn) then
 
-         local vel = dmz.object.velocity (hil)
+               local vel = dmz.object.velocity (hil)
 
-         if not vel then vel = dmz.vector.new () end
+               if not vel then vel = dmz.vector.new () end
 
-         local speed = vel:magnitude () * 3.6;
+               local speed = vel:magnitude () * 3.6;
 
-
-         local v1 = dmz.math.get_digit (speed, 0)
-         local v2 = dmz.math.get_digit (speed, 1)
-         local v3 = dmz.math.get_digit (speed, 2)
-
-         if v3 == 0 then
-            v3 = 10
-            if v2 == 0 then v2 = 10 end
+               v1 = dmz.math.get_digit (speed, 0)
+               v2 = dmz.math.get_digit (speed, 1)
+               v3 = dmz.math.get_digit (speed, 2)
+            end
+         end
+      else
+         local count = 0
+         if self.digitstate == 2 then
+            count = dmz.object.counter (hil, const.WinsHandle)
+         elseif self.digitstate == 3 then
+            count = dmz.object.counter (hil, const.KillsHandle)
+         elseif self.digitstate == 4 then
+            count = dmz.object.counter (hil, const.DeathsHandle)
          end
 
-         dmz.overlay.enable_single_switch_state (self.digits[1], v1);
-         dmz.overlay.enable_single_switch_state (self.digits[2], v2);
-         dmz.overlay.enable_single_switch_state (self.digits[3], v3);
+         if not count then count = 0 end
+
+         v1 = dmz.math.get_digit (count, 0)
+         v2 = dmz.math.get_digit (count, 1)
+         v3 = dmz.math.get_digit (count, 2)
+      end
+   end
+
+   if v3 == 0 then
+      v3 = 10
+      if v2 == 0 then v2 = 10 end
+   end
+
+   dmz.overlay.enable_single_switch_state (self.digits[1], v1);
+   dmz.overlay.enable_single_switch_state (self.digits[2], v2);
+   dmz.overlay.enable_single_switch_state (self.digits[3], v3);
+
+   if self.currentCount then
+      local scale = dmz.overlay.scale (self.currentCount);
+      if scale then
+         scale = scale - (time * CountScale)
+         if scale < 0.01 then scale = 0.01 end
+         dmz.overlay.scale (self.currentCount, scale)
+      end
+   end
+
+   if self.slider then
+      if time > 0.1 then cprint (time) time = 0.1 end
+      if self.dashstate then
+         local x = dmz.overlay.position (self.slider)
+         if x > 0 then x = x - (400 * time) end
+         if x < 0 then x = 0 end
+         dmz.overlay.position (self.slider, x, 0)
       else
-         dmz.overlay.enable_single_switch_state (self.digits[1], 10);
-         dmz.overlay.enable_single_switch_state (self.digits[2], 10);
-         dmz.overlay.enable_single_switch_state (self.digits[3], 10);
+         local x = dmz.overlay.position (self.slider)
+         if x < 300 then x = x + (400 * time) end
+         if x > 300 then x = 300 end
+         dmz.overlay.position (self.slider, x, 0)
       end
    end
 end
@@ -51,7 +95,12 @@ local function receive_input_event (self, event)
    end
 
    if event.button then
-      --print ("button: " .. event.button.which .. " value: " .. tostring (event.button.value))
+      if event.button.which == 2 and event.button.value then
+         self.dashstate = not self.dashstate
+      elseif event.button.which == 3 and event.button.value then
+         self.digitstate = self.digitstate + 1
+         if self.digitstate > 4 then self.digitstate = 1 end
+      end
    end
 end
 
@@ -69,21 +118,36 @@ local function update_object_state (self, Object, Attribute, State, PreviousStat
       if State:contains (const.GameCountdown5)
             and not PreviousState:contains (const.GameCountdown5) then
          dmz.overlay.enable_single_switch_state (self.switch, 5)
+         self.currentCount = self.countdown[5]
+         dmz.overlay.scale (self.currentCount, CountScale)
+         dmz.overlay.all_switch_state (self.waiting, false)
       elseif State:contains (const.GameCountdown4)
             and not PreviousState:contains (const.GameCountdown4) then
          dmz.overlay.enable_single_switch_state (self.switch, 4)
+         self.currentCount = self.countdown[4]
+         dmz.overlay.scale (self.currentCount, CountScale)
       elseif State:contains (const.GameCountdown3)
             and not PreviousState:contains (const.GameCountdown3) then
          dmz.overlay.enable_single_switch_state (self.switch, 3)
+         self.currentCount = self.countdown[3]
+         dmz.overlay.scale (self.currentCount, CountScale)
       elseif State:contains (const.GameCountdown2)
             and not PreviousState:contains (const.GameCountdown1) then
          dmz.overlay.enable_single_switch_state (self.switch, 2)
+         self.currentCount = self.countdown[2]
+         dmz.overlay.scale (self.currentCount, CountScale)
       elseif State:contains (const.GameCountdown1)
             and not PreviousState:contains (const.GameCountdown1) then
          dmz.overlay.enable_single_switch_state (self.switch, 1)
+         self.currentCount = self.countdown[1]
+         dmz.overlay.scale (self.currentCount, CountScale)
       elseif State:contains (const.GameActive)
             and not PreviousState:contains (const.GameActive) then
          dmz.overlay.all_switch_state (self.switch, false)
+         self.currentCount = nil
+      elseif State:contains (const.GameWaiting)
+            and not PreviousState:contains (const.GameActive) then
+         dmz.overlay.all_switch_state (self.waiting, true)
       end
    end
 end
@@ -139,6 +203,10 @@ function new (config, name)
          dmz.overlay.lookup_handle ("four"),
          dmz.overlay.lookup_handle ("five"),
       },
+      slider = dmz.overlay.lookup_handle ("dashboard slider"),
+      dashstate = true,
+      digitstate = 1,
+      waiting = dmz.overlay.lookup_handle ("waiting switch"),
    }
 
    self.log:info ("Creating plugin: " .. name)

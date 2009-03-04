@@ -7,7 +7,6 @@
    <config file="config/audio.xml"/>
    <config file="config/input.xml"/>
    <config file="config/render.xml"/>
-   <config file="config/cycle.xml"/>
    <config file="config/game.xml"/>
    <config file="config/lua.xml"/>
    <single-player>
@@ -24,11 +23,29 @@
       </drone>
    </multi-player>
    <color>
-      <config text="Red" file="config/cycle_red.xml"/>
-      <config text="Orange" file="config/cycle_orange.xml"/>
-      <config text="Yellow" file="config/cycle_yellow.xml"/>
-      <config text="Blue" file="config/cycle_blue.xml"/>
-      <config text="Spectator" file="config/spectator.xml"/>
+      <type text="Red">
+         <config file="config/cycle.xml"/>
+         <config file="config/cycle_overlay.xml"/>
+         <config file="config/cycle_red.xml"/>
+      </type>
+      <type text="Orange">
+         <config file="config/cycle.xml"/>
+         <config file="config/cycle_overlay.xml"/>
+         <config file="config/cycle_orange.xml"/>
+      </type>
+      <type text="Yellow">
+         <config file="config/cycle.xml"/>
+         <config file="config/cycle_overlay.xml"/>
+         <config file="config/cycle_yellow.xml"/>
+      </type>
+      <type text="Blue">
+         <config file="config/cycle.xml"/>
+         <config file="config/cycle_overlay.xml"/>
+         <config file="config/cycle_blue.xml"/>
+      </type>
+      <type text="Spectator">
+         <config file="config/spectator.xml"/>
+      </type>
    </color>
    <screen scope="dmz.render.view.window.screen">
       <resolution text="Full Screen">

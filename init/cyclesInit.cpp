@@ -24,11 +24,11 @@ static void
 local_populate_color_table (
       AppShellInitStruct &init,
       CyclesInit &ci,
-      FileTable &colorTable) {
+      ConfigTable &colorTable) {
 
    Config colorList;
 
-   if (init.manifest.lookup_all_config ("color.config", colorList)) {
+   if (init.manifest.lookup_all_config ("color.type", colorList)) {
 
       ConfigIterator it;
       Config color;
@@ -36,16 +36,15 @@ local_populate_color_table (
       while (colorList.get_next_config (it, color)) {
 
          String value = config_to_string ("text", color);
-         String file = config_to_string ("file", color);
 
-         if (value && file) {
+         if (value) {
 
             ci.ui.colorCombo->addItem (value.get_buffer ());
-            String *filePtr = new String (file);
+            Config *ptr = new Config (color);
 
-            if (!colorTable.store (value, filePtr) && filePtr) {
+            if (ptr && !colorTable.store (value, ptr)) {
 
-               delete filePtr; filePtr = 0;
+               delete ptr; ptr = 0;
             }
          }
       }
@@ -260,7 +259,7 @@ dmz_init_cycles (AppShellInitStruct &init) {
       }
    }
 
-   FileTable colorTable;
+   ConfigTable colorTable;
 
    local_populate_color_table (init, ci, colorTable);
 
@@ -301,10 +300,24 @@ dmz_init_cycles (AppShellInitStruct &init) {
       }
       else { local_add_config ("single-player.config", init); }
 
-      String *colorPtr = colorTable.lookup (
+      Config *colorPtr = colorTable.lookup (
          qPrintable (ci.ui.colorCombo->currentText ()));
 
-      if (colorPtr) { init.files.append_arg (*colorPtr); }
+      if (colorPtr) {
+
+         Config fileList;
+
+         if (colorPtr->lookup_all_config ("config", fileList)) {
+
+            ConfigIterator it;
+            Config file;
+
+            while (fileList.get_next_config (it, file)) {
+
+               init.files.append_arg (config_to_string ("file", file));
+            }
+         }
+      }
 
       CommandLine cl;
       cl.add_args (init.files);
