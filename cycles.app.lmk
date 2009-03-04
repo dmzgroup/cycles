@@ -94,6 +94,8 @@ app.add_data {
    "../../assets/cycles/images/DMZ.png",
    "../../assets/cycles/images/cycles_dashboard.rgba",
    "../../assets/cycles/images/cycles_digit_all.inta",
+   "../../assets/cycles/images/gameover.png",
+   "../../assets/cycles/images/gameover_blur.png",
    "../../assets/cycles/images/five.png",
    "../../assets/cycles/images/four.png",
    "../../assets/cycles/images/grid2.png",

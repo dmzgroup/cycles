@@ -1,6 +1,7 @@
 require "const"
 
 local CountScale = 3.0
+local GScale = 1.5
 
 local function update_time_slice (self, time)
 
@@ -65,6 +66,23 @@ local function update_time_slice (self, time)
       end
    end
 
+   if self.goactive then
+      local scale = dmz.overlay.scale (self.gameover)
+      if scale < GScale then
+         scale = scale + (GScale * time);
+         if scale > GScale then scale = GScale end
+         dmz.overlay.scale (self.gameover, scale)
+         local rot = dmz.overlay.rotation (self.gameover)
+         rot = rot - (dmz.math.TwoPi * time * 3)
+         if rot < 0 then rot = dmz.math.TwoPi + rot end
+         dmz.overlay.rotation (self.gameover, rot)
+      else
+         dmz.overlay.scale (self.gameover, GScale)
+         dmz.overlay.rotation (self.gameover, 0)
+         dmz.overlay.enable_single_switch_state (self.gswitch, 2, true)
+      end
+   end
+
    if self.slider then
       if time > 0.1 then cprint (time) time = 0.1 end
       if self.dashstate then
@@ -121,6 +139,8 @@ local function update_object_state (self, Object, Attribute, State, PreviousStat
          self.currentCount = self.countdown[5]
          dmz.overlay.scale (self.currentCount, CountScale)
          dmz.overlay.all_switch_state (self.waiting, false)
+         dmz.overlay.all_switch_state (self.gswitch, false)
+         self.goactive = false;
       elseif State:contains (const.GameCountdown4)
             and not PreviousState:contains (const.GameCountdown4) then
          dmz.overlay.enable_single_switch_state (self.switch, 4)
@@ -145,9 +165,13 @@ local function update_object_state (self, Object, Attribute, State, PreviousStat
             and not PreviousState:contains (const.GameActive) then
          dmz.overlay.all_switch_state (self.switch, false)
          self.currentCount = nil
-      elseif State:contains (const.GameWaiting)
-            and not PreviousState:contains (const.GameActive) then
-         dmz.overlay.all_switch_state (self.waiting, true)
+      end
+
+      if State:contains (const.GameWaiting)
+            and PreviousState:contains (const.GameActive) then
+         dmz.overlay.scale (self.gameover, 0.01)
+         dmz.overlay.enable_single_switch_state (self.gswitch, 1, true)
+         self.goactive = true;
       end
    end
 end
@@ -207,6 +231,8 @@ function new (config, name)
       dashstate = true,
       digitstate = 1,
       waiting = dmz.overlay.lookup_handle ("waiting switch"),
+      gameover = dmz.overlay.lookup_handle ("gameover transform"),
+      gswitch = dmz.overlay.lookup_handle ("gameover switch"),
    }
 
    self.log:info ("Creating plugin: " .. name)
