@@ -2,6 +2,7 @@ require "const"
 
 local CountScale = 3.0
 local GScale = 1.5
+local SliderSpeed = 3.0
 
 local function update_time_slice (self, time)
 
@@ -84,15 +85,15 @@ local function update_time_slice (self, time)
    end
 
    if self.slider then
-      if time > 0.1 then cprint (time) time = 0.1 end
+      --if time > 0.1 then cprint (time) time = 0.1 end
       if self.dashstate then
          local x = dmz.overlay.position (self.slider)
-         if x > 0 then x = x - (400 * time) end
+         if x > 0 then x = x - (400 * time * SliderSpeed) end
          if x < 0 then x = 0 end
          dmz.overlay.position (self.slider, x, 0)
       else
          local x = dmz.overlay.position (self.slider)
-         if x < 300 then x = x + (400 * time) end
+         if x < 300 then x = x + (400 * time * SliderSpeed) end
          if x > 300 then x = 300 end
          dmz.overlay.position (self.slider, x, 0)
       end
