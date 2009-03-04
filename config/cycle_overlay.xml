@@ -23,6 +23,19 @@
          </node>
       </node>
    </node>
+   <node type="transform" name="gameover">
+      <node type="switch" name="gameover switch" which="0">
+         <node type="group"/>
+         <node type="box">
+            <color r="0" b="1" g="0"/>
+            <texture resource="gameover"/>
+         </node>
+         <node type="box">
+            <color r="0" b="1" g="0"/>
+            <texture resource="gameover blur"/>
+         </node>
+      </node>
+   </node>
    <node type="transform" name="waiting">
       <node type="switch" name="waiting switch" which="0">
 <!--
@@ -84,6 +97,10 @@
       <y type="absolute" value="254" flip="true"/>
    </layout>
    <layout node="countdown transform">
+      <x type="relative" value="0.5"/>
+      <y type="relative" value="0.5"/>
+   </layout>
+   <layout node="gameover">
       <x type="relative" value="0.5"/>
       <y type="relative" value="0.5"/>
    </layout>

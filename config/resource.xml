@@ -14,6 +14,8 @@
    <resource name="logo" file="DMZ.png"/>
    <resource name="dashboard" file="cycles_dashboard.rgba"/>
    <resource name="digits" file="cycles_digit_all.inta"/>
+   <resource name="gameover" file="gameover.png"/>
+   <resource name="gameover blur" file="gameover_blur.png"/>
    <resource name="five" file="five.png"/>
    <resource name="four" file="four.png"/>
    <resource name="three" file="three.png"/>
