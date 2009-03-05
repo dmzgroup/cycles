@@ -12,8 +12,8 @@
       <path value="./assets"/>
    </search>
    <resource name="logo" file="DMZ.png"/>
-   <resource name="dashboard" file="cycles_dashboard.rgba"/>
-   <resource name="digits" file="cycles_digit_all.inta"/>
+   <resource name="dashboard" file="cycles_dashboard.png"/>
+   <resource name="digits" file="cycles_digit_all.png"/>
    <resource name="mode_red" file="mode_red.png"/>
    <resource name="mode_green" file="mode_green.png"/>
    <resource name="mode_orange" file="mode_orange.png"/>

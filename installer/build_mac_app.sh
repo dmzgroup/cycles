@@ -24,7 +24,6 @@ cp $DEPTH/depend/osg/lib/libOpenThreads.dylib $OSGDIR
 cp $DEPTH/depend/osg/lib/libosgText.dylib $OSGDIR
 cp $DEPTH/depend/osg/lib/libosgDB.dylib $OSGDIR
 cp $DEPTH/depend/osg/lib/osgdb_qt.so $OSGPLUGINDIR
-cp $DEPTH/depend/osg/lib/osgdb_rgb.so $OSGPLUGINDIR
 cp $DEPTH/depend/osg/lib/osgdb_obj.so $OSGPLUGINDIR
 hdiutil create -srcfolder $DEPTH/cycles.app $DEPTH/cycles-`cat $DEPTH/tmp/macos-opt/mbraapp/buildnumber.txt`.dmg
 hdiutil internet-enable -yes -verbose $DEPTH/cycles-`cat $DEPTH/tmp/macos-opt/mbraapp/buildnumber.txt`.dmg
