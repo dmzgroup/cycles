@@ -10,16 +10,64 @@
             <texture resource="dashboard"/>
          </node>
          <node type="transform">
-            <position x="74" y="96"/>
+            <position x="74" y="102"/>
             <node type="clone" name="digit3" template="digit"/>
          </node>
          <node type="transform">
-            <position x="112" y="96"/>
+            <position x="112" y="102"/>
             <node type="clone" name="digit2" template="digit"/>
          </node>
          <node type="transform">
-            <position x="150" y="96"/>
+            <position x="150" y="102"/>
             <node type="clone" name="digit1" template="digit"/>
+         </node>
+         <node type="switch" name="speed switch">
+            <node type="box">
+               <min x="87" y="85"/>
+               <max x="103" y="101"/>
+               <texture resource="mode_green"/>
+            </node>
+            <node type="box">
+               <min x="87" y="85"/>
+               <max x="103" y="101"/>
+               <texture resource="mode_off"/>
+            </node>
+         </node>
+         <node type="switch" name="wins switch" which="1">
+            <node type="box">
+               <min x="109" y="85"/>
+               <max x="125" y="101"/>
+               <texture resource="mode_blue"/>
+            </node>
+            <node type="box">
+               <min x="109" y="85"/>
+               <max x="125" y="101"/>
+               <texture resource="mode_off"/>
+            </node>
+         </node>
+         <node type="switch" name="kills switch" which="1">
+            <node type="box">
+               <min x="131" y="85"/>
+               <max x="147" y="101"/>
+               <texture resource="mode_orange"/>
+            </node>
+            <node type="box">
+               <min x="131" y="85"/>
+               <max x="147" y="101"/>
+               <texture resource="mode_off"/>
+            </node>
+         </node>
+         <node type="switch" name="deaths switch" which="1">
+            <node type="box">
+               <min x="153" y="85"/>
+               <max x="169" y="101"/>
+               <texture resource="mode_red"/>
+            </node>
+            <node type="box">
+               <min x="153" y="85"/>
+               <max x="169" y="101"/>
+               <texture resource="mode_off"/>
+            </node>
          </node>
       </node>
    </node>

@@ -119,6 +119,27 @@ local function receive_input_event (self, event)
       elseif event.button.which == 3 and event.button.value then
          self.digitstate = self.digitstate + 1
          if self.digitstate > 4 then self.digitstate = 1 end
+         if self.digitstate == 1 then
+            dmz.overlay.enable_single_switch_state (self.speedSwitch, 0) 
+            dmz.overlay.enable_single_switch_state (self.winsSwitch, 1)
+            dmz.overlay.enable_single_switch_state (self.killsSwitch, 1)
+            dmz.overlay.enable_single_switch_state (self.deathsSwitch, 1)
+         elseif self.digitstate == 2 then
+            dmz.overlay.enable_single_switch_state (self.speedSwitch, 1) 
+            dmz.overlay.enable_single_switch_state (self.winsSwitch, 0)
+            dmz.overlay.enable_single_switch_state (self.killsSwitch, 1)
+            dmz.overlay.enable_single_switch_state (self.deathsSwitch, 1)
+         elseif self.digitstate == 3 then
+            dmz.overlay.enable_single_switch_state (self.speedSwitch, 1) 
+            dmz.overlay.enable_single_switch_state (self.winsSwitch, 1)
+            dmz.overlay.enable_single_switch_state (self.killsSwitch, 0)
+            dmz.overlay.enable_single_switch_state (self.deathsSwitch, 1)
+         elseif self.digitstate == 4 then
+            dmz.overlay.enable_single_switch_state (self.speedSwitch, 1) 
+            dmz.overlay.enable_single_switch_state (self.winsSwitch, 1)
+            dmz.overlay.enable_single_switch_state (self.killsSwitch, 1)
+            dmz.overlay.enable_single_switch_state (self.deathsSwitch, 0)
+         end
       end
    end
 end
@@ -234,6 +255,10 @@ function new (config, name)
       waiting = dmz.overlay.lookup_handle ("waiting switch"),
       gameover = dmz.overlay.lookup_handle ("gameover transform"),
       gswitch = dmz.overlay.lookup_handle ("gameover switch"),
+      speedSwitch = dmz.overlay.lookup_handle ("speed switch"),
+      winsSwitch = dmz.overlay.lookup_handle ("wins switch"),
+      killsSwitch = dmz.overlay.lookup_handle ("kills switch"),
+      deathsSwitch = dmz.overlay.lookup_handle ("deaths switch"),
    }
 
    self.log:info ("Creating plugin: " .. name)
