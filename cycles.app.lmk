@@ -5,7 +5,7 @@ lmk.add_vars {
    majorVersion = "1",
    minorVersion = "0",
    bugVersion = "0",
-   releaseType = "alpha 1",
+   releaseType = "alpha 2",
    aboutImage = "./assets/DMZ-Icon.png",
 }
 lmk.add_files ({"version.xml",}, {src="version",})
@@ -66,8 +66,8 @@ app.set_app ("cycles")
 app.set_plist ("Info.plist")
 app.add_icons {"AppIcon.icns"}
 app.add_config {
-   "$(localTmpDir)/version.xml",
    "config/",
+   "$(localTmpDir)/version.xml",
 }
 app.add_data {
    "assets/DMZ-Splash.png",
