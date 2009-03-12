@@ -77,12 +77,14 @@
          <node type="box">
             <min x="-256" y="-64"/>
             <max x="256" y="64"/>
+            <depth value="4"/>
             <color r="1" b="0" g="0"/>
             <texture resource="gameover blur"/>
          </node>
          <node type="box">
             <min x="-256" y="-64"/>
             <max x="256" y="64"/>
+            <depth value="4"/>
             <color r="1" b="0" g="0"/>
             <texture resource="gameover"/>
          </node>
@@ -107,6 +109,7 @@
                <color name="countdown green"/>
                <min x="-64" y="-64"/>
                <max x="64" y="64"/>
+               <depth value="2"/>
                <texture resource="one"/>
             </node>
          </node>
@@ -115,6 +118,7 @@
                <color name="countdown yellow"/>
                <min x="-64" y="-64"/>
                <max x="64" y="64"/>
+               <depth value="2"/>
                <texture resource="two"/>
             </node>
          </node>
@@ -123,6 +127,7 @@
                <color name="countdown red"/>
                <min x="-64" y="-64"/>
                <max x="64" y="64"/>
+               <depth value="2"/>
                <texture resource="three"/>
             </node>
          </node>
@@ -131,6 +136,7 @@
                <color name="countdown red"/>
                <min x="-64" y="-64"/>
                <max x="64" y="64"/>
+               <depth value="2"/>
                <texture resource="four"/>
             </node>
          </node>
@@ -139,6 +145,7 @@
                <color name="countdown red"/>
                <min x="-64" y="-64"/>
                <max x="64" y="64"/>
+               <depth value="2"/>
                <texture resource="five"/>
             </node>
          </node>
