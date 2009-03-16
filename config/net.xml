@@ -16,7 +16,7 @@
       <element type="size" base="uint32"/>
    </header>
    <packet id="1" name="NetCodecCycle">
-      <object-type name="cycle"/>
+      <object-type name="vehicle"/>
    </packet>
    <packet id="2" name="NetCodecMCP">
       <object-type name="mcp"/>

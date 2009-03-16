@@ -10,10 +10,45 @@
 </plugin-list>
 <dmzLuaModuleBasic>
    <instance name="mcp"/>
+   <instance name="recognizer"/>
 </dmzLuaModuleBasic>
 <!--
 <mcp>
    <drone-free-play value="true"/>
 </mcp>
 -->
+<archive>
+   <object type="recognizer">
+      <attributes>
+         <state value="Engine_On"/>
+         <position x="250.0" y="35.0" z="250.0"/>
+         <orientation
+            v0="1.0" v1="0.0" v2="0.0"
+            v3="0.0" v4="1.0" v5="0.0"
+            v6="0.0" v7="0.0" v8="1.0"
+         />
+         <velocity x="0.0" y="0.0" z="0.0"/>
+         <acceleration x="0.0" y="0.0" z="0.0"/>
+      </attributes>
+      <attributes name="Recognizer_Controlled">
+         <flag value="true"/>
+      </attributes>
+   </object>
+   <object type="recognizer">
+      <attributes>
+         <state value="Engine_On"/>
+         <position x="-250.0" y="35.0" z="-250.0"/>
+         <orientation
+            v0="1.0" v1="0.0" v2="0.0"
+            v3="0.0" v4="1.0" v5="0.0"
+            v6="0.0" v7="0.0" v8="1.0"
+         />
+         <velocity x="0.0" y="0.0" z="0.0"/>
+         <acceleration x="0.0" y="0.0" z="0.0"/>
+      </attributes>
+      <attributes name="Recognizer_Controlled">
+         <flag value="true"/>
+      </attributes>
+   </object>
+</archive>
 </dmz>

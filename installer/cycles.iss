@@ -59,6 +59,7 @@ Source: {#DependDir}\bin\QtSvg4.dll; DestDir: {app}\bin
 Source: {#DependDir}\bin\QtXml4.dll; DestDir: {app}\bin
 Source: {#DependDir}\bin\osg55-osg.dll; DestDir: {app}\bin
 Source: {#DependDir}\bin\osg55-osgDB.dll; DestDir: {app}\bin
+Source: {#DependDir}\bin\osg55-osgFX.dll; DestDir: {app}\bin
 Source: {#DependDir}\bin\osg55-osgGA.dll; DestDir: {app}\bin
 Source: {#DependDir}\bin\osg55-osgSim.dll; DestDir: {app}\bin
 Source: {#DependDir}\bin\osg55-osgText.dll; DestDir: {app}\bin

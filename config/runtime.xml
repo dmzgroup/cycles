@@ -100,6 +100,20 @@
          <offset value="3.46"/>
       </wall>
    </object-type>
+   <object-type name="recognizer" parent="vehicle">
+      <audio>
+         <state
+            name="Engine_On"
+            looped-resource="recognizer-sound"
+         />
+      </audio>
+      <net>
+         <enum value="1.2"/>
+      </net>
+      <render>
+         <model resource="recognizer"/>
+      </render>
+   </object-type>
    <object-type name="mcp">
       <audio>
          <state name="Game_Waiting" activate-resource="gameover-sound" relative="true"/>

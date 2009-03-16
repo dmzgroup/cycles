@@ -31,8 +31,10 @@
    <resource name="orange" file="orange.obj"/>
    <resource name="yellow" file="yellow.obj"/>
    <resource name="blue" file="blue.obj"/>
+   <resource name="recognizer" file="recognizer.ive"/>
    <resource name="engine-sound" file="game_engine_mono.wav" path="audio"/>
    <resource name="crash-sound" file="game_crash_mono.wav" path="audio"/>
+   <resource name="recognizer-sound" file="game_recognizer_mono.wav" path="audio"/>
    <resource name="gameover-sound" file="gameover.wav" path="audio"/>
    <resource name="begin-sound" file="begin.wav" path="audio"/>
    <resource name="five-sound" file="five.wav" path="audio"/>
