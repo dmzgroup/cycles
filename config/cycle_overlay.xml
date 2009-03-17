@@ -71,6 +71,17 @@
          </node>
       </node>
    </node>
+   <node type="transform" name="help">
+      <node type="switch" name="help switch">
+         <node type="group"/>
+         <node type="box">
+            <min x="-256" y="-256"/>
+            <max x="256" y="256"/>
+            <depth value="10"/>
+            <texture resource="cycles help"/>
+         </node>
+      </node>
+   </node>
    <node type="transform" name="gameover transform">
       <node type="switch" name="gameover switch" which="0">
          <node type="group"/>
@@ -154,6 +165,10 @@
    <layout node="dashboard">
       <x type="absolute" value="254" flip="true"/>
       <y type="absolute" value="254" flip="true"/>
+   </layout>
+   <layout node="help">
+      <x type="relative" value="0.5"/>
+      <y type="relative" value="0.5"/>
    </layout>
    <layout node="countdown transform">
       <x type="relative" value="0.5"/>

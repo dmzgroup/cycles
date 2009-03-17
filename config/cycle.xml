@@ -7,6 +7,7 @@
 <dmzLuaModuleBasic>
    <instance name="cycle"/>
    <instance name="cycleOverlay"/>
+   <instance name="helpOverlay"/>
    <instance name="camera"/>
    <extensions>
       <plugin name="dmzLuaExtPortal"/>

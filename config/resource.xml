@@ -19,6 +19,7 @@
    <resource name="mode_orange" file="mode_orange.png"/>
    <resource name="mode_blue" file="mode_blue.png"/>
    <resource name="mode_off" file="mode_off.png"/>
+   <resource name="cycles help" file="cycles_help.png"/>
    <resource name="gameover" file="gameover.png"/>
    <resource name="gameover blur" file="gameover_blur.png"/>
    <resource name="five" file="five.png"/>
