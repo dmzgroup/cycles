@@ -11,7 +11,7 @@
       <path value="../../assets/cycles/sounds"/>
       <path value="./assets"/>
    </search>
-   <resource name="logo" file="DMZ.png"/>
+   <resource name="logo" file="encom.png"/>
    <resource name="dashboard" file="cycles_dashboard.png"/>
    <resource name="digits" file="cycles_digit_all.png"/>
    <resource name="mode_red" file="mode_red.png"/>
