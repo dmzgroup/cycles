@@ -63,6 +63,7 @@ Source: {#DependDir}\bin\osg55-osgFX.dll; DestDir: {app}\bin
 Source: {#DependDir}\bin\osg55-osgGA.dll; DestDir: {app}\bin
 Source: {#DependDir}\bin\osg55-osgSim.dll; DestDir: {app}\bin
 Source: {#DependDir}\bin\osg55-osgText.dll; DestDir: {app}\bin
+Source: {#DependDir}\bin\osg55-osgTerrain.dll; DestDir: {app}\bin
 Source: {#DependDir}\bin\osg55-osgUtil.dll; DestDir: {app}\bin
 Source: {#DependDir}\bin\osg55-osgViewer.dll; DestDir: {app}\bin
 Source: {#DependDir}\bin\ot11-OpenThreads.dll; DestDir: {app}\bin
@@ -70,6 +71,8 @@ Source: {#DependDir}\bin\libpng13.dll; DestDir: {app}\bin
 Source: {#DependDir}\bin\zlib1.dll; DestDir: {app}\bin
 Source: {#DependDir}\bin\osgplugins-2.8.0\osgdb_png.dll; DestDir: {app}\bin
 Source: {#DependDir}\bin\osgplugins-2.8.0\osgdb_obj.dll; DestDir: {app}\bin
+Source: {#DependDir}\bin\osgplugins-2.8.0\osgdb_ive.dll; DestDir: {app}\bin
+Source: {#DependDir}\bin\osgplugins-2.8.0\osgdb_osgfx.dll; DestDir: {app}\bin
 Source: {#DependDir}\bin\fmodex.dll; DestDir: {app}\bin
 Source: {#DependDir}\bin\fmodexL.dll; DestDir: {app}\bin
 Source: {#DependDir}\bin\fmodexp.dll; DestDir: {app}\bin

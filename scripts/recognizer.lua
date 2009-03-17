@@ -1,7 +1,7 @@
 require "const"
 
 local TargetHandle = dmz.handle.new ("Recognizer_Target_Counter")
-local LocalSpeed = 80
+local LocalSpeed = 30
 
 local path = {
    dmz.vector.new {0.0, 1.0, 0.0},
@@ -17,10 +17,6 @@ local path = {
    dmz.vector.new {0.33333, 1.0, 1.0},
    dmz.vector.new {0.33333, 1.0, 0.0},
 }
-
-local Forward = dmz.vector.new {0.0, 0.0, -1.0}
-local Right = dmz.vector.new {1.0, 0.0, 0.0}
-local Up = dmz.vector.new {0.0, 1.0, 0.0}
 
 local function rotate (time, orig, target)
    local diff = target - orig
@@ -41,8 +37,8 @@ local function new_ori (obj, time, targetVec)
    local hvec = dmz.vector.new (targetVec)
    hvec:set_y (0.0)
    hvec = hvec:normalize ()
-   local heading = Forward:get_angle (hvec)
-   local hcross = Forward:cross (hvec):normalize ()
+   local heading = const.Forward:get_angle (hvec)
+   local hcross = const.Forward:cross (hvec):normalize ()
    if hcross:get_y () < 0.0 then
       heading = dmz.math.TwoPi - heading
    end
@@ -51,13 +47,13 @@ local function new_ori (obj, time, targetVec)
    end
    local ori = dmz.object.orientation (obj)
    if not ori then ori = dmz.matrix.new () end
-   local dir = ori:transform (Forward)
+   local dir = ori:transform (const.Forward)
    dir:set_y (0)
-   local currentHeading = Forward:get_angle (dir)
-   local cross = Forward:cross (dir)
+   local currentHeading = const.Forward:get_angle (dir)
+   local cross = const.Forward:cross (dir)
    if cross:get_y () < 0 then currentHeading = dmz.math.TwoPi - currentHeading end
    heading = rotate (time, currentHeading, heading) 
-   result = result:from_axis_and_angle (Up, heading);
+   result = result:from_axis_and_angle (const.Up, heading);
    return result;
 end
 
