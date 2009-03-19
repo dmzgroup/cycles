@@ -23,10 +23,10 @@ local function update_time_slice (self, time)
    end
 end
 
-local HKey = 72
-local hKey = 104
-local SlashKey = 47
-local QuestionKey = 63
+local HKey = dmz.input.get_key_value ("h")
+local hKey = dmz.input.get_key_value ("H")
+local SlashKey = dmz.input.get_key_value ("/")
+local QuestionKey = dmz.input.get_key_value ("?")
 
 local function receive_input_event (self, event)
 
