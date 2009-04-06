@@ -54,9 +54,9 @@ local function update_time_slice (self, time)
       if v2 == 0 then v2 = 10 end
    end
 
-   dmz.overlay.enable_single_switch_state (self.digits[1], v1);
-   dmz.overlay.enable_single_switch_state (self.digits[2], v2);
-   dmz.overlay.enable_single_switch_state (self.digits[3], v3);
+   dmz.overlay.enable_switch_state_single (self.digits[1], v1);
+   dmz.overlay.enable_switch_state_single (self.digits[2], v2);
+   dmz.overlay.enable_switch_state_single (self.digits[3], v3);
 
    if self.currentCount then
       local scale = dmz.overlay.scale (self.currentCount);
@@ -80,7 +80,7 @@ local function update_time_slice (self, time)
       else
          dmz.overlay.scale (self.gameover, GScale)
          dmz.overlay.rotation (self.gameover, 0)
-         dmz.overlay.enable_single_switch_state (self.gswitch, 2, true)
+         dmz.overlay.enable_switch_state_single (self.gswitch, 2, true)
       end
    end
 
@@ -120,25 +120,25 @@ local function receive_input_event (self, event)
          self.digitstate = self.digitstate + 1
          if self.digitstate > 4 then self.digitstate = 1 end
          if self.digitstate == 1 then
-            dmz.overlay.enable_single_switch_state (self.speedSwitch, 0) 
-            dmz.overlay.enable_single_switch_state (self.winsSwitch, 1)
-            dmz.overlay.enable_single_switch_state (self.killsSwitch, 1)
-            dmz.overlay.enable_single_switch_state (self.deathsSwitch, 1)
+            dmz.overlay.enable_switch_state_single (self.speedSwitch, 0) 
+            dmz.overlay.enable_switch_state_single (self.winsSwitch, 1)
+            dmz.overlay.enable_switch_state_single (self.killsSwitch, 1)
+            dmz.overlay.enable_switch_state_single (self.deathsSwitch, 1)
          elseif self.digitstate == 2 then
-            dmz.overlay.enable_single_switch_state (self.speedSwitch, 1) 
-            dmz.overlay.enable_single_switch_state (self.winsSwitch, 0)
-            dmz.overlay.enable_single_switch_state (self.killsSwitch, 1)
-            dmz.overlay.enable_single_switch_state (self.deathsSwitch, 1)
+            dmz.overlay.enable_switch_state_single (self.speedSwitch, 1) 
+            dmz.overlay.enable_switch_state_single (self.winsSwitch, 0)
+            dmz.overlay.enable_switch_state_single (self.killsSwitch, 1)
+            dmz.overlay.enable_switch_state_single (self.deathsSwitch, 1)
          elseif self.digitstate == 3 then
-            dmz.overlay.enable_single_switch_state (self.speedSwitch, 1) 
-            dmz.overlay.enable_single_switch_state (self.winsSwitch, 1)
-            dmz.overlay.enable_single_switch_state (self.killsSwitch, 0)
-            dmz.overlay.enable_single_switch_state (self.deathsSwitch, 1)
+            dmz.overlay.enable_switch_state_single (self.speedSwitch, 1) 
+            dmz.overlay.enable_switch_state_single (self.winsSwitch, 1)
+            dmz.overlay.enable_switch_state_single (self.killsSwitch, 0)
+            dmz.overlay.enable_switch_state_single (self.deathsSwitch, 1)
          elseif self.digitstate == 4 then
-            dmz.overlay.enable_single_switch_state (self.speedSwitch, 1) 
-            dmz.overlay.enable_single_switch_state (self.winsSwitch, 1)
-            dmz.overlay.enable_single_switch_state (self.killsSwitch, 1)
-            dmz.overlay.enable_single_switch_state (self.deathsSwitch, 0)
+            dmz.overlay.enable_switch_state_single (self.speedSwitch, 1) 
+            dmz.overlay.enable_switch_state_single (self.winsSwitch, 1)
+            dmz.overlay.enable_switch_state_single (self.killsSwitch, 1)
+            dmz.overlay.enable_switch_state_single (self.deathsSwitch, 0)
          end
       end
    end
@@ -157,42 +157,42 @@ local function update_object_state (self, Object, Attribute, State, PreviousStat
       if not PreviousState then PreviousState = dmz.mask.new () end
       if State:contains (const.GameCountdown5)
             and not PreviousState:contains (const.GameCountdown5) then
-         dmz.overlay.enable_single_switch_state (self.switch, 5)
+         dmz.overlay.enable_switch_state_single (self.switch, 5)
          self.currentCount = self.countdown[5]
          dmz.overlay.scale (self.currentCount, CountScale)
-         dmz.overlay.all_switch_state (self.waiting, false)
-         dmz.overlay.all_switch_state (self.gswitch, false)
+         dmz.overlay.switch_state_all (self.waiting, false)
+         dmz.overlay.switch_state_all (self.gswitch, false)
          self.goactive = false;
       elseif State:contains (const.GameCountdown4)
             and not PreviousState:contains (const.GameCountdown4) then
-         dmz.overlay.enable_single_switch_state (self.switch, 4)
+         dmz.overlay.enable_switch_state_single (self.switch, 4)
          self.currentCount = self.countdown[4]
          dmz.overlay.scale (self.currentCount, CountScale)
       elseif State:contains (const.GameCountdown3)
             and not PreviousState:contains (const.GameCountdown3) then
-         dmz.overlay.enable_single_switch_state (self.switch, 3)
+         dmz.overlay.enable_switch_state_single (self.switch, 3)
          self.currentCount = self.countdown[3]
          dmz.overlay.scale (self.currentCount, CountScale)
       elseif State:contains (const.GameCountdown2)
             and not PreviousState:contains (const.GameCountdown1) then
-         dmz.overlay.enable_single_switch_state (self.switch, 2)
+         dmz.overlay.enable_switch_state_single (self.switch, 2)
          self.currentCount = self.countdown[2]
          dmz.overlay.scale (self.currentCount, CountScale)
       elseif State:contains (const.GameCountdown1)
             and not PreviousState:contains (const.GameCountdown1) then
-         dmz.overlay.enable_single_switch_state (self.switch, 1)
+         dmz.overlay.enable_switch_state_single (self.switch, 1)
          self.currentCount = self.countdown[1]
          dmz.overlay.scale (self.currentCount, CountScale)
       elseif State:contains (const.GameActive)
             and not PreviousState:contains (const.GameActive) then
-         dmz.overlay.all_switch_state (self.switch, false)
+         dmz.overlay.switch_state_all (self.switch, false)
          self.currentCount = nil
       end
 
       if State:contains (const.GameWaiting)
             and PreviousState:contains (const.GameActive) then
          dmz.overlay.scale (self.gameover, 0.01)
-         dmz.overlay.enable_single_switch_state (self.gswitch, 1, true)
+         dmz.overlay.enable_switch_state_single (self.gswitch, 1, true)
          self.goactive = true;
       end
    end

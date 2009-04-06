@@ -16,7 +16,7 @@ local function update_time_slice (self, time)
          if scale <= 0.01 then
             scale = 0.01
             self.scaling = false
-            dmz.overlay.enable_single_switch_state (self.switch, 0)
+            dmz.overlay.enable_switch_state_single (self.switch, 0)
          end
       end
       dmz.overlay.scale (self.transform, scale)
@@ -48,7 +48,7 @@ local function receive_input_event (self, event)
             self.show = (not self.show)
             self.scaling = true
             if self.show then
-               dmz.overlay.enable_single_switch_state (self.switch, 1)
+               dmz.overlay.enable_switch_state_single (self.switch, 1)
             end
          end
       end
