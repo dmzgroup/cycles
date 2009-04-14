@@ -1,7 +1,7 @@
 #!/bin/sh
 DEPTH=../../..
 lmk -m opt -b
-cp -r $DEPTH/bin/macos-opt/cycles.app $DEPTH
+cp -RL $DEPTH/bin/macos-opt/cycles.app $DEPTH
 mkdir $DEPTH/cycles.app/Contents/Frameworks/Qt
 cp $DEPTH/depend/Qt/QtCore $DEPTH/cycles.app/Contents/Frameworks/Qt
 cp $DEPTH/depend/Qt/QtGui $DEPTH/cycles.app/Contents/Frameworks/Qt
