@@ -109,48 +109,42 @@ local function update_time_slice (self, time)
    end
 end
 
-local function receive_input_event (self, event)
+local function update_channel_state (self, channel, state)
 
-   if event.state then 
-      if event.state.active then  self.active = self.active + 1
-      else self.active = self.active - 1 end
+   if state then  self.active = self.active + 1
+   else self.active = self.active - 1 end
 
-      if self.active == 1 then self.timeSlice:start (self.handle)
-      elseif self.active == 0 then
-         self.timeSlice:stop (self.handle)
-         local hil = dmz.object.hil ()
-         if hil then dmz.object.scalar (hil, self.throttleHandle, 0) end
-      end
-   end
-
-   if event.axis then
-      --print ("axis: " .. event.axis.which .. " value: " .. event.axis.value)
-      local value = 0
-      if not dmz.math.is_zero (event.axis.value, 0.1) then
-         if event.axis.value > 0 then value = 1
-         else value = -1
-         end
-      end
-      if event.axis.which == 2 then --self.speed = value * self.moveSpeed
-      elseif event.axis.which == 1 then self.turn = value
-      elseif event.axis.which == 6 then --self.strafe = value * self.moveSpeed
-      elseif event.axis.which == 7 then self.accel = value
-      end
-   end
-
-   if event.button then
-      --print ("button: " .. event.button.which .. " value: " .. tostring (event.button.value))
+   if self.active == 1 then self.timeSlice:start (self.handle)
+   elseif self.active == 0 then
+      self.timeSlice:stop (self.handle)
+      local hil = dmz.object.hil ()
+      if hil then dmz.object.scalar (hil, self.throttleHandle, 0) end
    end
 end
 
+local function receive_axis_event (self, channel, axis)
+   local value = 0
+   if not dmz.math.is_zero (axis.value, 0.1) then
+      if axis.value > 0 then value = 1
+      else value = -1
+      end
+   end
+   if axis.which == 2 then --self.speed = value * self.moveSpeed
+   elseif axis.which == 1 then self.turn = value
+   elseif axis.which == 6 then --self.strafe = value * self.moveSpeed
+   elseif axis.which == 7 then self.accel = value
+   end
+end
 
 local function start (self)
    self.handle = self.timeSlice:create (update_time_slice, self, self.name)
 
-   self.inputObs:init_channels (
-      self.config,
-      dmz.input.Axis + dmz.input.Button + dmz.input.ChannelState,
-      receive_input_event,
+   self.inputObs:register (
+      nil,
+      {
+         update_channel_state = update_channel_state,
+         receive_axis_event = receive_axis_event,
+      },
       self);
 
    if self.handle and self.active == 0 then self.timeSlice:stop (self.handle) end

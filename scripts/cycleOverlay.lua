@@ -100,46 +100,43 @@ local function update_time_slice (self, time)
    end
 end
 
-local function receive_input_event (self, event)
+local function update_channel_state (self, channel, state)
+   if state then  self.active = self.active + 1
+   else self.active = self.active - 1 end
 
-   if event.state then 
-      if event.state.active then  self.active = self.active + 1
-      else self.active = self.active - 1 end
-
-      if self.active == 1 then
-         self.timeSlice:start (self.handle)
-      elseif self.active == 0 then
-         self.timeSlice:stop (self.handle)
-      end
+   if self.active == 1 then
+      self.timeSlice:start (self.handle)
+   elseif self.active == 0 then
+      self.timeSlice:stop (self.handle)
    end
+end
 
-   if event.button then
-      if event.button.which == 2 and event.button.value then
-         self.dashstate = not self.dashstate
-      elseif event.button.which == 3 and event.button.value then
-         self.digitstate = self.digitstate + 1
-         if self.digitstate > 4 then self.digitstate = 1 end
-         if self.digitstate == 1 then
-            dmz.overlay.enable_switch_state_single (self.speedSwitch, 0) 
-            dmz.overlay.enable_switch_state_single (self.winsSwitch, 1)
-            dmz.overlay.enable_switch_state_single (self.killsSwitch, 1)
-            dmz.overlay.enable_switch_state_single (self.deathsSwitch, 1)
-         elseif self.digitstate == 2 then
-            dmz.overlay.enable_switch_state_single (self.speedSwitch, 1) 
-            dmz.overlay.enable_switch_state_single (self.winsSwitch, 0)
-            dmz.overlay.enable_switch_state_single (self.killsSwitch, 1)
-            dmz.overlay.enable_switch_state_single (self.deathsSwitch, 1)
-         elseif self.digitstate == 3 then
-            dmz.overlay.enable_switch_state_single (self.speedSwitch, 1) 
-            dmz.overlay.enable_switch_state_single (self.winsSwitch, 1)
-            dmz.overlay.enable_switch_state_single (self.killsSwitch, 0)
-            dmz.overlay.enable_switch_state_single (self.deathsSwitch, 1)
-         elseif self.digitstate == 4 then
-            dmz.overlay.enable_switch_state_single (self.speedSwitch, 1) 
-            dmz.overlay.enable_switch_state_single (self.winsSwitch, 1)
-            dmz.overlay.enable_switch_state_single (self.killsSwitch, 1)
-            dmz.overlay.enable_switch_state_single (self.deathsSwitch, 0)
-         end
+local function receive_button_event (self, channel, button)
+   if button.which == 2 and button.value then
+      self.dashstate = not self.dashstate
+   elseif button.which == 3 and button.value then
+      self.digitstate = self.digitstate + 1
+      if self.digitstate > 4 then self.digitstate = 1 end
+      if self.digitstate == 1 then
+         dmz.overlay.enable_switch_state_single (self.speedSwitch, 0) 
+         dmz.overlay.enable_switch_state_single (self.winsSwitch, 1)
+         dmz.overlay.enable_switch_state_single (self.killsSwitch, 1)
+         dmz.overlay.enable_switch_state_single (self.deathsSwitch, 1)
+      elseif self.digitstate == 2 then
+         dmz.overlay.enable_switch_state_single (self.speedSwitch, 1) 
+         dmz.overlay.enable_switch_state_single (self.winsSwitch, 0)
+         dmz.overlay.enable_switch_state_single (self.killsSwitch, 1)
+         dmz.overlay.enable_switch_state_single (self.deathsSwitch, 1)
+      elseif self.digitstate == 3 then
+         dmz.overlay.enable_switch_state_single (self.speedSwitch, 1) 
+         dmz.overlay.enable_switch_state_single (self.winsSwitch, 1)
+         dmz.overlay.enable_switch_state_single (self.killsSwitch, 0)
+         dmz.overlay.enable_switch_state_single (self.deathsSwitch, 1)
+      elseif self.digitstate == 4 then
+         dmz.overlay.enable_switch_state_single (self.speedSwitch, 1) 
+         dmz.overlay.enable_switch_state_single (self.winsSwitch, 1)
+         dmz.overlay.enable_switch_state_single (self.killsSwitch, 1)
+         dmz.overlay.enable_switch_state_single (self.deathsSwitch, 0)
       end
    end
 end
@@ -198,14 +195,15 @@ local function update_object_state (self, Object, Attribute, State, PreviousStat
    end
 end
 
-
 local function start (self)
    self.handle = self.timeSlice:create (update_time_slice, self, self.name)
 
-   self.inputObs:init_channels (
-      self.config,
-      dmz.input.Button + dmz.input.ChannelState,
-      receive_input_event,
+   self.inputObs:register (
+      nil,
+      {
+         update_channel_state = update_channel_state,
+         receive_button_event = receive_button_event,
+      },
       self);
 
    if self.handle and self.active == 0 then self.timeSlice:stop (self.handle) end

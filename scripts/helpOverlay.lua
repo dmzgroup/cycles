@@ -28,28 +28,26 @@ local hKey = dmz.input.get_key_value ("H")
 local SlashKey = dmz.input.get_key_value ("/")
 local QuestionKey = dmz.input.get_key_value ("?")
 
-local function receive_input_event (self, event)
 
-   if event.state then 
-      if event.state.active then  self.active = self.active + 1
-      else self.active = self.active - 1 end
+local function update_channel_state (self, channel, state)
+   if state then  self.active = self.active + 1
+   else self.active = self.active - 1 end
 
-      if self.active == 1 then
-         self.timeSlice:start (self.handle)
-      elseif self.active == 0 then
-         self.timeSlice:stop (self.handle)
-      end
+   if self.active == 1 then
+      self.timeSlice:start (self.handle)
+   elseif self.active == 0 then
+      self.timeSlice:stop (self.handle)
    end
+end
 
-   if event.key then
-      if event.key.state then
-         if HKey == event.key.value or hKey == event.key.value or
-               SlashKey == event.key.value or QuestionKey == event.key.value then
-            self.show = (not self.show)
-            self.scaling = true
-            if self.show then
-               dmz.overlay.enable_switch_state_single (self.switch, 1)
-            end
+local function receive_key_event (self, channel, key)
+   if key.state then
+      if HKey == key.value or hKey == key.value or
+            SlashKey == key.value or QuestionKey == key.value then
+         self.show = (not self.show)
+         self.scaling = true
+         if self.show then
+            dmz.overlay.enable_switch_state_single (self.switch, 1)
          end
       end
    end
@@ -59,10 +57,12 @@ end
 local function start (self)
    self.handle = self.timeSlice:create (update_time_slice, self, self.name)
 
-   self.inputObs:init_channels (
-      self.config,
-      dmz.input.Key + dmz.input.ChannelState,
-      receive_input_event,
+   self.inputObs:register (
+      nil,
+      {
+         update_channel_state = update_channel_state,
+         receive_key_event = receive_key_event,
+      },
       self);
 
    if self.handle and self.active == 0 then self.timeSlice:stop (self.handle) end
