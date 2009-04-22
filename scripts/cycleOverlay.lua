@@ -199,7 +199,7 @@ local function start (self)
    self.handle = self.timeSlice:create (update_time_slice, self, self.name)
 
    self.inputObs:register (
-      nil,
+      self.config,
       {
          update_channel_state = update_channel_state,
          receive_button_event = receive_button_event,
