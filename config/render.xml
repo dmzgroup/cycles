@@ -29,8 +29,12 @@
    <visibility fov="60.0" near="1.0" far="32000.0"/>
 </render>
 <overlay>
-   <node type="box">
-      <texture resource="logo"/>
+   <node type="transform">
+      <position y="10"/>
+      <node type="box">
+         <texture resource="logo"/>
+         <color r="0" g="1.0" b="0" a="0.4"/>
+      </node>
    </node>
 </overlay>
 </dmz>
