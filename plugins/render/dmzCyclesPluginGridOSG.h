@@ -1,5 +1,5 @@
-#ifndef DMZ_RENDER_PLUGIN_LOGO_OSG_DOT_H
-#define DMZ_RENDER_PLUGIN_LOGO_OSG_DOT_H
+#ifndef DMZ_CYCLES_PLUGIN_GRID_OSG_DOT_H
+#define DMZ_CYCLES_PLUGIN_GRID_OSG_DOT_H
 
 #include <dmzRuntimeLog.h>
 #include <dmzRuntimePlugin.h>
@@ -48,4 +48,4 @@ namespace dmz {
    };
 };
 
-#endif // DMZ_RENDER_PLUGIN_LOGO_OSG_DOT_H
+#endif // DMZ_CYCLES_PLUGIN_GRID_OSG_DOT_H
