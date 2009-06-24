@@ -44,7 +44,7 @@
 </NetCodecCycle>
 <NetCodecMCP>
    <adapter type="state" lnv="true"/>
-   <adapter type="timestamp" attribute="MCP_Running_Time"/>
+   <adapter type="time-stamp" attribute="MCP_Running_Time"/>
 </NetCodecMCP>
 <NetCodecBasePoint>
    <adapter type="position" lnv="true"/>
