@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dmz>
+<archive>
+   <object type="red_cycle">
+      <attributes>
+         <position x="0.0" y="0.0" z="0.0"/>
+         <orientation
+            v0="1.0" v1="0.0" v2="0.0"
+            v3="0.0" v4="1.0" v5="0.0"
+            v6="0.0" v7="0.0" v8="1.0"
+         />
+         <velocity x="0.0" y="0.0" z="0.0"/>
+         <acceleration x="0.0" y="0.0" z="0.0"/>
+      </attributes>
+      <attributes name="throttle">
+         <scalar value="0.0"/>
+      </attributes>
+   </object>
+   <object type="orange_cycle">
+      <attributes>
+         <position x="2.0" y="0.0" z="-0.5"/>
+         <orientation
+            v0="1.0" v1="0.0" v2="0.0"
+            v3="0.0" v4="1.0" v5="0.0"
+            v6="0.0" v7="0.0" v8="1.0"
+         />
+         <velocity x="0.0" y="0.0" z="0.0"/>
+         <acceleration x="0.0" y="0.0" z="0.0"/>
+      </attributes>
+   </object>
+   <object type="yellow_cycle">
+      <attributes>
+         <position x="4.0" y="0.0" z="-1.0"/>
+         <orientation
+            v0="1.0" v1="0.0" v2="0.0"
+            v3="0.0" v4="1.0" v5="0.0"
+            v6="0.0" v7="0.0" v8="1.0"
+         />
+         <velocity x="0.0" y="0.0" z="0.0"/>
+         <acceleration x="0.0" y="0.0" z="0.0"/>
+      </attributes>
+   </object>
+   <object type="blue_cycle">
+      <attributes>
+         <position x="6.0" y="0.0" z="-2.0"/>
+         <orientation
+            v0="1.0" v1="0.0" v2="0.0"
+            v3="0.0" v4="1.0" v5="0.0"
+            v6="0.0" v7="0.0" v8="1.0"
+         />
+         <velocity x="0.0" y="0.0" z="0.0"/>
+         <acceleration x="0.0" y="0.0" z="0.0"/>
+      </attributes>
+   </object>
+</archive>
+</dmz>
