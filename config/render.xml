@@ -25,6 +25,7 @@
    </loader>
    <view>
       <window-title value="DMZ: Cycles"/>
+      <aa samples="4"/>
    </view>
    <visibility fov="60.0" near="1.0" far="32000.0"/>
    <light value="0">
