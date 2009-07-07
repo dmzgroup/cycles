@@ -47,6 +47,7 @@
          <config file="config/spectator.xml"/>
       </type>
    </color>
+   <aa scope="dmz.render.viewer.aa.samples"/>
    <screen scope="dmz.render.view.window.screen">
       <resolution text="Full Screen">
          <attribute scope="dmz.render.view.window.fullscreen" value="true"/>

@@ -58,6 +58,7 @@ lmk.add_preqs {
    "dmzLuaExtIsect",
    "dmzLuaExtObject",
    "dmzLuaExtEvent",
+   "dmzQtUtil",
    "dmzQtExtLuaConsole",
    "dmzLuaPluginReset",
    "dmzQtPluginLuaProfiler",

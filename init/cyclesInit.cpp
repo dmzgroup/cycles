@@ -2,16 +2,20 @@
 #include <dmzApplication.h>
 #include <dmzAppShellExt.h>
 #include <dmzCommandLine.h>
+#include <dmzQtConfigRead.h>
+#include <dmzQtConfigWrite.h>
 #include <dmzRuntimeConfig.h>
 #include <dmzRuntimeConfigToTypesBase.h>
 #include <dmzRuntimePluginFactoryLinkSymbol.h>
+#include <dmzRuntimeSession.h>
 #include <dmzRuntimeVersion.h>
 #include <dmzTypesHashTableStringTemplate.h>
 #include <dmzXMLUtil.h>
 
 #include <QtCore/QUrl>
-#include <QtGui/QDesktopServices>
 #include <QtGui/QCloseEvent>
+#include <QtGui/QDesktopServices>
+#include <QtGui/QDesktopWidget>
 
 using namespace dmz;
 
@@ -20,10 +24,21 @@ namespace {
 typedef HashTableStringTemplate<String> FileTable;
 typedef HashTableStringTemplate<Config> ConfigTable;
 
+static const String CyclesName ("cyclesInit");
+static const String ColorName ("color.value");
+static const String ResolutionName ("resolution.value");
+static const String ScreenName ("screen.value");
+static const String AAName ("aa.value");
+static const String MultiplayerName ("multiplayer.value");
+static const String DronesName ("drones.value");
+static const String PortName ("port.value");
+static const String MCPName ("mcp.value");
+static const String GeometryName ("geometry");
+
 static void
 local_populate_color_table (
       AppShellInitStruct &init,
-      CyclesInit &ci,
+      CyclesInit &cInit,
       ConfigTable &colorTable) {
 
    Config colorList;
@@ -39,7 +54,7 @@ local_populate_color_table (
 
          if (value) {
 
-            ci.ui.colorCombo->addItem (value.get_buffer ());
+            cInit.ui.colorCombo->addItem (value.get_buffer ());
             Config *ptr = new Config (color);
 
             if (ptr && !colorTable.store (value, ptr)) {
@@ -55,7 +70,7 @@ local_populate_color_table (
 static void
 local_populate_resolution_table (
       AppShellInitStruct &init,
-      CyclesInit &ci,
+      CyclesInit &cInit,
       ConfigTable &rezTable) {
 
    Config rezList;
@@ -71,7 +86,7 @@ local_populate_resolution_table (
 
          if (value) {
 
-            ci.ui.resolutionCombo->addItem (value.get_buffer ());
+            cInit.ui.resolutionCombo->addItem (value.get_buffer ());
 
             Config *ptr = new Config (rez);
 
@@ -81,6 +96,63 @@ local_populate_resolution_table (
             }
          }
       }
+   }
+}
+
+
+static void
+local_restore_session (AppShellInitStruct &init, CyclesInit &cInit) {
+
+   Config session = get_session_config (CyclesName, init.app.get_context ());
+
+   const String Color = config_to_string (ColorName, session);
+
+   if (Color) {
+
+      const int Index = cInit.ui.colorCombo->findText (Color.get_buffer ());
+      if (Index >= 0) { cInit.ui.colorCombo->setCurrentIndex (Index); }
+   }
+
+   const String Resolution = config_to_string (ResolutionName, session);
+
+   if (Resolution) {
+
+      const int Index = cInit.ui.resolutionCombo->findText (Resolution.get_buffer ());
+      if (Index >= 0) { cInit.ui.resolutionCombo->setCurrentIndex (Index); }
+   }
+
+   const Int32 Screen = config_to_int32 (ScreenName, session, -1);
+   if (Screen >= 0) { cInit.ui.screenBox->setValue (Screen); }
+
+   const Int32 Samples = config_to_int32 (AAName, session, -1);
+   if (Samples >= 0) { cInit.ui.aaBox->setValue (Samples); }
+
+   if (config_to_boolean (MultiplayerName, session, False)) {
+
+      cInit.ui.netBox->setCheckState (Qt::Checked);
+   }
+
+   const Int32 Drones = config_to_int32 (DronesName, session, -1);
+   if (Drones > 0) { cInit.ui.droneBox->setValue (Drones); }
+
+   const Int32 Port = config_to_int32 (PortName, session, -1);
+   if (Port > 0) { cInit.ui.portBox->setValue (Port); }
+
+   if (config_to_boolean (MCPName, session, False)) {
+
+      cInit.ui.mcpBox->setCheckState (Qt::Checked);
+   }
+
+   Config geometry;
+
+   if (session.lookup_config (GeometryName, geometry)) {
+
+      cInit.restoreGeometry (config_to_qbytearray (geometry));
+   }
+   else {
+
+      QRect rect = QApplication::desktop ()->availableGeometry (&cInit);
+      cInit.move(rect.center () - cInit.rect ().center ());
    }
 }
 
@@ -108,14 +180,14 @@ local_add_config (const String &Scope, AppShellInitStruct &init) {
 static void
 local_setup_resolution (
       AppShellInitStruct &init,
-      CyclesInit &ci,
+      CyclesInit &cInit,
       ConfigTable &rezTable) {
 
    Config global;
 
    init.app.get_global_config (global);
 
-   Config *ptr = rezTable.lookup (qPrintable (ci.ui.resolutionCombo->currentText ()));
+   Config *ptr = rezTable.lookup (qPrintable (cInit.ui.resolutionCombo->currentText ()));
 
    if (ptr) {
 
@@ -139,9 +211,18 @@ local_setup_resolution (
 
    if (ScreenScope) {
 
-      const String Screen = qPrintable (ci.ui.screenBox->cleanText ());
+      const String Screen = qPrintable (cInit.ui.screenBox->cleanText ());
 
       global.store_attribute (ScreenScope, Screen);
+   }
+
+   String AAScope = config_to_string ("aa.scope", init.manifest);
+
+   if (AAScope) {
+
+      const String Samples = qPrintable (cInit.ui.aaBox->cleanText ());
+
+      global.store_attribute (AAScope, Samples);
    }
 }
 
@@ -230,6 +311,38 @@ CyclesInit::closeEvent (QCloseEvent * event) {
 
       init.app.quit ("Cancel Button Pressed");
    }
+   else {
+
+      Config session (CyclesName);
+
+      const String Color = qPrintable (ui.colorCombo->currentText ());
+      session.store_attribute (ColorName, Color);
+
+      const String Resolution = qPrintable (ui.resolutionCombo->currentText ());
+      session.store_attribute (ResolutionName, Resolution);
+
+      const Int32 Screen = ui.screenBox->value ();
+      session.store_attribute (ScreenName, String::number (Screen));
+
+      const Int32 Samples = ui.aaBox->value ();
+      session.store_attribute (AAName, String::number (Samples));
+
+      const Int32 Drones = ui.droneBox->value ();
+      session.store_attribute (DronesName, String::number (Drones));
+
+      const Boolean Multiplayer = ui.netBox->checkState () == Qt::Checked;
+      session.store_attribute (MultiplayerName, Multiplayer ? "true" : "false");
+
+      const Int32 Port = ui.portBox->value ();
+      session.store_attribute (PortName, String::number (Port));
+
+      const Boolean MCP = ui.mcpBox->checkState () == Qt::Checked;
+      session.store_attribute (MCPName, Multiplayer ? "true" : "false");
+
+      session.add_config (qbytearray_to_config ("geometry", saveGeometry ()));
+
+      set_session_config (init.app.get_context (), session);
+   }
 
    event->accept ();
 }
@@ -240,7 +353,7 @@ extern "C" {
 DMZ_PLUGIN_FACTORY_LINK_SYMBOL void
 dmz_init_cycles (AppShellInitStruct &init) {
 
-   CyclesInit ci (init);
+   CyclesInit cInit (init);
 
    if (init.VersionFile) {
 
@@ -248,29 +361,31 @@ dmz_init_cycles (AppShellInitStruct &init) {
 
       if (xml_to_version (init.VersionFile, version, &init.app.log)) {
 
-         QString vs = ci.windowTitle ();
+         QString vs = cInit.windowTitle ();
          vs += " (v";
          const String Tmp = version.get_version ().get_buffer ();
          if (Tmp) { vs += Tmp.get_buffer (); }
          else { vs += "Unknown"; }
          vs += ")";
 
-         ci.setWindowTitle (vs);
+         cInit.setWindowTitle (vs);
       }
    }
 
    ConfigTable colorTable;
 
-   local_populate_color_table (init, ci, colorTable);
+   local_populate_color_table (init, cInit, colorTable);
 
    ConfigTable rezTable;
 
-   local_populate_resolution_table (init, ci, rezTable);
+   local_populate_resolution_table (init, cInit, rezTable);
 
-   ci.show ();
-   ci.raise ();
+   local_restore_session (init, cInit);
 
-   while (ci.isVisible ()) {
+   cInit.show ();
+   cInit.raise ();
+
+   while (cInit.isVisible ()) {
 
       // wait for log window to close
       QApplication::sendPostedEvents (0, -1);
@@ -284,24 +399,24 @@ dmz_init_cycles (AppShellInitStruct &init) {
       Boolean multiplayer = False;
       Int32 droneCount = 0;
 
-      if (ci.ui.netBox->checkState () == Qt::Checked) {
+      if (cInit.ui.netBox->checkState () == Qt::Checked) {
 
          multiplayer = True;
          local_add_config ("multi-player.config", init);
 
-         if (ci.ui.mcpBox->checkState () == Qt::Checked) {
+         if (cInit.ui.mcpBox->checkState () == Qt::Checked) {
 
             local_add_config ("multi-player.mcp.config", init);
          }
 
-         droneCount = ci.ui.droneBox->value ();
+         droneCount = cInit.ui.droneBox->value ();
 
          if (droneCount > 0) { local_add_config ("multi-player.drone.config", init); }
       }
       else { local_add_config ("single-player.config", init); }
 
       Config *colorPtr = colorTable.lookup (
-         qPrintable (ci.ui.colorCombo->currentText ()));
+         qPrintable (cInit.ui.colorCombo->currentText ()));
 
       if (colorPtr) {
 
@@ -325,12 +440,12 @@ dmz_init_cycles (AppShellInitStruct &init) {
 
       if (!init.app.is_error ()) {
 
-         local_setup_resolution (init, ci, rezTable);
+         local_setup_resolution (init, cInit, rezTable);
 
          if (multiplayer) {
 
             local_set_drone_count (droneCount, init);
-            local_set_port (ci.ui.portBox->value (), init);
+            local_set_port (cInit.ui.portBox->value (), init);
          }
       }
    }

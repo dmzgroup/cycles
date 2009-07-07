@@ -1,43 +1,44 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>cyclesSetupForm</class>
- <widget class="QWidget" name="cyclesSetupForm" >
-  <property name="geometry" >
+ <widget class="QWidget" name="cyclesSetupForm">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>623</width>
-    <height>541</height>
+    <width>624</width>
+    <height>570</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>Cycles Launch Control Panel</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2" >
+  <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
-    <widget class="QLabel" name="label_3" >
-     <property name="text" >
+    <widget class="QLabel" name="label_3">
+     <property name="text">
       <string/>
      </property>
-     <property name="pixmap" >
-      <pixmap resource="cyclesInit.qrc" >:/cycles/Cycles-Banner.png</pixmap>
+     <property name="pixmap">
+      <pixmap resource="cyclesInit.qrc">:/cycles/Cycles-Banner.png</pixmap>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="Line" name="line" >
-     <property name="orientation" >
+    <widget class="Line" name="line">
+     <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout" >
+    <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <spacer name="horizontalSpacer_10" >
-       <property name="orientation" >
+      <spacer name="horizontalSpacer_10">
+       <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
-       <property name="sizeHint" stdset="0" >
+       <property name="sizeHint" stdset="0">
         <size>
          <width>40</width>
          <height>20</height>
@@ -46,15 +47,15 @@
       </spacer>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout" >
+      <layout class="QVBoxLayout" name="verticalLayout">
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_2" >
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
-          <spacer name="horizontalSpacer_12" >
-           <property name="orientation" >
+          <spacer name="horizontalSpacer_12">
+           <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
-           <property name="sizeHint" stdset="0" >
+           <property name="sizeHint" stdset="0">
             <size>
              <width>40</width>
              <height>20</height>
@@ -63,21 +64,21 @@
           </spacer>
          </item>
          <item>
-          <widget class="QLabel" name="label" >
-           <property name="text" >
+          <widget class="QLabel" name="label">
+           <property name="text">
             <string>Cycle Color:</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="colorCombo" />
+          <widget class="QComboBox" name="colorCombo"/>
          </item>
          <item>
-          <spacer name="horizontalSpacer_2" >
-           <property name="orientation" >
+          <spacer name="horizontalSpacer_2">
+           <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
-           <property name="sizeHint" stdset="0" >
+           <property name="sizeHint" stdset="0">
             <size>
              <width>40</width>
              <height>20</height>
@@ -88,56 +89,69 @@
         </layout>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_10" >
+        <layout class="QHBoxLayout" name="horizontalLayout_10">
          <item>
-          <widget class="QGroupBox" name="groupBox" >
-           <property name="title" >
+          <widget class="QGroupBox" name="groupBox">
+           <property name="title">
             <string> Screen Settings</string>
            </property>
-           <layout class="QGridLayout" name="gridLayout" >
-            <item row="2" column="2" >
-             <widget class="QSpinBox" name="screenBox" />
+           <layout class="QGridLayout" name="gridLayout">
+            <item row="2" column="2">
+             <widget class="QSpinBox" name="screenBox"/>
             </item>
-            <item row="2" column="1" >
-             <widget class="QLabel" name="label_6" >
-              <property name="text" >
+            <item row="2" column="1">
+             <widget class="QLabel" name="label_6">
+              <property name="text">
                <string>Screen:</string>
               </property>
-              <property name="alignment" >
+              <property name="alignment">
                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
               </property>
              </widget>
             </item>
-            <item row="0" column="2" >
-             <widget class="QComboBox" name="resolutionCombo" />
+            <item row="0" column="2">
+             <widget class="QComboBox" name="resolutionCombo"/>
             </item>
-            <item row="0" column="1" >
-             <widget class="QLabel" name="label_5" >
-              <property name="text" >
+            <item row="0" column="1">
+             <widget class="QLabel" name="label_5">
+              <property name="text">
                <string>Screen Resolution:</string>
               </property>
-              <property name="alignment" >
+              <property name="alignment">
                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="QLabel" name="label_7">
+              <property name="text">
+               <string>AA Samples:</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="2">
+             <widget class="QSpinBox" name="aaBox">
+              <property name="maximum">
+               <number>32</number>
               </property>
              </widget>
             </item>
            </layout>
-           <zorder>screenBox</zorder>
-           <zorder>label_6</zorder>
-           <zorder>resolutionCombo</zorder>
-           <zorder>label_5</zorder>
           </widget>
          </item>
         </layout>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_3" >
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
-          <spacer name="horizontalSpacer_13" >
-           <property name="orientation" >
+          <spacer name="horizontalSpacer_13">
+           <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
-           <property name="sizeHint" stdset="0" >
+           <property name="sizeHint" stdset="0">
             <size>
              <width>40</width>
              <height>20</height>
@@ -146,18 +160,18 @@
           </spacer>
          </item>
          <item>
-          <widget class="QCheckBox" name="netBox" >
-           <property name="text" >
+          <widget class="QCheckBox" name="netBox">
+           <property name="text">
             <string>Multiplayer</string>
            </property>
           </widget>
          </item>
          <item>
-          <spacer name="horizontalSpacer_3" >
-           <property name="orientation" >
+          <spacer name="horizontalSpacer_3">
+           <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
-           <property name="sizeHint" stdset="0" >
+           <property name="sizeHint" stdset="0">
             <size>
              <width>40</width>
              <height>20</height>
@@ -168,64 +182,64 @@
         </layout>
        </item>
        <item>
-        <widget class="QGroupBox" name="netGroup" >
-         <property name="enabled" >
+        <widget class="QGroupBox" name="netGroup">
+         <property name="enabled">
           <bool>false</bool>
          </property>
-         <property name="title" >
+         <property name="title">
           <string>Multiplayer Settings</string>
          </property>
-         <layout class="QGridLayout" name="gridLayout_2" >
-          <item row="2" column="2" >
-           <widget class="QSpinBox" name="droneBox" >
-            <property name="maximum" >
+         <layout class="QGridLayout" name="gridLayout_2">
+          <item row="2" column="2">
+           <widget class="QSpinBox" name="droneBox">
+            <property name="maximum">
              <number>5</number>
             </property>
            </widget>
           </item>
-          <item row="5" column="2" >
-           <widget class="QSpinBox" name="portBox" >
-            <property name="minimum" >
+          <item row="5" column="2">
+           <widget class="QSpinBox" name="portBox">
+            <property name="minimum">
              <number>1</number>
             </property>
-            <property name="maximum" >
+            <property name="maximum">
              <number>50000</number>
             </property>
-            <property name="value" >
+            <property name="value">
              <number>3001</number>
             </property>
            </widget>
           </item>
-          <item row="5" column="1" >
-           <widget class="QLabel" name="label_4" >
-            <property name="text" >
+          <item row="5" column="1">
+           <widget class="QLabel" name="label_4">
+            <property name="text">
              <string>Port:</string>
             </property>
-            <property name="alignment" >
+            <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
            </widget>
           </item>
-          <item row="2" column="1" >
-           <widget class="QLabel" name="label_2" >
-            <property name="text" >
+          <item row="2" column="1">
+           <widget class="QLabel" name="label_2">
+            <property name="text">
              <string>Drone Cycles:</string>
             </property>
-            <property name="alignment" >
+            <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
            </widget>
           </item>
-          <item row="7" column="1" >
-           <widget class="QCheckBox" name="mcpBox" >
-            <property name="text" >
+          <item row="7" column="1">
+           <widget class="QCheckBox" name="mcpBox">
+            <property name="text">
              <string>Enable MCP</string>
             </property>
            </widget>
           </item>
-          <item row="6" column="1" colspan="2" >
-           <widget class="Line" name="line_3" >
-            <property name="orientation" >
+          <item row="6" column="1" colspan="2">
+           <widget class="Line" name="line_3">
+            <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
            </widget>
@@ -236,11 +250,11 @@
       </layout>
      </item>
      <item>
-      <spacer name="horizontalSpacer_11" >
-       <property name="orientation" >
+      <spacer name="horizontalSpacer_11">
+       <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
-       <property name="sizeHint" stdset="0" >
+       <property name="sizeHint" stdset="0">
         <size>
          <width>40</width>
          <height>20</height>
@@ -251,11 +265,11 @@
     </layout>
    </item>
    <item>
-    <spacer name="verticalSpacer" >
-     <property name="orientation" >
+    <spacer name="verticalSpacer">
+     <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
-     <property name="sizeHint" stdset="0" >
+     <property name="sizeHint" stdset="0">
       <size>
        <width>596</width>
        <height>21</height>
@@ -264,15 +278,15 @@
     </spacer>
    </item>
    <item>
-    <widget class="Line" name="line_2" >
-     <property name="orientation" >
+    <widget class="Line" name="line_2">
+     <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QDialogButtonBox" name="buttonBox" >
-     <property name="standardButtons" >
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="standardButtons">
       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Help|QDialogButtonBox::Ok</set>
      </property>
     </widget>
@@ -283,7 +297,7 @@
   <tabstop>colorCombo</tabstop>
  </tabstops>
  <resources>
-  <include location="cyclesInit.qrc" />
+  <include location="cyclesInit.qrc"/>
  </resources>
  <connections>
   <connection>
@@ -292,11 +306,11 @@
    <receiver>netGroup</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>344</x>
      <y>308</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>360</x>
      <y>363</y>
     </hint>
