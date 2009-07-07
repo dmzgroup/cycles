@@ -10,8 +10,14 @@ lmk.add_vars {
 }
 lmk.add_files ({"version.xml",}, {src="version",})
 lmk.add_files {"cycles.app"}
-lmk.add_preqs ({"dmzAudioModuleOpenAL",}, { macos = true })
-lmk.add_preqs ({"dmzAudioModuleFMOD",}, { win32 = true })
+lmk.add_preqs ({
+   "dmzAudioModuleOpenAL",
+   "dmzInputPluginControllerMacOS",
+}, { macos = true })
+lmk.add_preqs ({
+   "dmzAudioModuleFMOD",
+   "dmzInputPluginControllerWin32",
+}, { win32 = true })
 lmk.add_preqs {
    "cycles",
    "cyclesInit",
@@ -29,7 +35,6 @@ lmk.add_preqs {
    "dmzAudioPluginEvent",
    "dmzInputModuleBasic",
    "dmzInputPluginControllerKey",
-   "dmzInputPluginControllerMacOS",
    "dmzInputPluginExit",
    "dmzInputPluginKeyEventToMessage",
    "dmzNetPluginPacket",

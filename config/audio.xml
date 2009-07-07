@@ -2,7 +2,7 @@
 <dmz>
    <plugin-list>
       <plugin name="dmzAudioModuleOpenAL" platform="macos|linux"/>
-      <plugin name="dmzAudioModuleOpenAL" platform="win32"/>
+      <plugin name="dmzAudioModuleFMOD" platform="win32"/>
       <plugin name="dmzAudioModulePortalBasic"/>
       <plugin name="dmzAudioPluginObject" />
       <plugin name="dmzAudioPluginEvent" />
