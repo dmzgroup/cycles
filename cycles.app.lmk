@@ -5,7 +5,7 @@ lmk.add_vars {
    majorVersion = "1",
    minorVersion = "0",
    bugVersion = "0",
-   releaseType = "beta 1",
+   releaseType = "beta 2",
    aboutImage = "./assets/DMZ-Icon.png",
 }
 lmk.add_files ({"version.xml",}, {src="version",})
@@ -63,6 +63,7 @@ lmk.add_preqs {
    "dmzLuaExtIsect",
    "dmzLuaExtObject",
    "dmzLuaExtEvent",
+   "dmzLuaExtRuntime",
    "dmzQtUtil",
    "dmzQtExtLuaConsole",
    "dmzLuaPluginReset",
