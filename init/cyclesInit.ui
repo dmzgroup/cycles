@@ -295,6 +295,14 @@
  </widget>
  <tabstops>
   <tabstop>colorCombo</tabstop>
+  <tabstop>resolutionCombo</tabstop>
+  <tabstop>screenBox</tabstop>
+  <tabstop>aaBox</tabstop>
+  <tabstop>netBox</tabstop>
+  <tabstop>droneBox</tabstop>
+  <tabstop>portBox</tabstop>
+  <tabstop>mcpBox</tabstop>
+  <tabstop>buttonBox</tabstop>
  </tabstops>
  <resources>
   <include location="cyclesInit.qrc"/>

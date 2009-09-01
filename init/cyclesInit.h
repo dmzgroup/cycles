@@ -2,12 +2,12 @@
 #define CYCLES_INIT_DOT_H
 
 #include <dmzAppShellExt.h>
-#include <QtGui/QWidget>
+#include <QtGui/QDialog>
 #include <ui_cyclesInit.h>
 
 namespace dmz {
 
-class CyclesInit : public QWidget {
+class CyclesInit : public QDialog {
 
    Q_OBJECT
 
