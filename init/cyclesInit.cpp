@@ -337,7 +337,7 @@ CyclesInit::closeEvent (QCloseEvent * event) {
       session.store_attribute (PortName, String::number (Port));
 
       const Boolean MCP = ui.mcpBox->checkState () == Qt::Checked;
-      session.store_attribute (MCPName, Multiplayer ? "true" : "false");
+      session.store_attribute (MCPName, MCP ? "true" : "false");
 
       session.add_config (qbytearray_to_config ("geometry", saveGeometry ()));
 
