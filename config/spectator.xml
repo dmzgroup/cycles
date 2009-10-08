@@ -12,6 +12,9 @@
    <movement speed="100" turn-rate="2.4"/>
    <offset x="0.0" y="0.0" z="0.0"/>
 </freefly>
+<mcp>
+   <drone-free-play value="true"/>
+</mcp>
 <archive>
    <object type="spectator">
       <attributes>
