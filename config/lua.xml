@@ -11,13 +11,13 @@
 </dmzLuaPluginTimedReset>
 <dmzLuaModuleBasic>
    <path value="./scripts/?.lua"/>
-   <extensions>
+   <plugin-list>
       <plugin name="dmzLuaExtInput"/>
       <plugin name="dmzLuaExtIsect"/>
       <plugin name="dmzLuaExtObject"/>
       <plugin name="dmzLuaExtEvent"/>
       <plugin name="dmzLuaExtOverlay"/>
       <plugin name="dmzQtExtLuaConsole"/>
-   </extensions>
+   </plugin-list>
 </dmzLuaModuleBasic>
 </dmz>

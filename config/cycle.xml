@@ -9,8 +9,8 @@
    <instance name="cycleOverlay"/>
    <instance name="helpOverlay"/>
    <instance name="camera"/>
-   <extensions>
+   <plugin-list>
       <plugin name="dmzLuaExtPortal"/>
-   </extensions>
+   </plugin-list>
 </dmzLuaModuleBasic>
 </dmz>

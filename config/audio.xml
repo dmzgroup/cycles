@@ -24,9 +24,9 @@
       </event-list>
    </dmzAudioPluginEvent>
 <dmzLuaModuleBasic>
-   <extensions>
+   <plugin-list>
       <plugin name="dmzLuaExtAudio"/>
-   </extensions>
+   </plugin-list>
    <!-- <instance name="bgmusic"/> -->
 </dmzLuaModuleBasic>
 </dmz>
