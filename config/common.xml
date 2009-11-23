@@ -12,6 +12,8 @@
    <plugin name="dmzObjectModuleBasic"/>
    <plugin name="dmzEventModuleBasic"/>
    <plugin name="dmzEventModuleCommonBasic"/>
+   
+   <!-- <plugin name="dmzQtPluginObjectInspector" unique="object-inspector"/> -->
 <!--
    <plugin name="dmzQtModuleMainWindowBasic"/>
    <plugin name="dmzPluginTermExit"/>
