@@ -119,6 +119,8 @@ local function update_time_slice (self, time)
          dmz.object.position (object, nil, (passed and pos or origPos))
          dmz.object.velocity (object, nil, (passed and vel or {0, 0, 0}))
          dmz.object.orientation (object, nil, ori)
+      else
+         dmz.object.velocity (object, nil, {0, 0, 0})
       end
    end
 end
