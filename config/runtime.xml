@@ -39,9 +39,6 @@
          <rule type="zero-velocity"/>
          <rule type="rate-limit"/>
          <rule type="position" value="20.0"/>
-<!--
-         <rule type="skew"/>
--->
          <rule type="orientation"/>
          <rule type="velocity"/>
          <rule type="state"/>
