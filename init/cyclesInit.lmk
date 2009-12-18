@@ -6,6 +6,6 @@ lmk.add_files {"cyclesInit.qrc",}
 lmk.add_files {"cyclesInit.ui",}
 lmk.add_files ({"cyclesInit.h",}, {src="moc",})
 lmk.add_files {"cyclesInit.cpp",}
-lmk.add_libs {"dmzQtUtil", "dmzXML", "dmzApplication", "dmzKernel", }
+lmk.add_libs {"dmzQtUtil", "dmzFoundation", "dmzKernel", }
 lmkQt.add_libs {"QtCore","QtGui",}
 
