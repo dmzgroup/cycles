@@ -10,7 +10,8 @@
    <time value="0.5"/>
 </dmzLuaPluginTimedReset>
 <dmzLuaModuleBasic>
-   <path value="./scripts/?.lua"/>
+   <path value="./scripts"/>
+   <path value="../dmz/scripts/entity"/>
    <plugin-list>
       <plugin name="dmzLuaExtInput"/>
       <plugin name="dmzLuaExtIsect"/>
