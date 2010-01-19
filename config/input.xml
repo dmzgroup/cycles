@@ -16,6 +16,9 @@
          <converter key="P">
             <target name="dmzQtPluginLuaProfiler" message="DMZ_Show_Lua_Profiler"/>
          </converter>
+         <converter key="C">
+            <target message="Start_Render_Screen_Capture_Message"/>
+         </converter>
       </channel>
    </dmzInputPluginKeyEventToMessage>
    <dmzInputPluginControllerMacOS>

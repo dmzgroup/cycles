@@ -16,8 +16,11 @@
    <plugin name="dmzRenderModuleCoreOSGBasic" scope="render" platform="win32|macos"/>
    <plugin name="dmzRenderModuleCoreOSGBasic" scope="render" platform="linux" unload="false"/>
    <plugin name="dmzRenderPluginScreenCaptureOSG"/>
-   <plugin name="dmzQtPluginRenderScreenCapture"/>
+   <plugin name="dmzQtPluginRenderScreenCapture" scope="screen-capture"/>
 </plugin-list>
+<screen-capture>
+   <file-root name="DMZ Cycles Screen Capture"/>
+</screen-capture>
 <render>
    <plugin-list>
       <plugin name="dmzRenderExtViewerOSG" scope="view"/> 
