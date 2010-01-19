@@ -23,15 +23,15 @@
 </screen-capture>
 <render>
    <plugin-list>
-      <plugin name="dmzRenderExtViewerOSG" scope="view"/> 
+      <plugin name="dmzRenderExtViewerOSG" scope="viewer"/> 
    </plugin-list>
    <loader>
       <path value="../Frameworks/osg"/>
    </loader>
-   <view>
+   <viewer>
       <window-title value="DMZ: Cycles"/>
       <aa samples="4"/>
-   </view>
+   </viewer>
    <visibility fov="60.0" near="1.0" far="32000.0"/>
    <light value="0">
       <position x="0" y="10000" z="0"/>

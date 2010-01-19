@@ -47,25 +47,25 @@
          <config file="config/spectator.xml"/>
       </type>
    </color>
-   <aa scope="dmz.render.view.aa.samples"/>
-   <screen scope="dmz.render.view.window.screen">
+   <aa scope="dmz.render.viewer.aa.samples"/>
+   <screen scope="dmz.render.viewer.window.screen">
       <resolution text="Full Screen">
-         <attribute scope="dmz.render.view.window.fullscreen" value="true"/>
+         <attribute scope="dmz.render.viewer.window.fullscreen" value="true"/>
       </resolution>
       <resolution text="640x480">
-         <attribute scope="dmz.render.view.window.center" value="true"/>
-         <attribute scope="dmz.render.view.window.width" value="640"/>
-         <attribute scope="dmz.render.view.window.height" value="480"/>
+         <attribute scope="dmz.render.viewer.window.center" value="true"/>
+         <attribute scope="dmz.render.viewer.window.width" value="640"/>
+         <attribute scope="dmz.render.viewer.window.height" value="480"/>
       </resolution>
       <resolution text="800x600">
-         <attribute scope="dmz.render.view.window.center" value="true"/>
-         <attribute scope="dmz.render.view.window.width" value="800"/>
-         <attribute scope="dmz.render.view.window.height" value="600"/>
+         <attribute scope="dmz.render.viewer.window.center" value="true"/>
+         <attribute scope="dmz.render.viewer.window.width" value="800"/>
+         <attribute scope="dmz.render.viewer.window.height" value="600"/>
       </resolution>
       <resolution text="1024x768">
-         <attribute scope="dmz.render.view.window.center" value="true"/>
-         <attribute scope="dmz.render.view.window.width" value="1024"/>
-         <attribute scope="dmz.render.view.window.height" value="768"/>
+         <attribute scope="dmz.render.viewer.window.center" value="true"/>
+         <attribute scope="dmz.render.viewer.window.width" value="1024"/>
+         <attribute scope="dmz.render.viewer.window.height" value="768"/>
       </resolution>
    </screen>
 </manifest>
