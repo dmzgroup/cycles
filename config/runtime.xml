@@ -18,10 +18,7 @@
       <net>
          <enum value="4"/>
       </net>
-      <audio>
-         <attribute source="true"/>
-         <object-type name="cycle" resource="crash-sound"/>
-      </audio>
+      <audio type-attribute="Event_Source_Attribute"/>
    </event-type>
    <object-type name="spectator"/>
    <object-type name="vehicle">
@@ -50,6 +47,7 @@
             looped-resource="engine-sound"
             scalar="throttle"
          />
+         <event name="Event_Collision" resource="crash-sound"/>
       </audio>
    </object-type>
    <object-type name="red_cycle" parent="cycle">
