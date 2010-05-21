@@ -32,10 +32,10 @@
    <object-type name="cycle" parent="vehicle">
       <net>
          <enum value="1.1"/>
-         <rule type="heartbeat" value="1.0"/>
+         <rule type="heartbeat" value="2.0"/>
          <rule type="zero-velocity"/>
          <rule type="rate-limit"/>
-         <rule type="position" value="20.0"/>
+         <rule type="skew" value="1.0"/>
          <rule type="orientation"/>
          <rule type="velocity"/>
          <rule type="state"/>
@@ -115,6 +115,11 @@
       </audio>
       <net>
          <enum value="1.2"/>
+         <rule type="heartbeat" value="2.0"/>
+         <rule type="rate-limit"/>
+         <rule type="skew" value="1.0"/>
+         <rule type="orientation" value="0.05"/>
+         <rule type="velocity"/>
       </net>
       <render>
          <model resource="recognizer"/>
@@ -149,7 +154,7 @@
          <enum value="3"/>
          <rule type="heartbeat" value="1.0"/>
          <rule type="rate-limit"/>
-         <rule type="position"/>
+         <rule type="skew"/>
          <rule type="orientation"/>
          <rule type="counter" attribute="Start_Position"/>
       </net>
