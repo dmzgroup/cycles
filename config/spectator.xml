@@ -4,6 +4,7 @@
    <plugin name="dmzEntityPluginFreeFly" reserve="true"/>
    <plugin name="dmzEntityPluginPortalTether" scope="freefly"/>
    <plugin name="dmzEntityPluginTeleport"/>
+   <plugin name="dmzEntityModulePortalBasic"/>
 </plugin-list>
 <dmzLuaModuleBasic>
    <instance name="dmzEntityPluginFreeFly" scope="freefly"/>
