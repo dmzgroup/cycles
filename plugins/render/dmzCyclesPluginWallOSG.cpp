@@ -77,6 +77,8 @@ dmz::CyclesPluginWallOSG::discover_plugin (
 void
 dmz::CyclesPluginWallOSG::update_time_slice (const Float64 DeltaTime) {
 
+   static const Vector Scale (1.0, 1.0, 1.0);
+
    HashTableHandleIterator it;
 
    ObjectStruct *os (_objectTable.get_first (it));
@@ -169,7 +171,7 @@ dmz::CyclesPluginWallOSG::update_time_slice (const Float64 DeltaTime) {
 
          os->wallYOffset -= 2.0 * DeltaTime;
          os->xform->setMatrix (
-            to_osg_matrix (Matrix (), Vector (0.0, os->wallYOffset, 0.0)));
+            to_osg_matrix (Matrix (), Vector (0.0, os->wallYOffset, 0.0), Scale));
       }
 
       os  = _deadTable.get_next (it);
