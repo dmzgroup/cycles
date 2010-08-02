@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest>
-   <help url="http://dmzdev.org/wiki/cycles"/>
+   <help url="http://help.dmzdev.org/faqs/user-guides/cycles-demo"/>
    <config file="config/render.xml"/>
    <config file="config/resource.xml"/>
    <config file="config/runtime.xml"/>

@@ -293,8 +293,10 @@ CyclesInit::on_buttonBox_rejected () {
 void
 CyclesInit::on_buttonBox_helpRequested () {
 
-   const String UrlValue =
-      config_to_string ("help.url", init.manifest, "http://dmzdev.org/wiki/cycles");
+   const String UrlValue = config_to_string (
+      "help.url",
+      init.manifest,
+      "http://help.dmzdev.org/faqs/user-guides/cycles-demo");
 
    if (UrlValue) {
 
