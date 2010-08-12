@@ -8,11 +8,12 @@
    <instance name="cycle"/>
    <instance name="cycleOverlay"/>
    <instance name="helpOverlay"/>
-   <instance name="camera"/>
+
    <plugin-list>
       <plugin name="dmzLuaExtPortal"/>
    </plugin-list>
 </dmzLuaModuleBasic>
 <javascript>
+   <instance name="camera"/>
 </javascript>
 </dmz>

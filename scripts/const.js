@@ -8,21 +8,38 @@ var dmz =
    , eventCommon: require("dmz/components/eventCommon")
    , util: require("dmz/types/util")
    }
+
+
+   , GameWaiting = dmz.defs.lookupState ("Game_Waiting")
+   , GameCountdown5 = dmz.defs.lookupState ("Game_Countdown_5")
+   , GameCountdown4 = dmz.defs.lookupState ("Game_Countdown_4")
+   , GameCountdown3 = dmz.defs.lookupState ("Game_Countdown_3")
+   , GameCountdown2 = dmz.defs.lookupState ("Game_Countdown_2")
+   , GameCountdown1 = dmz.defs.lookupState ("Game_Countdown_1")
+   , GameActive = dmz.defs.lookupState ("Game_Active")
+
+   , Dead = dmz.defs.lookupState("Dead")
+   , Standby = dmz.defs.lookupState("Standby")
+   , EngineOn = dmz.defs.lookupState("Engine_On")
+
+   , CycleType = dmz.objectType.lookup("cycle")
+   , MCPType = dmz.objectType.lookup("mcp")
+   , StartPointType = dmz.objectType.lookup("start_point")
+   , WaitPointType = dmz.objectType.lookup("wait_point")
+   , RedType = dmz.objectType.lookup("red_cycle")
+   , OrangeType = dmz.objectType.lookup("orange_cycle")
+   , YellowType = dmz.objectType.lookup("yellow_cycle")
+   , BlueType = dmz.objectType.lookup("blue_cycle")
    ;
 
-dmz.util.defineConst(exports, "GameWaiting", dmz.defs.lookupState("Game_Waiting"));
-dmz.util.defineConst(exports, "GameCountdown5",
-                     dmz.defs.lookupState("Game_Countdown_5"));
-dmz.util.defineConst(exports, "GameCountdown4",
-                     dmz.defs.lookupState("Game_Countdown_4"));
-dmz.util.defineConst(exports, "GameCountdown3",
-                     dmz.defs.lookupState("Game_Countdown_3"));
-dmz.util.defineConst(exports, "GameCountdown2",
-                     dmz.defs.lookupState("Game_Countdown_2"));
-dmz.util.defineConst(exports, "GameCountdown1",
-                     dmz.defs.lookupState("Game_Countdown_1"));
+dmz.util.defineConst(exports, "GameWaiting", GameWaiting);
+dmz.util.defineConst(exports, "GameCountdown5", GameCountdown5);
+dmz.util.defineConst(exports, "GameCountdown4", GameCountdown4);
+dmz.util.defineConst(exports, "GameCountdown3", GameCountdown3);
+dmz.util.defineConst(exports, "GameCountdown2", GameCountdown2);
+dmz.util.defineConst(exports, "GameCountdown1", GameCountdown1);
 
-dmz.util.defineConst(exports, "GameActive", dmz.defs.lookupState("Game_Active"));
+dmz.util.defineConst(exports, "GameActive", GameActive);
 
 
 dmz.util.defineConst(exports, "GameStateMask", GameWaiting.or(GameActive).or
@@ -30,9 +47,9 @@ dmz.util.defineConst(exports, "GameStateMask", GameWaiting.or(GameActive).or
                      (GameCountdown4).or(GameCountdown5));
 
 
-dmz.util.defineConst(exports, "Dead", dmz.defs.lookupState("Dead"));
-dmz.util.defineConst(exports, "Standby", dmz.defs.lookupState("Standby"));
-dmz.util.defineConst(exports, "EngineOn", dmz.defs.lookupState("Engine_On"));
+dmz.util.defineConst(exports, "Dead", Dead);
+dmz.util.defineConst(exports, "Standby", Standby);
+dmz.util.defineConst(exports, "EngineOn", EngineOn);
 dmz.util.defineConst(exports, "CycleState", Dead.or(Standby).or(EngineOn));
 dmz.util.defineConst(exports, "EmptyState", dmz.mask.create ());
 
@@ -45,22 +62,22 @@ dmz.util.defineConst(exports, "KillsHandle", dmz.defs.createNamedHandle("Kills")
 dmz.util.defineConst(exports, "WinsHandle", dmz.defs.createNamedHandle("Wins"));
 dmz.util.defineConst(exports, "DeathsHandle", dmz.defs.createNamedHandle("Deaths"));
 
-dmz.util.defineConst(exports, "CycleType", dmz.objectType.lookup("cycle"));
-dmz.util.defineConst(exports, "MCPType", dmz.objectType.lookup("mcp"));
-dmz.util.defineConst(exports, "StartPointType", dmz.objectType.lookup("start_point"));
-dmz.util.defineConst(exports, "WaitPointType", dmz.objectType.lookup("wait_point"));
-dmz.util.defineConst(exports, "RedType", dmz.objectType.lookup("red_cycle"));
-dmz.util.defineConst(exports, "OrangeType", dmz.objectType.lookup("orange_cycle"));
-dmz.util.defineConst(exports, "YellowType", dmz.objectType.lookup("yellow_cycle"));
-dmz.util.defineConst(exports, "BlueType", dmz.objectType.lookup("blue_cycle"));
+dmz.util.defineConst(exports, "CycleType", CycleType);
+dmz.util.defineConst(exports, "MCPType", MCPType);
+dmz.util.defineConst(exports, "StartPointType", StartPointType);
+dmz.util.defineConst(exports, "WaitPointType", WaitPointType);
+dmz.util.defineConst(exports, "RedType", RedType);
+dmz.util.defineConst(exports, "OrangeType", OrangeType);
+dmz.util.defineConst(exports, "YellowType", YellowType);
+dmz.util.defineConst(exports, "BlueType", BlueType);
 
 dmz.util.defineConst(exports, "CycleTypeList",
                      [ RedType, OrangeType, YellowType, BlueType ]);
 
-dmz.util.defineConst(exports, "Right", dmz.vector.Right ());
-dmz.util.defineConst(exports, "Left", dmz.vector.Left ());
-dmz.util.defineConst(exports, "Up", dmz.vector.Up ());
-dmz.util.defineConst(exports, "Forward", dmz.vector.Forward ());
+dmz.util.defineConst(exports, "Right", dmz.vector.Right);
+dmz.util.defineConst(exports, "Left", dmz.vector.create(-1, 0, 0));
+dmz.util.defineConst(exports, "Up", dmz.vector.Up);
+dmz.util.defineConst(exports, "Forward", dmz.vector.Forward);
 
 exports.testMove = function (obj, origPos, pos, ori) {
    var result = true
