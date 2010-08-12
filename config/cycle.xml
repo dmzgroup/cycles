@@ -13,4 +13,6 @@
       <plugin name="dmzLuaExtPortal"/>
    </plugin-list>
 </dmzLuaModuleBasic>
+<javascript>
+</javascript>
 </dmz>
