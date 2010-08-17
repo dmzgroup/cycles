@@ -1,6 +1,16 @@
-, const = require("const")
+var dmz =
+      { object : require("dmz/components/object")
+      , time: require("dmz/runtime/time")
+      , consts: require("const")
+      , input: require("dmz/components/input")
+      , portal: require("dmz/components/portal")
+      , vector: require("dmz/types/vector")
+      , defs: require("dmz/runtime/definitions")
+      , matrix: require("dmz/types/matrix")
+      , util: require("dmz/types/util")
+      }
 
-create_start_points ()
+createStartPoints ()
    var Distance = 10
    var Space = 5
    var Offset = math.modf (self.maxCycles / 4) + 1
@@ -30,7 +40,7 @@ create_start_points ()
    }
 }
 
-assign_points_to_cycles ()
+assignPointsToCycles ()
    self.playerCount = 0
    for (obj, cycle in pairs (self.cycleList)) {
       if (cycle.point) {
@@ -55,7 +65,7 @@ assign_points_to_cycles ()
    }
 }
 
-get_standby_count ()
+getStandbyCount ()
    var result = 0
    for (obj, cycle in pairs (self.cycleList)) {
       if (cycle.point && cycle.standby) { result = result + 1 }
@@ -63,7 +73,7 @@ get_standby_count ()
    return result
 }
 
-get_dead_count ()
+getDeadCount ()
    var result = 0
    for (obj, cycle in pairs (self.cycleList)) {
       if (cycle.point && cycle.dead) { result = result + 1 }
@@ -71,7 +81,7 @@ get_dead_count ()
    return result
 }
 
-is_all_drones ()
+isAllDrones ()
    var result = true
    for (obj, cycle in pairs (self.cycleList)) {
       if (cycle.point && !cycle.dead && !cycle.drone) { result = false }
@@ -79,14 +89,14 @@ is_all_drones ()
    return result
 }
 
-set_game_state (mcp, State)
+setGameState (mcp, State)
    var newState = dmz.object.state (mcp)
    newState.unset (dmz.const.GameStateMask)
    newState = newState + State
    dmz.object.state (mcp, nil, newState)
 }
 
-update_time_slice (time)
+updateTimeSlice (time)
 
    var State = dmz.object.state (self.mcp)
 
@@ -94,53 +104,53 @@ update_time_slice (time)
       var CTime = dmz.time.frame_time ()
       if (State.contains (dmz.const.GameWaiting)) {
          if (self.assignPoints) {
-            assign_points_to_cycles ()
+            assignPointsToCycles ()
             self.assignPoints = false
             self.waitTime = CTime + 1
          }
          if ((self.waitTime <= CTime) and
-               (get_standby_count () == self.playerCount) and
+               (getStandbyCount () == self.playerCount) and
                (self.playerCount >= self.minCycles)) {
-            set_game_state (self.mcp, dmz.const.GameCountdown5)
+            setGameState (self.mcp, dmz.const.GameCountdown5)
             self.nextStateTime = CTime + 1
          }
       else if (State.contains (dmz.const.GameActive)) {
          if (self.}Time && self.}Time <= CTime) {
-            set_game_state (self.mcp, dmz.const.GameWaiting)
+            setGameState (self.mcp, dmz.const.GameWaiting)
             self.}Time = nil
             self.waitTime = CTime + 2
-         else if (!self.}Time && (get_dead_count () >= (self.playerCount - 1)
-                 || is_all_drones ()) ) {
+         else if (!self.}Time && (getDeadCount () >= (self.playerCount - 1)
+                 || isAllDrones ()) ) {
             self.}Time = CTime + 2
          }
       else if (State.contains (dmz.const.GameCountdown5)) {
          if (CTime >= self.nextStateTime) {
-            set_game_state (self.mcp, dmz.const.GameCountdown4)
+            setGameState (self.mcp, dmz.const.GameCountdown4)
             self.nextStateTime = CTime + 1
          }
       else if (State.contains (dmz.const.GameCountdown4)) {
          if (CTime >= self.nextStateTime) {
-            set_game_state (self.mcp, dmz.const.GameCountdown3)
+            setGameState (self.mcp, dmz.const.GameCountdown3)
             self.nextStateTime = CTime + 1
          }
       else if (State.contains (dmz.const.GameCountdown3)) {
          if (CTime >= self.nextStateTime) {
-            set_game_state (self.mcp, dmz.const.GameCountdown2)
+            setGameState (self.mcp, dmz.const.GameCountdown2)
             self.nextStateTime = CTime + 1
          }
       else if (State.contains (dmz.const.GameCountdown2)) {
          if (CTime >= self.nextStateTime) {
-            set_game_state (self.mcp, dmz.const.GameCountdown1)
+            setGameState (self.mcp, dmz.const.GameCountdown1)
             self.nextStateTime = CTime + 1
          }
       else if (State.contains (dmz.const.GameCountdown1)) {
          if (CTime >= self.nextStateTime) {
-            set_game_state (self.mcp, dmz.const.GameActive)
+            setGameState (self.mcp, dmz.const.GameActive)
             self.nextStateTime = CTime + 1
          }
       else
          self.log.error ("Game in unknown state. Changing to a waiting state")
-         set_game_state (self.mcp, dmz.const.GameWaiting)
+         setGameState (self.mcp, dmz.const.GameWaiting)
       }
    }
 }
@@ -183,7 +193,7 @@ update_obj_state (obj, Attribute, State, PreviousState)
 }
 
 start ()
-   self.handle = self.timeSlice.create (update_time_slice, self, self.name)
+   self.handle = self.timeSlice.create (updateTimeSlice, self, self.name)
    var callbacks = {
       create_obj = create_obj,
       destroy_obj = destroy_obj,
@@ -195,7 +205,7 @@ start ()
    dmz.object.state (self.mcp, nil, dmz.const.GameWaiting)
    dmz.object.activate (self.mcp)
    dmz.object.set_temporary (self.mcp)
-   create_start_points ()
+   createStartPoints ()
 }
 
 stop ()
@@ -222,7 +232,7 @@ function new (config, name)
    self.log.info ("Creating plugin. " + name)
 
    if (config.to_boolean ("drone-free-play.value", false)) {
-      is_all_drones = function () return false }
+      isAllDrones = function () return false }
    }
 
    return self
