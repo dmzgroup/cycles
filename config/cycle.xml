@@ -4,16 +4,10 @@
    <plugin name="cycle" reserve="true"/>
    <plugin name="camera" reserve="true"/>
 </plugin-list>
-<dmzLuaModuleBasic>
-   <instance name="cycle"/>
-   <instance name="cycleOverlay"/>
-   <instance name="helpOverlay"/>
-
-   <plugin-list>
-      <plugin name="dmzLuaExtPortal"/>
-   </plugin-list>
-</dmzLuaModuleBasic>
 <javascript>
+   <instance name="helpOverlay"/>
+   <instance name="cycleOverlay"/>
+   <instance name="cycle"/>
    <instance name="camera"/>
 </javascript>
 </dmz>

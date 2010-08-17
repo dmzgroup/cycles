@@ -3,10 +3,10 @@
 <plugin-list>
    <plugin name="drone" reserve="true"/>
 </plugin-list>
-<dmzLuaModuleBasic>
+<javascript>
    <instance name="drone"/>
-</dmzLuaModuleBasic>
+</javascript>
 <drone>
-   <count value="3"/>
+   <count value="7"/>
 </drone>
 </dmz>

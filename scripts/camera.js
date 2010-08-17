@@ -46,7 +46,9 @@ timeSliceFunction = function (time) {
          if (watch) {
             pos = dmz.vector.create(300, 50, 300);
             ori = dmz.consts.Forward.cross(-1, 0, -1).normalize();
-            ori = dmz.matrix.create(ori, ori.getAngle(dmz.consts.Forward));
+            ori = dmz.matrix.create().fromAxisAndAngle(
+                  ori,
+                  ori.getAngle(dmz.consts.Forward));
 
             dmz.portal.view (pos, ori);
          }
@@ -63,7 +65,7 @@ timeSliceFunction = function (time) {
          if (!dir || dir.isZero ()) { dir = ori.transform (dmz.consts.Forward); }
          else { dir = dir.normalize (); }
          heading = Heading;
-         var prevOri = dmz.matrix.create(dmz.consts.Up, Heading);
+         var prevOri = dmz.matrix.create().fromAxisAndAngle(dmz.consts.Up, Heading);
          var prevDir = prevOri.transform (dmz.consts.Forward);
          var headingDiff = prevDir.getAngle (dir);
          if (headingDiff > MaxTurn) { headingDiff = MaxTurn; }
@@ -73,13 +75,15 @@ timeSliceFunction = function (time) {
          if (backMod) { heading += backMod; }
          else if (sideMod) { heading += sideMod; }
 
-         ori = dmz.matrix.create(dmz.consts.Up, heading)
+         ori = dmz.matrix.create().fromAxisAndAngle(dmz.consts.Up, heading);
          pos = ori.transform(Offset).add(pos);
          dmz.portal.view(pos, ori);
       }
    }
 }
 
+//Active = 1;
+//timeSlice = dmz.time.setRepeatingTimer (self, timeSliceFunction);
 dmz.input.channel.observe (self, function (channel, state) {
    var hil;
 
@@ -103,7 +107,7 @@ dmz.input.axis.observe (self, function (channel, axis) {
       if (axis.value > 0) { value = 1; }
       else { value = -1; }
    }
-   switch (axis.which) {
+   switch (axis.id) {
    case 1: break;
    case 2: backMod = (value > 0) ? Math.PI : null; break;
    case 6: sideMod = (value) ? Math.PI / 2 * (value / Math.abs(value)) : null; break;
@@ -112,5 +116,5 @@ dmz.input.axis.observe (self, function (channel, axis) {
 });
 
 dmz.input.button.observe (self, function (channel, button) {
-   if (button.which == 1 && button.value) { watch = true; }
+   if (button.id == 1 && button.value) { watch = true; }
 });

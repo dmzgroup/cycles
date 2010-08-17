@@ -1,100 +1,77 @@
-, const = require("const")
+var dmz =
+      { object : require("dmz/components/object")
+      , time: require("dmz/runtime/time")
+      , consts: require("const")
+      , input: require("dmz/components/input")
+      , overlay: require("dmz/components/overlay")
+      }
 
-var Speed = 3
+   , Speed = 3
+   , Scaling = false
+   , Transform = dmz.overlay.lookup("help")
+   , Active = 0
+   , Switch = dmz.overlay.lookup("help switch")
+   , Show = false
+   , HKey = dmz.input.key.toValue ("h")
+   , hKey = dmz.input.key.toValue ("H")
+   , SlashKey = dmz.input.key.toValue ("/")
+   , QuestionKey = dmz.input.key.toValue ("?")
 
-update_time_slice (time)
-   if (self.scaling) {
-      var scale = dmz.overlay.scale (self.transform)
-      if (self.show) {
-         scale = scale + (time * Speed)
+   , timeSlice
+   , updateTimeSlice
+
+   ;
+
+
+(function() { Transform.scale(0.1);}());
+
+
+updateTimeSlice = function (time) {
+   var scale;
+
+   if (Scaling) {
+      scale = Transform.scale()[0];
+      if (Show) {
+         scale += (time * Speed);
          if (scale >= 1) {
-            scale = 1
-            self.scaling = false
+            scale = 1;
+            Scaling = false;
          }
-      else
-         scale = scale - (time * Speed)
+      }
+      else {
+         scale -= (time * Speed);
          if (scale <= 0.01) {
-            scale = 0.01
-            self.scaling = false
-            dmz.overlay.enable_switch_state_single (self.switch, 0)
+            scale = 0.01;
+            Scaling = false;
+            Switch.enableSingleSwitchState (0);
          }
       }
-      dmz.overlay.scale (self.transform, scale)
+      Transform.scale(scale);
+
    }
-}
+};
 
-var HKey = dmz.input.get_key_value ("h")
-var hKey = dmz.input.get_key_value ("H")
-var SlashKey = dmz.input.get_key_value ("/")
-var QuestionKey = dmz.input.get_key_value ("?")
+dmz.input.channel.observe (self, function (channel, state) {
+   if (state) {  Active += 1; }
+   else { Active -= 1; }
 
-
-update_channel_state (channel, state)
-   if (state) {  self.active = self.active + 1
-   else {self.active = self.active - 1 }
-
-   if (self.active == 1) {
-      self.timeSlice.start (self.handle)
-   else if (self.active == 0) {
-      self.timeSlice.stop (self.handle)
+   if (Active == 1) {
+      timeSlice = dmz.time.setRepeatingTimer (self, updateTimeSlice);
    }
-}
+   else if (Active == 0) {
+      dmz.time.setRepeatingTimer (self, timeSlice);
+   }
+});
 
-receive_key_event (channel, key)
+dmz.input.key.observe (self, function (channel, key) {
    if (key.state) {
-      if (HKey == key.value || hKey == key.value or
-            SlashKey == key.value || QuestionKey == key.value) {
-         self.show = (!self.show)
-         self.scaling = true
-         if (self.show) {
-            dmz.overlay.enable_switch_state_single (self.switch, 1)
+      if (HKey == key.key || hKey == key.key ||
+            SlashKey == key.key || QuestionKey == key.key) {
+         Show = !Show;
+         Scaling = true;
+         if (Show) {
+            Switch.enableSingleSwitchState(1);
          }
       }
    }
-}
-
-
-start ()
-   self.handle = self.timeSlice.create (update_time_slice, self, self.name)
-
-   self.inputObs.register (
-      self.config,
-      {
-         update_channel_state = update_channel_state,
-         receive_key_event = receive_key_event,
-      },
-      self);
-
-   if (self.handle && self.active == 0) { self.timeSlice.stop (self.handle) }
-}
-
-
-stop ()
-   if (self.handle && self.timeSlice) { self.timeSlice.destroy (self.handle) }
-   self.inputObs.release_all ()
-}
-
-
-function new (config, name)
-   var self = {
-      start_plugin = start,
-      stop_plugin = stop,
-      name = name,
-      log = dmz.log.new ("lua." + name),
-      timeSlice = dmz.time_slice.new (),
-      inputObs = dmz.input_observer.new (),
-      active = 0,
-      config = config,
-      switch = dmz.overlay.lookup_handle ("help switch"),
-      transform = dmz.overlay.lookup_handle ("help"),
-      show = false,
-      scaling = false,
-   }
-
-   dmz.overlay.scale (self.transform, 0.1)
-
-   self.log.info ("Creating plugin. " + name)
-   
-   return self
-}
-
+});

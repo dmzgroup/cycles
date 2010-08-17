@@ -6,23 +6,33 @@ local function calculate_orientation (self, ori)
 
    local result = dmz.matrix.new ()
 
+   self.log:warn("ori: " .. ori:__tostring())
    local dir = ori:transform (const.Forward)
    dir:set_y (0)
 
+   self.log:warn ("dir1: " .. dir:get_x() .. " " .. dir:get_y() .. " " .. dir:get_z());
    if not dir:is_zero () then
       dir = dir:normalize ()
       local heading = const.Forward:get_angle (dir)
+      self.log:warn ("dir: " .. dir:get_x() .. " " .. dir:get_y() .. " " .. dir:get_z())
+      self.log:warn ("head: " .. heading .. " " .. const.Forward:get_x() .. " " .. const.Forward:get_y() .. " " .. const.Forward:get_z());
       local cross =  const.Forward:cross (dir)
-      if cross:get_y () < 0 then heading = dmz.math.TwoPi - heading end
+      if cross:get_y () < 0 then
+         heading = dmz.math.TwoPi - heading
+         self.log:warn("heading: "..heading) end
       local remainder = math.fmod (heading, dmz.math.HalfPi)
+      self.log:warn("remainder: " .. remainder)
       if remainder > (dmz.math.HalfPi / 2) then
          heading = heading + dmz.math.HalfPi - remainder
+         self.log:warn("case 1 "..heading)
       else
          heading = heading - remainder
+         self.log:warn("case 2 "..heading)
       end
-
+      self.log:warn("heading1:"..heading)
       if dmz.math.is_zero (self.turn) then self.lastTurn = FrameTime - 0.8
       elseif (FrameTime - self.lastTurn) > 0.75 then
+         self.log:warn("adjustments")
          if self.turn > 0.1 then
             heading = heading - dmz.math.HalfPi
             self.lastTurn = FrameTime
@@ -33,6 +43,8 @@ local function calculate_orientation (self, ori)
          end
       end
       result:from_axis_and_angle (const.Up, heading)
+      self.log:warn("heading: " .. heading.." up: "..const.Up:__tostring())
+      self.log:warn("result:"..result:__tostring());
    end
 
    return result

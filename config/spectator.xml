@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <dmz>
 <plugin-list>
-   <plugin name="dmzEntityPluginFreeFly" reserve="true"/>
+<!--   <plugin name="dmzEntityPluginFreeFly" reserve="true"/> -->
+   <plugin name="dmzEntityPluginFreeFly" scope="freefly"/>
    <plugin name="dmzEntityPluginPortalTether" scope="freefly"/>
    <plugin name="dmzEntityPluginTeleport"/>
    <plugin name="dmzEntityModulePortalBasic"/>
 </plugin-list>
-<dmzLuaModuleBasic>
+<!--
+<javascript>
    <instance name="dmzEntityPluginFreeFly" scope="freefly"/>
-</dmzLuaModuleBasic>
+</javascript>
+-->
 <freefly>
    <movement speed="100" turn-rate="2.4"/>
    <offset x="0.0" y="0.0" z="0.0"/>
