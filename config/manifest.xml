@@ -8,7 +8,7 @@
    <config file="config/audio.xml"/>
    <config file="config/input.xml"/>
    <config file="config/game.xml"/>
-   <config file="config/lua.xml"/>
+   <config file="config/js.xml"/>
    <single-player>
       <config file="config/mcp.xml"/>
       <config file="config/drone.xml"/>

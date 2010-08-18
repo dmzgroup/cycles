@@ -1,149 +1,169 @@
-, const = require("const")
+var dmz =
+      { object : require("dmz/components/object")
+      , time: require("dmz/runtime/time")
+      , consts: require("const")
+      , input: require("dmz/components/input")
+      , portal: require("dmz/components/portal")
+      , vector: require("dmz/types/vector")
+      , defs: require("dmz/runtime/definitions")
+      , matrix: require("dmz/types/matrix")
+      , util: require("dmz/types/util")
+      , isect: require("dmz/components/isect")
+      , mask: require("dmz/types/mask")
+      }
 
-var TargetHandle = dmz.defs.createNamedHandle("Recognizer_Target_Counter")
-var varSpeed = 30
+   , TargetHandle = dmz.defs.createNamedHandle("Recognizer_Target_Counter")
+   , LocalSpeed = 30
+   , path =
+         [ dmz.vector.create ([0.0, 1.0, 0.0])
+         , dmz.vector.create ([0.0, 1.0, 1.0])
+         , dmz.vector.create ([0.33333, 1.0, 1.0])
+         , dmz.vector.create ([0.33333, 1.0, 0.0])
+         , dmz.vector.create ([0.66667, 1.0, 0.0])
+         , dmz.vector.create ([0.66667, 1.0, 1.0])
+         , dmz.vector.create ([1.0, 1.0, 1.0])
+         , dmz.vector.create ([1.0, 1.0, 0.0])
+         , dmz.vector.create ([0.66667, 1.0, 0.0])
+         , dmz.vector.create ([0.66667, 1.0, 1.0])
+         , dmz.vector.create ([0.33333, 1.0, 1.0])
+         , dmz.vector.create ([0.33333, 1.0, 0.0])
+         ]
 
-var path = {
-   dmz.vector.new {0.0, 1.0, 0.0},
-   dmz.vector.new {0.0, 1.0, 1.0},
-   dmz.vector.new {0.33333, 1.0, 1.0},
-   dmz.vector.new {0.33333, 1.0, 0.0},
-   dmz.vector.new {0.66667, 1.0, 0.0},
-   dmz.vector.new {0.66667, 1.0, 1.0},
-   dmz.vector.new {1.0, 1.0, 1.0},
-   dmz.vector.new {1.0, 1.0, 0.0},
-   dmz.vector.new {0.66667, 1.0, 0.0},
-   dmz.vector.new {0.66667, 1.0, 1.0},
-   dmz.vector.new {0.33333, 1.0, 1.0},
-   dmz.vector.new {0.33333, 1.0, 0.0},
-}
+   , rotate
+   , newOri
+   , updateTimeSlice
+   , timeSlice
+   , Objs = {}
 
-rotate (time, orig, target)
+   ;
+
+rotate = function (time, orig, target) {
    var diff = target - orig
-   if (diff > Math.Pi) { diff = diff - Math.TwoPi
-   else if (diff < -Math.Pi) { diff = diff + Math.TwoPi
+     , max
+     ;
+   if (diff > Math.Pi) { diff -= Math.PI * 2; }
+   else if (diff < -Math.Pi) { diff += Math.PI * 2; }
+   max = time * Math.Pi * 3;
+   if (Math.abs (diff) > max) {
+      if (diff > 0) { target = orig + max; }
+      else { target = orig - max; }
    }
-   var max = time * Math.Pi * 3
-   if (math.abs (diff) > max) {
-      if (diff > 0) { target = orig + max
-      else {target = orig - max
-      }
-   }
-   return target
-}
+   return target;
+};
 
-new_ori (obj, time, targetVec)
-   var result = dmz.matrix.new ()
-   var hvec = dmz.vector.new (targetVec)
-   hvec.set_y (0.0)
-   hvec = hvec.normalize ()
-   var heading = dmz.const.Forward.get_angle (hvec)
-   var hcross = dmz.const.Forward.cross (hvec).normalize ()
-   if (hcross.get_y () < 0.0) {
-      heading = Math.TwoPi - heading
+newOri = function (obj, time, targetVec) {
+   var result = dmz.matrix.create ()
+     , hvec = dmz.vector.create (targetVec)
+     , heading
+     , hcross
+     , ori
+     , dir
+     , currentHeading
+     , cross
+     ;
+
+   hvec.add([0, -hvec.toArray()[1], 0]);
+   hvec = hvec.normalize ();
+   heading = dmz.consts.Forward.getAngle (hvec);
+   hcross = dmz.consts.Forward.cross (hvec).normalize ().toArray();
+   if (hcross[1] < 0.0) {
+      heading = (Math.PI * 2) - heading;
    }
-   if (heading > Math.Pi) { heading = heading - Math.TwoPi
-   else if (heading < -Math.Pi) { heading = heading + Math.TwoPi
-   }
-   var ori = dmz.object.orientation (obj)
-   if (!ori) { ori = dmz.matrix.new () }
-   var dir = ori.transform (dmz.const.Forward)
-   dir.set_y (0)
-   var currentHeading = dmz.const.Forward.get_angle (dir)
-   var cross = dmz.const.Forward.cross (dir)
-   if (cross.get_y () < 0) { currentHeading = Math.TwoPi - currentHeading }
-   heading = rotate (time, currentHeading, heading) 
-   result = result.from_axis_and_angle (dmz.const.Up, heading);
+   if (heading > Math.PI) { heading -= Math.PI * 2; }
+   else if (heading < -Math.PI) { heading += Math.PI * 2; }
+
+   ori = dmz.object.orientation (obj);
+   if (!ori) { ori = dmz.matrix.create (); }
+   dir = ori.transform (dmz.consts.Forward);
+   dir.add([0, -dir.toArray()[1], 0]);
+   currentHeading = dmz.consts.Forward.getAngle (dir);
+   cross = dmz.consts.Forward.cross (dir).toArray();
+   if (cross[1] < 0) { currentHeading = (Math.PI * 2) - currentHeading; }
+   heading = rotate (time, currentHeading, heading);
+   result = result.fromAxisAndAngle (dmz.consts.Up, heading);
    return result;
-}
+};
 
-update_time_slice (time)
-   for (obj, _ in pairs (self.objs)) {
-      var pos = dmz.object.position (obj)
-      if (!pos) { pos = dmz.vector.new () }
+updateTimeSlice = function (time) {
+   var pos
+     , which
+     , target
+     , max
+     , offset
+     , distance
+     , delta
+     , obj
+     ;
 
-      var which = dmz.object.counter (obj, TargetHandle)
-      var target = path[which]
+   Object.keys(Objs).forEach (function (key) {
+      obj = parseInt(key);
+      pos = dmz.object.position(obj);
+      if (!pos) { pos = dmz.vector.create () }
 
-      var max = time * varSpeed
-      var offset = target - pos
-      var distance = offset.magnitude ()
-      var delta = distance
-      if (delta > max) { delta = max }
-      offset = offset.normalize ()
-      pos = pos + (offset * delta)
-      if (dmz.util.isZero (distance, 1.0)) {
-         which = which + 1
-         if (which > #path) { which = 1 }
-         dmz.object.counter (obj, TargetHandle, which)
+      which = dmz.object.counter (obj, TargetHandle);
+      target = path[which];
+      if (!target) { self.log.warn (which, path[which], path.length); }
+
+      max = time * LocalSpeed;
+      offset = target.subtract(pos);
+      distance = offset.magnitude ();
+      delta = distance;
+      if (delta > max) { delta = max; }
+      offset = offset.normalize ();
+      pos = pos.add(offset.multiply(delta));
+      if (dmz.util.isZero (distance)) {
+         which += 1;
+         if (which >= path.length) { which = 0; }
+         dmz.object.counter (obj, TargetHandle, which);
       }
-      dmz.object.position (obj, nil, pos)
-      dmz.object.orientation (obj, nil, new_ori (obj, time, offset))
-      dmz.object.velocity (obj, nil, offset * varSpeed)
-   }
-}
+      dmz.object.position (obj, null, pos);
+      dmz.object.orientation (obj, null, newOri (obj, time, offset));
+      dmz.object.velocity (obj, null, offset.multiply(LocalSpeed));
+   });
+};
 
-destroy_obj (obj)
-   self.objs[obj] = nil
-}
+dmz.object.destroy.observe (self, function (obj) {
+   if (Objs[obj]) { delete Objs[obj]; }
+});
 
-update_obj_flag (obj, attr, value)
-   self.objs[obj] = true
+dmz.object.flag.observe (self, dmz.defs.createNamedHandle("Recognizer_Controlled"),
+function (obj, attr, value) {
    var pos = dmz.object.position (obj)
-   if (!pos) { pos = dmz.vector.new () }
-   var target = 1
-   var offset = math.huge
-   for (index, value in ipairs (path)) {
-      var distance = (value - pos).magnitude ()
+     , target = 0
+     , offset = Infinity
+     , distance
+     , count = 0
+     , index
+     ;
+
+   Objs[obj] = obj;
+   if (!pos) { pos = dmz.vector.create (); }
+   for (count = 0; count < path.length; count += 1) {
+      distance = (path[count].subtract(pos)).magnitude ();
       if (offset > distance) {
-         offset = distance 
-         target = index
+         offset = distance;
+         target = index;
       }
    }
    dmz.object.counter (obj, TargetHandle, target);
-}
+});
 
-start ()
-   self.handle = self.timeSlice.create (update_time_slice, self, self.name)
-   self.objObs.register (nil, {destroy_obj = destroy_obj,}, self)
-   self.objObs.register (
-      "Recognizer_Controlled",
-      {update_obj_flag = update_obj_flag,},
-      self)
-}
+(function () {
+   var min = self.config.number ("min", -250)
+     , max = self.config.number ("max", 250)
+     , offset = max - min
+     , height = self.config.number ("height", 35)
+     , index = 0
+     , value
+     ;
 
-
-stop ()
-   if (self.handle && self.timeSlice) { self.timeSlice.destroy (self.handle) }
-}
-
-
-function new (config, name)
-   var self = {
-      start_plugin = start,
-      stop_plugin = stop,
-      name = name,
-      log = dmz.log.new ("lua." + name),
-      timeSlice = dmz.time_slice.new (),
-      objObs = dmz.object_observer.new (),
-      config = config,
-      objs = {},
+   for (index = 0; index < path.length; index += 1) {
+      value = path[index].toArray();
+      path[index] = dmz.vector.create (
+            (value[0] * offset) + min,
+            value[1] * height,
+            (value[2] * offset) + min);
    }
+}());
 
-   self.log.info ("Creating plugin. " + name)
-
-   var min = config.to_number ("min", -250)
-   var max = config.to_number ("min", 250)
-   var offset = max - min
-   var height = config.to_number ("height", 35)
-
-   for (index, value in ipairs (path)) {
-      path[index] = dmz.vector.new (
-         (value.get_x () * offset) + min,
-         value.get_y () * height,
-         (value.get_z () * offset) + min)
-   }
-   
-   return self
-}
-
+timeSlice = dmz.time.setRepeatingTimer(self, updateTimeSlice);

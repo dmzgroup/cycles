@@ -122,7 +122,7 @@
          <rule type="velocity"/>
       </net>
       <render>
-         <model resource="recognizer"/>
+         <model resource="recognizer model"/>
       </render>
    </object-type>
    <object-type name="mcp">

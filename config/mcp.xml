@@ -8,10 +8,8 @@
 <plugin-list>
    <plugin name="mcp" reserve="true"/>
 </plugin-list>
-<dmzLuaModuleBasic>
-   <instance name="recognizer"/>
-</dmzLuaModuleBasic>
 <javascript>
+   <instance name="recognizer"/>
    <instance name="mcp"/>
 </javascript>
 <!--
