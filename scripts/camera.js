@@ -82,8 +82,8 @@ timeSliceFunction = function (time) {
    }
 }
 
-Active = 1;
-timeSlice = dmz.time.setRepeatingTimer (self, timeSliceFunction);
+//Active = 1;
+//timeSlice = dmz.time.setRepeatingTimer (self, timeSliceFunction);
 dmz.input.channel.observe (self, function (channel, state) {
    var hil;
 

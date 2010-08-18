@@ -319,9 +319,9 @@ function (Link, Attribute, Super, Sub) {
       cycleState = cycleState.unset (dmz.consts.CycleState);
       cycleState = cycleState.or(dmz.consts.Dead);
       dmz.object.state (Sub, null, cycleState);
-      info.startobj = null;
-      info.pos = null;
-      info.ori = null;
+      delete info.startobj;
+      delete info.pos;
+      delete info.ori;
    }
 });
 
