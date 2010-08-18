@@ -48,19 +48,19 @@ calculateOrientation = function (ori) {
    var FrameTime = dmz.time.getFrameTime()
      , result = dmz.matrix.create()
      , dir = ori.transform (dmz.vector.Forward)
-     , vec = dir.toArray()
      , heading
      , cross
      , remainder
      ;
 
    dir.y = 0;
+//     dir = dir.add([0, -dir.toArray()[1], 0]);
 
    if (!dir.isZero()) {
       dir = dir.normalize ();
       heading = dmz.vector.Forward.getAngle (dir);
-      cross =  dmz.vector.Forward.cross(dir).toArray();
-      if (cross[1] < 0) { heading = (Math.PI * 2) - heading; }
+      cross =  dmz.vector.Forward.cross(dir);
+      if (cross.y < 0) { heading = (Math.PI * 2) - heading; }
       remainder = heading % (Math.PI / 2);
       if (remainder > (Math.PI / 4)) {
          heading += (Math.PI / 2) - remainder
@@ -168,8 +168,6 @@ timeSliceFunction = function (time) {
    }
 };
 
-//Active = 1;
-//timeSlice = dmz.time.setRepeatingTimer (self, timeSliceFunction);
 dmz.input.channel.observe (self, function (channel, state) {
    var hil;
 

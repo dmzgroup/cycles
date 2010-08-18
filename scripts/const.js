@@ -88,8 +88,8 @@ exports.testMove = function (obj, origPos, pos, ori) {
    var result = true
      , deathPoint
      , target
-     , left = null
-     , right = null
+     , left
+     , right
      , wiskerResults
      , isectResults
      , state
@@ -98,11 +98,9 @@ exports.testMove = function (obj, origPos, pos, ori) {
 
    if (obj) {
       dmz.isect.disable(obj);
-      deathPoint = null;
-      target = null;
       left = (ori.transform(Left.multiply(0.6))).add(pos);
       right = (ori.transform(Right.multiply(0.6))).add(pos);
-      wiskerResults = dmz.isect.doIsect( { start: right, end: left });
+      wiskerResults = dmz.isect.doIsect({ start: right, end: left });
       if (wiskerResults && wiskerResults[0]) {
 
          deathPoint = wiskerResults[0].point;
@@ -111,8 +109,8 @@ exports.testMove = function (obj, origPos, pos, ori) {
       }
       else {
 
-         origPos = origPos.add([0, 0.5, 0]);
-         pos = pos.add([0, 0.5, 0]);
+         origPos.y += 0.5;
+         pos.y += 0.5;
          isectResults = dmz.isect.doIsect({start: origPos, end: pos});
          if(isectResults && isectResults[0]) {
 
@@ -134,7 +132,6 @@ exports.testMove = function (obj, origPos, pos, ori) {
       }
       dmz.isect.enable(obj);
    }
-   result = [Left, Left.multiply(0.6), ori.transform(Left.multiply(0.6)), ori.transform(Left.multiply(0.6)).add(pos)];
    return result;
 }
 
