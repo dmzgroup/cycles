@@ -13,10 +13,10 @@ var dmz =
    , timeSlice
    , timeSliceFunction
    , Active = 0
-   , Offset = self.config.vector ("offset", dmz.vector.create(0,3,8))
+   , Offset = self.config.vector("offset", dmz.vector.create(0,3,8))
    , Heading = 0
    , throttleHandle = dmz.defs.createNamedHandle(
-        self.config.string ("throttle.name", "throttle"))
+        self.config.string("throttle.name", "throttle"))
    , watch
    , sideMod
    , backMod
@@ -25,7 +25,7 @@ var dmz =
 
 timeSliceFunction = function (time) {
 
-   var hil = dmz.object.hil ()
+   var hil = dmz.object.hil()
      , state
      , pos
      , ori
@@ -40,47 +40,47 @@ timeSliceFunction = function (time) {
 
    if (hil && Active > 0) {
 
-      state = dmz.object.state (hil);
+      state = dmz.object.state(hil);
 
-      if (state && state.contains (dmz.consts.Dead)) {
+      if (state && state.contains(dmz.consts.Dead)) {
          if (watch) {
             pos = dmz.vector.create(300, 50, 300);
-            ori = dmz.consts.Forward.cross(-1, 0, -1).normalize();
+            ori = dmz.vector.Forward.cross(-1, 0, -1).normalize();
             ori = dmz.matrix.create().fromAxisAndAngle(
-                  ori,
-                  ori.getAngle(dmz.consts.Forward));
+               ori,
+               ori.getAngle(dmz.vector.Forward));
 
-            dmz.portal.view (pos, ori);
+            dmz.portal.view(pos, ori);
          }
       }
       else {
          watch = false;
          MaxTurn = (Math.PI * 2 * time);
-         pos = dmz.object.position (hil);
-         ori = dmz.object.orientation (hil);
-         dir = dmz.object.velocity (hil);
+         pos = dmz.object.position(hil);
+         ori = dmz.object.orientation(hil);
+         dir = dmz.object.velocity(hil);
 
          if (!pos) { pos = dmz.vector.create(); }
          if (!ori) { ori = dmz.matrix.create(); }
-         if (!dir || dir.isZero ()) { dir = ori.transform (dmz.consts.Forward); }
-         else { dir = dir.normalize (); }
+         if (!dir || dir.isZero()) { dir = ori.transform(dmz.vector.Forward); }
+         else { dir = dir.normalize(); }
          heading = Heading;
-         var prevOri = dmz.matrix.create().fromAxisAndAngle(dmz.consts.Up, Heading);
-         var prevDir = prevOri.transform (dmz.consts.Forward);
-         var headingDiff = prevDir.getAngle (dir);
+         var prevOri = dmz.matrix.create().fromAxisAndAngle(dmz.vector.Up, Heading);
+         var prevDir = prevOri.transform(dmz.vector.Forward);
+         var headingDiff = prevDir.getAngle(dir);
          if (headingDiff > MaxTurn) { headingDiff = MaxTurn; }
-         if (prevDir.cross (dir).toArray()[1] < 0) { heading = heading - headingDiff; }
+         if (prevDir.cross(dir).y < 0) { heading = heading - headingDiff; }
          else { heading += headingDiff; }
          Heading = heading;
          if (backMod) { heading += backMod; }
          else if (sideMod) { heading += sideMod; }
 
-         ori = dmz.matrix.create().fromAxisAndAngle(dmz.consts.Up, heading);
+         ori = dmz.matrix.create().fromAxisAndAngle(dmz.vector.Up, heading);
          pos = ori.transform(Offset).add(pos);
          dmz.portal.view(pos, ori);
       }
    }
-}
+};
 
 //Active = 1;
 //timeSlice = dmz.time.setRepeatingTimer (self, timeSliceFunction);
@@ -90,20 +90,20 @@ dmz.input.channel.observe (self, function (channel, state) {
    if (state) {  Active += 1; }
    else { Active -= 1; }
 
-   if (Active == 1) {
-      timeSlice = dmz.time.setRepeatingTimer (self, timeSliceFunction);
+   if (Active === 1) {
+      timeSlice = dmz.time.setRepeatingTimer(self, timeSliceFunction);
    }
-   else if (Active == 0) {
+   else if (Active === 0) {
       dmz.time.cancleTimer(timeSlice);
-      hil = dmz.object.hil ()
-      if (hil) { dmz.object.scalar (hil, throttleHandle, 0); }
+      hil = dmz.object.hil()
+      if (hil) { dmz.object.scalar(hil, throttleHandle, 0); }
    }
 });
 
 dmz.input.axis.observe (self, function (channel, axis) {
    var value = 0
      ;
-   if (dmz.util.isNotZero (axis.value)) {
+   if (dmz.util.isNotZero(axis.value)) {
       if (axis.value > 0) { value = 1; }
       else { value = -1; }
    }
@@ -116,5 +116,5 @@ dmz.input.axis.observe (self, function (channel, axis) {
 });
 
 dmz.input.button.observe (self, function (channel, button) {
-   if (button.id == 1 && button.value) { watch = true; }
+   if (button.id === 1 && button.value) { watch = true; }
 });

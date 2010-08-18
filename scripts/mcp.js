@@ -39,7 +39,7 @@ createStartPoints = function () {
      , Space = 5
      , Offset = Math.floor (MaxCycles / 4) + 1
      , Ident = dmz.matrix.create()
-     , HeadingPi = dmz.matrix.create().fromAxisAndAngle(dmz.consts.Up, Math.PI)
+     , HeadingPi = dmz.matrix.create().fromAxisAndAngle(dmz.vector.Up, Math.PI)
      , oddPos = [ -(Space * Offset), 0, Distance ]
      , evenPos = [ -(Space * Offset) + (Space / 2), 0, -Distance ]
      , Odd

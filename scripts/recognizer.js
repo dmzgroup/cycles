@@ -64,8 +64,8 @@ newOri = function (obj, time, targetVec) {
 
    hvec.add([0, -hvec.toArray()[1], 0]);
    hvec = hvec.normalize ();
-   heading = dmz.consts.Forward.getAngle (hvec);
-   hcross = dmz.consts.Forward.cross (hvec).normalize ().toArray();
+   heading = dmz.vector.Forward.getAngle (hvec);
+   hcross = dmz.vector.Forward.cross (hvec).normalize ().toArray();
    if (hcross[1] < 0.0) {
       heading = (Math.PI * 2) - heading;
    }
@@ -74,13 +74,13 @@ newOri = function (obj, time, targetVec) {
 
    ori = dmz.object.orientation (obj);
    if (!ori) { ori = dmz.matrix.create (); }
-   dir = ori.transform (dmz.consts.Forward);
+   dir = ori.transform (dmz.vector.Forward);
    dir.add([0, -dir.toArray()[1], 0]);
-   currentHeading = dmz.consts.Forward.getAngle (dir);
-   cross = dmz.consts.Forward.cross (dir).toArray();
+   currentHeading = dmz.vector.Forward.getAngle (dir);
+   cross = dmz.vector.Forward.cross (dir).toArray();
    if (cross[1] < 0) { currentHeading = (Math.PI * 2) - currentHeading; }
    heading = rotate (time, currentHeading, heading);
-   result = result.fromAxisAndAngle (dmz.consts.Up, heading);
+   result = result.fromAxisAndAngle (dmz.vector.Up, heading);
    return result;
 };
 

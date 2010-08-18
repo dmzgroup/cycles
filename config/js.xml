@@ -16,6 +16,5 @@
 <javascript>
    <path value="./scripts"/>
    <path value="../js/scripts"/>
-
 </javascript>
 </dmz>

@@ -77,8 +77,8 @@ testDistance = function (obj, pos, heading) {
      ;
 
    pos = dmz.vector.create(pos.toArray());
-   ori.fromAxisAndAngle(dmz.consts.Up, heading);
-   dir = dmz.vector.create(dmz.consts.Forward);
+   ori.fromAxisAndAngle(dmz.vector.Up, heading);
+   dir = dmz.vector.create(dmz.vector.Forward);
    dir = ori.transform (dir);
 
    dmz.isect.disable (obj);
@@ -113,13 +113,13 @@ calculateOrientation = function (obj, info, pos, ori) {
       if (info.nextTurnTime <  FrameTime) {
          forceTurn = true;
       }
-      dir = ori.transform (dmz.consts.Forward);
-      dir = dir.add([0, -dir.toArray()[1], 0]);
+      dir = ori.transform (dmz.vector.Forward);
+      dir.y = 0;
 
       if (!dir.isZero()) {
          dir = dir.normalize ();
-         heading = dmz.consts.Forward.getAngle (dir);
-         cross =  dmz.consts.Forward.cross(dir).toArray();
+         heading = dmz.vector.Forward.getAngle (dir);
+         cross =  dmz.vector.Forward.cross(dir).toArray();
          if (cross[1] < 0) { heading = (Math.PI * 2) - heading; }
          remainder = heading % (Math.PI / 2);
          if (remainder > (Math.PI / 4)) {
@@ -140,7 +140,7 @@ calculateOrientation = function (obj, info, pos, ori) {
             }
             else if (left > forward) { heading += (Math.PI / 2); }
          }
-         result.fromAxisAndAngle (dmz.consts.Up, heading);
+         result.fromAxisAndAngle (dmz.vector.Up, heading);
       }
    }
 
@@ -195,7 +195,7 @@ updateTimeSlice = function (time) {
          ori = calculateOrientation (obj, info, pos, ori);
 //         self.log.warn("ori:", ori);
 
-         dir = ori.transform (dmz.consts.Forward);
+         dir = ori.transform (dmz.vector.Forward);
 //         self.log.warn ("dir", dir);
 
          setThrottle (obj, info);

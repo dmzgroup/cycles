@@ -47,19 +47,19 @@ calculateOrientation = function (ori) {
 
    var FrameTime = dmz.time.getFrameTime()
      , result = dmz.matrix.create()
-     , dir = ori.transform (dmz.consts.Forward)
+     , dir = ori.transform (dmz.vector.Forward)
      , vec = dir.toArray()
      , heading
      , cross
      , remainder
      ;
 
-   dir = dir.add ([0, -vec[1], 0]);
+   dir.y = 0;
 
    if (!dir.isZero()) {
       dir = dir.normalize ();
-      heading = dmz.consts.Forward.getAngle (dir);
-      cross =  dmz.consts.Forward.cross(dir).toArray();
+      heading = dmz.vector.Forward.getAngle (dir);
+      cross =  dmz.vector.Forward.cross(dir).toArray();
       if (cross[1] < 0) { heading = (Math.PI * 2) - heading; }
       remainder = heading % (Math.PI / 2);
       if (remainder > (Math.PI / 4)) {
@@ -80,7 +80,7 @@ calculateOrientation = function (ori) {
          }
          else { lastTurn = FrameTime - 0.6; }
       }
-      result.fromAxisAndAngle (dmz.consts.Up, heading);
+      result.fromAxisAndAngle (dmz.vector.Up, heading);
    }
 
    return result;
@@ -132,7 +132,7 @@ timeSliceFunction = function (time) {
 
          ori = calculateOrientation (ori);
 
-         dir = ori.transform (dmz.consts.Forward);
+         dir = ori.transform (dmz.vector.Forward);
 
          if (Accel > 0.1) {
             Speed += (Deceleration * time);
@@ -161,7 +161,7 @@ timeSliceFunction = function (time) {
          wasAlive = null;
          ori = dmz.object.orientation (hil);
          if (!ori) { ori = dmz.matrix.create (); }
-         dir = ori.transform (dmz.consts.Forward);
+         dir = ori.transform (dmz.vector.Forward);
          Speed = NormalSpeed;
          dmz.object.velocity (hil, null, dir * Speed);
       }
