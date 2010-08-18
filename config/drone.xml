@@ -7,6 +7,6 @@
    <instance name="drone"/>
 </javascript>
 <drone>
-   <count value="7"/>
+   <count value="5"/>
 </drone>
 </dmz>

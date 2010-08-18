@@ -9,9 +9,11 @@
    <plugin name="mcp" reserve="true"/>
 </plugin-list>
 <dmzLuaModuleBasic>
-   <instance name="mcp"/>
    <instance name="recognizer"/>
 </dmzLuaModuleBasic>
+<javascript>
+   <instance name="mcp"/>
+</javascript>
 <!--
 <mcp>
    <drone-free-play value="true"/>

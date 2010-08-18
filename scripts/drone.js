@@ -9,6 +9,7 @@ var dmz =
       , matrix: require("dmz/types/matrix")
       , util: require("dmz/types/util")
       , isect: require("dmz/components/isect")
+      , mask: require("dmz/types/mask")
       }
 
    , MCP

@@ -10,231 +10,256 @@ var dmz =
       , util: require("dmz/types/util")
       }
 
-createStartPoints ()
+   , CycleList = {}
+   , CycleCount = 0
+   , StartPoints = []
+   , WaitTime = dmz.time.getFrameTime() + 1
+   , MaxCycles = self.config.number ("cycles.max", 6)
+   , MinCycles = self.config.number ("cycles.min", 2)
+   , MCP = dmz.object.create (dmz.consts.MCPType)
+   , AssignPoints = false
+   , timeSlice
+   , PlayerCount
+   , NextStateTime
+   , EndTime
+
+   , createStartPoints
+   , assignPointsToCycles
+   , isAllDrones
+   , createStartPoints
+   , assignPointsToCycles
+   , getStandbyCount
+   , getDeadCount
+   , setGameState
+   , updateTimeSlice
+   ;
+
+createStartPoints = function () {
    var Distance = 10
-   var Space = 5
-   var Offset = math.modf (self.maxCycles / 4) + 1
-   var Ident = dmz.matrix.new ()
-   var HeadingPi = dmz.matrix.new (dmz.const.Up, Math.Pi)
-   var oddPos = { -(Space * Offset), 0, Distance }
-   var evenPos = { -(Space * Offset) + (Space / 2), 0, -Distance }
-   for (ix = 1, self.maxCycles) {
-      var Odd = (1 == math.fmod (ix, 2))
-      var point = {
-         index = ix,
-         pos = (Odd && oddPos || evenPos),
-         ori = (Odd && Ident || HeadingPi),
-         handle = dmz.object.create (dmz.const.StartPointType),
-      }
-      self.startPoints[ix] = point
-      dmz.object.position (point.handle, nil, point.pos)
-      dmz.object.orientation (point.handle, nil, point.ori)
-      // Counter is used to trigger a network s}
-      dmz.object.counter (point.handle, dmz.const.StartLinkHandle, 0)
-      dmz.object.counter_rollover (point.handle, dmz.const.StartLinkHandle, true)
-      dmz.object.activate (point.handle)
-      dmz.object.set_temporary (point.handle)
-      if (Odd) { oddPos[1] = oddPos[1] + Space
-      else {evenPos[1] = evenPos[1] + Space
-      }
-   }
-}
+     , Space = 5
+     , Offset = Math.floor (MaxCycles / 4) + 1
+     , Ident = dmz.matrix.create()
+     , HeadingPi = dmz.matrix.create().fromAxisAndAngle(dmz.consts.Up, Math.PI)
+     , oddPos = [ -(Space * Offset), 0, Distance ]
+     , evenPos = [ -(Space * Offset) + (Space / 2), 0, -Distance ]
+     , Odd
+     , point
+     , ix
+     ;
 
-assignPointsToCycles ()
-   self.playerCount = 0
-   for (obj, cycle in pairs (self.cycleList)) {
+   for (ix = 0; ix < MaxCycles; ix += 1) {
+      Odd = (1 == (ix % 2));
+      point = {
+         index: ix
+         , pos: (Odd ? oddPos : evenPos)
+         , ori: (Odd ? Ident : HeadingPi)
+         , handle: dmz.object.create (dmz.consts.StartPointType)
+      };
+      StartPoints[ix] = point;
+      dmz.object.position (point.handle, null, point.pos);
+      dmz.object.orientation (point.handle, null, point.ori);
+      // Counter is used to trigger a network send
+      dmz.object.counter (point.handle, dmz.consts.StartLinkHandle, 0);
+      dmz.object.counter.rollover (point.handle, dmz.consts.StartLinkHandle, true);
+      dmz.object.activate (point.handle);
+      if (Odd) { oddPos[0] += Space; }
+      else { evenPos[0] += Space; }
+
+   }
+};
+
+assignPointsToCycles = function() {
+   var count = 0
+     , cycle
+     ;
+
+   PlayerCount = 0;
+   Object.keys(CycleList).forEach(function (key) {
+      cycle = CycleList[key];
       if (cycle.point) {
-         dmz.object.unlink_sub_links (cycle.point.handle, dmz.const.StartLinkHandle)
-         cycle.point = nil
-      else if (cycle.wait) {
+         dmz.object.unlinkSubLinks (cycle.point.handle, dmz.consts.StartLinkHandle)
+         delete cycle.point;
       }
-   }
-   var count = 1
-   for (obj, cycle in pairs (self.cycleList)) {
-      if (count <= self.maxCycles) {
-          cycle.point = self.startPoints[count]
-          dmz.object.link (dmz.const.StartLinkHandle, cycle.point.handle, obj)
-          // Adding to the objs counter will cause the network rules to
-          // s} the packet immediately instead of waiting for (the one second
-          // heartbeat as specified in the net rules for (this obj type.
-          dmz.object.add_to_counter (cycle.point.handle, dmz.const.StartLinkHandle)
-          self.playerCount = self.playerCount + 1
-      else
+   });
+
+   Object.keys(CycleList).forEach(function (key) {
+      cycle = CycleList[key];
+      if (count < MaxCycles) {
+         cycle.point = StartPoints[count];
+         dmz.object.link (
+            dmz.consts.StartLinkHandle,
+            cycle.point.handle,
+            parseInt(key));
+         // Adding to the objs counter will cause the network rules to
+         // send the packet immediately instead of waiting for the one second
+         // heartbeat as specified in the net rules for this obj type.
+         dmz.object.addToCounter (cycle.point.handle, dmz.consts.StartLinkHandle);
+         PlayerCount += 1;
       }
-      count = count + 1
-   }
-}
+      count += 1;
+   });
+};
 
-getStandbyCount ()
+getStandbyCount = function () {
    var result = 0
-   for (obj, cycle in pairs (self.cycleList)) {
-      if (cycle.point && cycle.standby) { result = result + 1 }
-   }
-   return result
-}
+     , cycle
+     ;
 
-getDeadCount ()
+   Object.keys(CycleList).forEach(function (key) {
+      cycle = CycleList[key];
+      if (cycle.point && cycle.standby) { result += 1; }
+   });
+   return result;
+};
+
+getDeadCount = function () {
    var result = 0
-   for (obj, cycle in pairs (self.cycleList)) {
-      if (cycle.point && cycle.dead) { result = result + 1 }
-   }
-   return result
-}
+     , cycle
+     ;
 
-isAllDrones ()
+   Object.keys(CycleList).forEach(function (key) {
+      cycle = CycleList[key];
+      if (cycle.point && cycle.dead) { result += 1; }
+   });
+
+   return result;
+};
+
+isAllDrones = (self.config.string ("drone-free-play.value", "false") == "true") ?
+function () { return false; } :
+function () {
    var result = true
-   for (obj, cycle in pairs (self.cycleList)) {
-      if (cycle.point && !cycle.dead && !cycle.drone) { result = false }
-   }
-   return result
-}
+     , cycle
+     ;
 
-setGameState (mcp, State)
-   var newState = dmz.object.state (mcp)
-   newState.unset (dmz.const.GameStateMask)
-   newState = newState + State
-   dmz.object.state (mcp, nil, newState)
-}
+   Object.keys(CycleList).forEach(function (key) {
+      cycle = CycleList[key];
+      if (cycle.point && !cycle.dead && !cycle.drone) { result = false; }
+   });
+   return result;
+};
 
-updateTimeSlice (time)
+setGameState = function (mcp, State) {
+   var newState = dmz.object.state (mcp);
+   newState = newState.unset (dmz.consts.GameStateMask);
+   newState = newState.or(State);
+   dmz.object.state (mcp, null, newState);
+};
 
-   var State = dmz.object.state (self.mcp)
+updateTimeSlice = function (time) {
+
+   var State = dmz.object.state (MCP)
+     , CTime
+     ;
 
    if (State) {
-      var CTime = dmz.time.frame_time ()
-      if (State.contains (dmz.const.GameWaiting)) {
-         if (self.assignPoints) {
-            assignPointsToCycles ()
-            self.assignPoints = false
-            self.waitTime = CTime + 1
+      CTime = dmz.time.getFrameTime ();
+      if (State.contains (dmz.consts.GameWaiting)) {
+         if (AssignPoints) {
+            assignPointsToCycles ();
+            AssignPoints = false;
+            WaitTime = CTime + 1;
          }
-         if ((self.waitTime <= CTime) and
-               (getStandbyCount () == self.playerCount) and
-               (self.playerCount >= self.minCycles)) {
-            setGameState (self.mcp, dmz.const.GameCountdown5)
-            self.nextStateTime = CTime + 1
+         if ((WaitTime <= CTime) &&
+               (getStandbyCount () == PlayerCount) &&
+               (PlayerCount >= MinCycles)) {
+            setGameState (MCP, dmz.consts.GameCountdown5);
+            NextStateTime = CTime + 1;
          }
-      else if (State.contains (dmz.const.GameActive)) {
-         if (self.}Time && self.}Time <= CTime) {
-            setGameState (self.mcp, dmz.const.GameWaiting)
-            self.}Time = nil
-            self.waitTime = CTime + 2
-         else if (!self.}Time && (getDeadCount () >= (self.playerCount - 1)
-                 || isAllDrones ()) ) {
-            self.}Time = CTime + 2
+      }
+      else if (State.contains (dmz.consts.GameActive)) {
+         if (EndTime && (EndTime <= CTime)) {
+            setGameState (MCP, dmz.consts.GameWaiting);
+            EndTime = null;
+            WaitTime = CTime + 2;
          }
-      else if (State.contains (dmz.const.GameCountdown5)) {
-         if (CTime >= self.nextStateTime) {
-            setGameState (self.mcp, dmz.const.GameCountdown4)
-            self.nextStateTime = CTime + 1
+         else if (!EndTime && (getDeadCount () >= (PlayerCount - 1)
+                 || isAllDrones ())) {
+            EndTime = CTime + 2;
          }
-      else if (State.contains (dmz.const.GameCountdown4)) {
-         if (CTime >= self.nextStateTime) {
-            setGameState (self.mcp, dmz.const.GameCountdown3)
-            self.nextStateTime = CTime + 1
+      }
+      else if (State.contains (dmz.consts.GameCountdown5)) {
+         if (CTime >= NextStateTime) {
+            setGameState (MCP, dmz.consts.GameCountdown4);
+            NextStateTime = CTime + 1;
          }
-      else if (State.contains (dmz.const.GameCountdown3)) {
-         if (CTime >= self.nextStateTime) {
-            setGameState (self.mcp, dmz.const.GameCountdown2)
-            self.nextStateTime = CTime + 1
+      }
+      else if (State.contains (dmz.consts.GameCountdown4)) {
+         if (CTime >= NextStateTime) {
+            setGameState (MCP, dmz.consts.GameCountdown3);
+            NextStateTime = CTime + 1;
          }
-      else if (State.contains (dmz.const.GameCountdown2)) {
-         if (CTime >= self.nextStateTime) {
-            setGameState (self.mcp, dmz.const.GameCountdown1)
-            self.nextStateTime = CTime + 1
+      }
+      else if (State.contains (dmz.consts.GameCountdown3)) {
+         if (CTime >= NextStateTime) {
+            setGameState (MCP, dmz.consts.GameCountdown2);
+            NextStateTime = CTime + 1;
          }
-      else if (State.contains (dmz.const.GameCountdown1)) {
-         if (CTime >= self.nextStateTime) {
-            setGameState (self.mcp, dmz.const.GameActive)
-            self.nextStateTime = CTime + 1
+      }
+      else if (State.contains (dmz.consts.GameCountdown2)) {
+         if (CTime >= NextStateTime) {
+            setGameState (MCP, dmz.consts.GameCountdown1);
+            NextStateTime = CTime + 1;
          }
-      else
-         self.log.error ("Game in unknown state. Changing to a waiting state")
-         setGameState (self.mcp, dmz.const.GameWaiting)
+      }
+      else if (State.contains (dmz.consts.GameCountdown1)) {
+         if (CTime >= NextStateTime) {
+            setGameState (MCP, dmz.consts.GameActive);
+            NextStateTime = CTime + 1;
+         }
+      }
+      else {
+         self.log.error ("Game in unknown state. Changing to a waiting state");
+         setGameState (MCP, dmz.consts.GameWaiting);
       }
    }
-}
+};
 
-create_obj (obj, Type)
-   if (Type.is_of_type (dmz.const.CycleType)) {
-      self.cycleList[obj] = { drone = dmz.object.flag (obj, dmz.const.DroneHandle), }
-      self.cycleCount = self.cycleCount + 1
-      self.assignPoints = true
+
+
+dmz.object.create.observe (self, function (obj, Type) {
+   if (Type.isOfType (dmz.consts.CycleType)) {
+      CycleList[obj] = { drone: dmz.object.flag (obj, dmz.consts.DroneHandle) };
+      CycleCount += 1;
+      AssignPoints = true;
    }
-}
+});
 
-destroy_obj (obj)
-   var cycle = self.cycleList[obj]
+dmz.object.destroy.observe (self, function (obj, Type) {
+   var cycle = CycleList[obj];
    if (cycle) {
-      self.cycleList[obj] = nil
-      self.cycleCount = self.cycleCount - 1
-      if (cycle.point) { self.playerCount = self.playerCount - 1 }
-      self.assignPoints = true
+      delete CycleList[obj];
+      CycleCount -= 1;
+      if (cycle.point) { PlayerCount -= 1; }
+      AssignPoints = true;
    }
-}
+});
 
-update_obj_state (obj, Attribute, State, PreviousState)
-   var cycle = self.cycleList[obj]
+dmz.object.state.observe (self, function (obj, Attribute, State, PreviousState) {
+   var cycle = CycleList[obj];
    if (cycle) {
-      if (!PreviousState) { PreviousState = dmz.const.EmptyState }
-      if (State.contains (dmz.const.Dead) and
-            !PreviousState.contains (dmz.const.Dead)) {
-         cycle.dead = true
-         cycle.standby = false
-      else if (State.contains (dmz.const.Standby)
-            && !PreviousState.contains (dmz.const.Standby)) {
-         cycle.dead = false
-         cycle.standby = true
-      else
-         cycle.dead = false
-         cycle.standby = false
+      if (!PreviousState) { PreviousState = dmz.consts.EmptyState; }
+      if (State.contains (dmz.consts.Dead) &&
+            !PreviousState.contains (dmz.consts.Dead)) {
+         cycle.dead = true;
+         cycle.standby = false;
+      }
+      else if (State.contains (dmz.consts.Standby)
+            && !PreviousState.contains (dmz.consts.Standby)) {
+         cycle.dead = false;
+         cycle.standby = true;
+      }
+      else {
+         cycle.dead = false;
+         cycle.standby = false;
       }
    }
-}
+});
 
-start ()
-   self.handle = self.timeSlice.create (updateTimeSlice, self, self.name)
-   var callbacks = {
-      create_obj = create_obj,
-      destroy_obj = destroy_obj,
-      update_obj_state = update_obj_state,
-   }
-   self.objObs.register (nil, callbacks, self)
+(function () {
+   dmz.object.state (MCP, null, dmz.consts.GameWaiting);
+   dmz.object.activate (MCP);
+   createStartPoints ();
+}());
 
-   self.mcp = dmz.object.create (dmz.const.MCPType)
-   dmz.object.state (self.mcp, nil, dmz.const.GameWaiting)
-   dmz.object.activate (self.mcp)
-   dmz.object.set_temporary (self.mcp)
-   createStartPoints ()
-}
-
-stop ()
-   if (self.handle && self.timeSlice) { self.timeSlice.destroy (self.handle) }
-}
-
-function new (config, name)
-   var self = {
-      start_plugin = start,
-      stop_plugin = stop,
-      log = dmz.log.new ("lua." + name),
-      timeSlice = dmz.time_slice.new (),
-      objObs = dmz.object_observer.new (),
-      config = config,
-      name = name,
-      cycleList = {},
-      cycleCount = 0,
-      startPoints = {},
-      waitTime = dmz.time.frame_time () + 1,
-      maxCycles = config.to_number ("cycles.max", 6),
-      minCycles = config.to_number ("cycles.min", 2),
-   }
-
-   self.log.info ("Creating plugin. " + name)
-
-   if (config.to_boolean ("drone-free-play.value", false)) {
-      isAllDrones = function () return false }
-   }
-
-   return self
-}
-
+timeSlice = dmz.time.setRepeatingTimer (self, updateTimeSlice);
