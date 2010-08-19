@@ -15,7 +15,7 @@ var dmz =
    , timeSliceFunction
 
    , throttleHandle = dmz.defs.createNamedHandle(
-      self.config.string("throttle.name", "throttle"))
+        self.config.string("throttle.name", "throttle"))
    , Acceleration = self.config.number ("Speed.acceleration", 10)
    , Deceleration = self.config.number ("Speed.deceleration", -10)
    , MinSpeed = self.config.number ("Speed.min", 27.78)
@@ -54,6 +54,7 @@ calculateOrientation = function (ori) {
      ;
 
    dir.y = 0;
+
 //     dir = dir.add([0, -dir.toArray()[1], 0]);
 
    if (!dir.isZero()) {
@@ -63,7 +64,7 @@ calculateOrientation = function (ori) {
       if (cross.y < 0) { heading = (Math.PI * 2) - heading; }
       remainder = heading % (Math.PI / 2);
       if (remainder > (Math.PI / 4)) {
-         heading += (Math.PI / 2) - remainder
+         heading += (Math.PI / 2) - remainder;
       }
       else {
          heading -= remainder;
@@ -156,7 +157,7 @@ timeSliceFunction = function (time) {
          dmz.object.orientation (hil, null, ori);
       }
       else if (wasAlive && state && (state.contains (dmz.consts.Dead) ||
-                                     state.contains (dmz.consts.Standby))) {
+            state.contains (dmz.consts.Standby))) {
 
          wasAlive = null;
          ori = dmz.object.orientation (hil);
@@ -174,8 +175,8 @@ dmz.input.channel.observe (self, function (channel, state) {
    if (state) { Active += 1; }
    else { Active -= 1; }
 
-   if (Active == 1) { timeSlice = dmz.time.setRepeatingTimer(self, timeSliceFunction); }
-   else if (Active == 0) {
+   if (Active === 1) { timeSlice = dmz.time.setRepeatingTimer(self, timeSliceFunction); }
+   else if (Active === 0) {
       dmz.time.cancleTimer(timeSlice);
       hil = dmz.object.hil ()
       if (hil) { dmz.object.scalar (hil, throttleHandle, 0); }
@@ -189,6 +190,6 @@ dmz.input.axis.observe (self, function (channel, axis) {
       else { value = -1; }
    }
 
-   if (axis.id == 1) { Turn = value; }
-   else if (axis.id == 7) { Accel = value; }
+   if (axis.id === 1) { Turn = value; }
+   else if (axis.id === 7) { Accel = value; }
 });

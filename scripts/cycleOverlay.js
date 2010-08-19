@@ -67,7 +67,7 @@ updateTimeSlice = function (time) {
      ;
 
    if (hil) {
-      if (DigitState == 0) {
+      if (DigitState === 0) {
          if (Active > 0) {
 
             state = dmz.object.state (hil);
@@ -87,27 +87,27 @@ updateTimeSlice = function (time) {
       }
       else {
          count = 0;
-         if (DigitState == 1) {
+         if (DigitState === 1) {
             count = dmz.object.counter (hil, dmz.consts.WinsHandle)
          }
-         else if (DigitState == 2) {
+         else if (DigitState === 2) {
             count = dmz.object.counter (hil, dmz.consts.KillsHandle)
          }
-         else if (DigitState == 3) {
+         else if (DigitState === 3) {
             count = dmz.object.counter (hil, dmz.consts.DeathsHandle)
          }
 
          if (!count) { count = 0 }
 
          v0 = (count % 10);
-         v1 = (count % 100) / 10;
-         v2 = (count % 1000) / 100;
+         v1 = Math.floor((count % 100) / 10);
+         v2 = Math.floor((count % 1000) / 100);
       }
    }
 
-   if (v2 == 0) {
+   if (v2 === 0) {
       v2 = 10;
-      if (v1 == 0) { v1 = 10; }
+      if (v1 === 0) { v1 = 10; }
    }
 
    Digits[0].enableSingleSwitchState(v0);
@@ -142,7 +142,6 @@ updateTimeSlice = function (time) {
    }
 
    if (Slider) {
-      //if (time > 0.1) { cprint (time) time = 0.1 }
       if (DashState) {
          x = Slider.position()[0];
          if (x > 0) { x -= (400 * time * SliderSpeed); }
@@ -162,24 +161,24 @@ dmz.input.channel.observe (self, function (channel, state) {
    if (state) {  Active += 1; }
    else { Active -= 1; }
 
-   if (Active == 1) { timeSlice = dmz.time.setRepeatingTimer (self, updateTimeSlice); }
-   else if (Active == 0) {
+   if (Active === 1) { timeSlice = dmz.time.setRepeatingTimer (self, updateTimeSlice); }
+   else if (Active === 0) {
       dmz.time.cancleTimer(self, timeSlice);
    }
 });
 
 dmz.input.button.observe(self, function (channel, button) {
-   if (button.id == 2 && button.value) {
+   if ((button.id) === 2 && button.value) {
       DashState = !DashState;
    }
-   else if (button.id == 3 && button.value) {
+   else if ((button.id === 3) && button.value) {
       DigitState += 1;
       if (DigitState > 3) { DigitState = 0; }
 
-      SpeedSwitch.enableSingleSwitchState (DigitState == 0 ? 0 : 1)
-      WinsSwitch.enableSingleSwitchState  (DigitState == 1 ? 0 : 1)
-      KillsSwitch.enableSingleSwitchState (DigitState == 2 ? 0 : 1)
-      DeathsSwitch.enableSingleSwitchState(DigitState == 3 ? 0 : 1)
+      SpeedSwitch.enableSingleSwitchState (DigitState === 0 ? 0 : 1)
+      WinsSwitch.enableSingleSwitchState  (DigitState === 1 ? 0 : 1)
+      KillsSwitch.enableSingleSwitchState (DigitState === 2 ? 0 : 1)
+      DeathsSwitch.enableSingleSwitchState(DigitState === 3 ? 0 : 1)
    }
 });
 
@@ -188,7 +187,7 @@ dmz.object.create.observe (self, function (obj, Type) {
 });
 
 dmz.object.state.observe (self, function (obj, Attribute, State, PreviousState) {
-   if (obj == MCP) {
+   if (obj === MCP) {
       if (!PreviousState) { PreviousState = dmz.mask.create (); }
       if (State.contains (dmz.consts.GameCountdown5)
             && !PreviousState.contains (dmz.consts.GameCountdown5)) {

@@ -32,10 +32,6 @@ var dmz =
    , YellowType = dmz.objectType.lookup("yellow_cycle")
    , BlueType = dmz.objectType.lookup("blue_cycle")
 
-   , Left = dmz.vector.create(dmz.vector.Left)
-   , Right = dmz.vector.create(dmz.vector.Right)
-   , Forward = dmz.vector.create(dmz.vector.Forward)
-   , Up = dmz.vector.create(dmz.vector.Up)
    ;
 
 dmz.util.defineConst(exports, "GameWaiting", GameWaiting);
@@ -98,8 +94,8 @@ exports.testMove = function (obj, origPos, pos, ori) {
 
    if (obj) {
       dmz.isect.disable(obj);
-      left = (ori.transform(Left.multiply(0.6))).add(pos);
-      right = (ori.transform(Right.multiply(0.6))).add(pos);
+      left = (ori.transform(dmz.vector.Left.multiply(0.6))).add(pos);
+      right = (ori.transform(dmz.vector.Right.multiply(0.6))).add(pos);
       wiskerResults = dmz.isect.doIsect({ start: right, end: left });
       if (wiskerResults && wiskerResults[0]) {
 
@@ -109,8 +105,8 @@ exports.testMove = function (obj, origPos, pos, ori) {
       }
       else {
 
-         origPos.y += 0.5;
-         pos.y += 0.5;
+         origPos = dmz.vector.create(origPos.x, origPos.y + 0.5, origPos.z);
+         pos = dmz.vector.create(pos.x, pos.y + 0.5, pos.z);
          isectResults = dmz.isect.doIsect({start: origPos, end: pos});
          if(isectResults && isectResults[0]) {
 
