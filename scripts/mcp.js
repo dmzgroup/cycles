@@ -68,7 +68,7 @@ createStartPoints = function () {
    }
 };
 
-assignPointsToCycles = function() {
+assignPointsToCycles = function () {
    var count = 0
      , cycle
      ;

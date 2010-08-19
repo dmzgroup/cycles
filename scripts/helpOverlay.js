@@ -23,7 +23,7 @@ var dmz =
    ;
 
 
-(function() { Transform.scale(0.1);}());
+(function () { Transform.scale(0.1);}());
 
 
 updateTimeSlice = function (time) {
