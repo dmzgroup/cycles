@@ -176,7 +176,7 @@ dmz.input.button.observe(self, function (channel, button) {
       if (DigitState > 3) { DigitState = 0; }
 
       SpeedSwitch.enableSingleSwitchState(DigitState === 0 ? 0 : 1)
-      WinsSwitch.enableSingleSwitchState (DigitState === 1 ? 0 : 1)
+      WinsSwitch.enableSingleSwitchState(DigitState === 1 ? 0 : 1)
       KillsSwitch.enableSingleSwitchState(DigitState === 2 ? 0 : 1)
       DeathsSwitch.enableSingleSwitchState(DigitState === 3 ? 0 : 1)
    }
