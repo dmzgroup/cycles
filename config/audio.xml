@@ -23,10 +23,4 @@
          <event-type name="Event_Collision"/>
       </event-list>
    </dmzAudioPluginEvent>
-<dmzLuaModuleBasic>
-   <plugin-list>
-      <plugin name="dmzLuaExtAudio"/>
-   </plugin-list>
-   <!-- <instance name="bgmusic"/> -->
-</dmzLuaModuleBasic>
 </dmz>

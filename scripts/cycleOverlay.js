@@ -1,5 +1,5 @@
 var dmz =
-      { object : require("dmz/components/object")
+      { object: require("dmz/components/object")
       , time: require("dmz/runtime/time")
       , consts: require("const")
       , input: require("dmz/components/input")
@@ -23,27 +23,27 @@ var dmz =
 
    , Active = 0
    , Digits =
-        [ dmz.overlay.lookup ("digit1").lookup("switch")
-        , dmz.overlay.lookup ("digit2").lookup("switch")
-        , dmz.overlay.lookup ("digit3").lookup("switch")
+        [ dmz.overlay.lookup("digit1").lookup("switch")
+        , dmz.overlay.lookup("digit2").lookup("switch")
+        , dmz.overlay.lookup("digit3").lookup("switch")
         ]
-   , Switch = dmz.overlay.lookup ("countdown switch")
+   , Switch = dmz.overlay.lookup("countdown switch")
    , CountDown =
-        [ dmz.overlay.lookup ("one")
-        , dmz.overlay.lookup ("two")
-        , dmz.overlay.lookup ("three")
-        , dmz.overlay.lookup ("four")
-        , dmz.overlay.lookup ("five")
+        [ dmz.overlay.lookup("one")
+        , dmz.overlay.lookup("two")
+        , dmz.overlay.lookup("three")
+        , dmz.overlay.lookup("four")
+        , dmz.overlay.lookup("five")
         ]
-   , Slider = dmz.overlay.lookup ("dashboard slider")
+   , Slider = dmz.overlay.lookup("dashboard slider")
    , DashState = true
-   , Waiting = dmz.overlay.lookup ("waiting switch")
-   , GameOver = dmz.overlay.lookup ("gameover transform")
-   , GSwitch = dmz.overlay.lookup ("gameover switch")
-   , SpeedSwitch = dmz.overlay.lookup ("speed switch")
-   , WinsSwitch = dmz.overlay.lookup ("wins switch")
-   , KillsSwitch = dmz.overlay.lookup ("kills switch")
-   , DeathsSwitch = dmz.overlay.lookup ("deaths switch")
+   , Waiting = dmz.overlay.lookup("waiting switch")
+   , GameOver = dmz.overlay.lookup("gameover transform")
+   , GSwitch = dmz.overlay.lookup("gameover switch")
+   , SpeedSwitch = dmz.overlay.lookup("speed switch")
+   , WinsSwitch = dmz.overlay.lookup("wins switch")
+   , KillsSwitch = dmz.overlay.lookup("kills switch")
+   , DeathsSwitch = dmz.overlay.lookup("deaths switch")
 
    , timeSlice
    , updateTimeSlice
@@ -55,7 +55,7 @@ updateTimeSlice = function (time) {
    var v0 = 10
      , v1 = 10
      , v2 = 10
-     , hil = dmz.object.hil ()
+     , hil = dmz.object.hil()
      , state
      , vel
      , speed
@@ -70,14 +70,14 @@ updateTimeSlice = function (time) {
       if (DigitState === 0) {
          if (Active > 0) {
 
-            state = dmz.object.state (hil);
-            if (state && state.contains (dmz.consts.EngineOn)) {
+            state = dmz.object.state(hil);
+            if (state && state.contains(dmz.consts.EngineOn)) {
 
-               vel = dmz.object.velocity (hil);
+               vel = dmz.object.velocity(hil);
 
-               if (!vel) { vel = dmz.vector.create (); }
+               if (!vel) { vel = dmz.vector.create(); }
 
-               speed = vel.magnitude () * 3.6;
+               speed = vel.magnitude() * 3.6;
 
                v0 = (speed % 10);
                v1 = (speed % 100) / 10;
@@ -88,13 +88,13 @@ updateTimeSlice = function (time) {
       else {
          count = 0;
          if (DigitState === 1) {
-            count = dmz.object.counter (hil, dmz.consts.WinsHandle)
+            count = dmz.object.counter(hil, dmz.consts.WinsHandle)
          }
          else if (DigitState === 2) {
-            count = dmz.object.counter (hil, dmz.consts.KillsHandle)
+            count = dmz.object.counter(hil, dmz.consts.KillsHandle)
          }
          else if (DigitState === 3) {
-            count = dmz.object.counter (hil, dmz.consts.DeathsHandle)
+            count = dmz.object.counter(hil, dmz.consts.DeathsHandle)
          }
 
          if (!count) { count = 0 }
@@ -119,7 +119,7 @@ updateTimeSlice = function (time) {
       if (scale) {
          scale -= (time * CountScale);
          if (scale < 0.01) { scale = 0.01; }
-         CurrentCount.scale (scale);
+         CurrentCount.scale(scale);
       }
    }
 
@@ -127,17 +127,17 @@ updateTimeSlice = function (time) {
       scale = GameOver.scale()[0];
       if (scale < GScale) {
          scale += (GScale * time);
-         if (scale > GScale) { scale = GScale; }
-         GameOver.scale (scale);
-         rot = GameOver.rotation ();
+         if(scale > GScale) { scale = GScale; }
+         GameOver.scale(scale);
+         rot = GameOver.rotation();
          rot -= (Math.PI * 2 * time * 3);
          if (rot < 0) { rot += (Math.PI * 2); }
-         GameOver.rotation (rot);
+         GameOver.rotation(rot);
       }
       else {
-         GameOver.scale (GScale);
+         GameOver.scale(GScale);
          GameOver.rotation(0);
-         GSwitch.enableSingleSwitchState (2, true);
+         GSwitch.enableSingleSwitchState(2, true);
       }
    }
 
@@ -146,22 +146,22 @@ updateTimeSlice = function (time) {
          x = Slider.position()[0];
          if (x > 0) { x -= (400 * time * SliderSpeed); }
          if (x < 0) { x = 0; }
-         Slider.position (x, 0);
+         Slider.position(x, 0);
       }
       else {
          x = Slider.position()[0];
          if (x < 300) { x += (400 * time * SliderSpeed); }
          if (x > 300) { x = 300; }
-         Slider.position (x, 0);
+         Slider.position(x, 0);
       }
    }
 };
 
-dmz.input.channel.observe (self, function (channel, state) {
+dmz.input.channel.observe(self, function (channel, state) {
    if (state) {  Active += 1; }
    else { Active -= 1; }
 
-   if (Active === 1) { timeSlice = dmz.time.setRepeatingTimer (self, updateTimeSlice); }
+   if (Active === 1) { timeSlice = dmz.time.setRepeatingTimer(self, updateTimeSlice); }
    else if (Active === 0) {
       dmz.time.cancleTimer(self, timeSlice);
    }
@@ -175,70 +175,70 @@ dmz.input.button.observe(self, function (channel, button) {
       DigitState += 1;
       if (DigitState > 3) { DigitState = 0; }
 
-      SpeedSwitch.enableSingleSwitchState (DigitState === 0 ? 0 : 1)
-      WinsSwitch.enableSingleSwitchState  (DigitState === 1 ? 0 : 1)
-      KillsSwitch.enableSingleSwitchState (DigitState === 2 ? 0 : 1)
+      SpeedSwitch.enableSingleSwitchState(DigitState === 0 ? 0 : 1)
+      WinsSwitch.enableSingleSwitchState (DigitState === 1 ? 0 : 1)
+      KillsSwitch.enableSingleSwitchState(DigitState === 2 ? 0 : 1)
       DeathsSwitch.enableSingleSwitchState(DigitState === 3 ? 0 : 1)
    }
 });
 
-dmz.object.create.observe (self, function (obj, Type) {
-   if (Type.isOfType (dmz.consts.MCPType)) { MCP = obj; }
+dmz.object.create.observe(self, function (obj, Type) {
+   if (Type.isOfType(dmz.consts.MCPType)) { MCP = obj; }
 });
 
-dmz.object.state.observe (self, function (obj, Attribute, State, PreviousState) {
+dmz.object.state.observe(self, function (obj, Attribute, State, PreviousState) {
    if (obj === MCP) {
-      if (!PreviousState) { PreviousState = dmz.mask.create (); }
-      if (State.contains (dmz.consts.GameCountdown5)
-            && !PreviousState.contains (dmz.consts.GameCountdown5)) {
+      if (!PreviousState) { PreviousState = dmz.mask.create(); }
+      if (State.contains(dmz.consts.GameCountdown5)
+            && !PreviousState.contains(dmz.consts.GameCountdown5)) {
 
-         Switch.enableSingleSwitchState (5);
+         Switch.enableSingleSwitchState(5);
          CurrentCount = CountDown[4];
-         CurrentCount.scale (CountScale);
-         Waiting.setSwitchStateAll (false);
-         GSwitch.setSwitchStateAll (false);
+         CurrentCount.scale(CountScale);
+         Waiting.setSwitchStateAll(false);
+         GSwitch.setSwitchStateAll(false);
          GoActive = false;
       }
-      else if (State.contains (dmz.consts.GameCountdown4)
-            && !PreviousState.contains (dmz.consts.GameCountdown4)) {
+      else if (State.contains(dmz.consts.GameCountdown4)
+            && !PreviousState.contains(dmz.consts.GameCountdown4)) {
 
-               Switch.enableSingleSwitchState (4);
+               Switch.enableSingleSwitchState(4);
                CurrentCount = CountDown[3];
-               CurrentCount.scale (CountScale);
+               CurrentCount.scale(CountScale);
       }
-      else if (State.contains (dmz.consts.GameCountdown3)
-            && !PreviousState.contains (dmz.consts.GameCountdown3)) {
+      else if (State.contains(dmz.consts.GameCountdown3)
+            && !PreviousState.contains(dmz.consts.GameCountdown3)) {
 
-               Switch.enableSingleSwitchState (3);
+               Switch.enableSingleSwitchState(3);
                CurrentCount = CountDown[2];
-               CurrentCount.scale (CountScale);
+               CurrentCount.scale(CountScale);
       }
-      else if (State.contains (dmz.consts.GameCountdown2)
-            && !PreviousState.contains (dmz.consts.GameCountdown2)) {
+      else if (State.contains(dmz.consts.GameCountdown2)
+            && !PreviousState.contains(dmz.consts.GameCountdown2)) {
 
-               Switch.enableSingleSwitchState (2);
+               Switch.enableSingleSwitchState(2);
                CurrentCount = CountDown[1];
-               CurrentCount.scale (CountScale);
+               CurrentCount.scale(CountScale);
       }
-      else if (State.contains (dmz.consts.GameCountdown1)
-            && !PreviousState.contains (dmz.consts.GameCountdown1)) {
+      else if (State.contains(dmz.consts.GameCountdown1)
+            && !PreviousState.contains(dmz.consts.GameCountdown1)) {
 
-               Switch.enableSingleSwitchState (1);
+               Switch.enableSingleSwitchState(1);
                CurrentCount = CountDown[0];
-               CurrentCount.scale (CountScale);
+               CurrentCount.scale(CountScale);
       }
-      else if (State.contains (dmz.consts.GameActive)
-            && !PreviousState.contains (dmz.consts.GameActive)) {
+      else if (State.contains(dmz.consts.GameActive)
+            && !PreviousState.contains(dmz.consts.GameActive)) {
 
-               Switch.setSwitchStateAll (false);
+               Switch.setSwitchStateAll(false);
                CurrentCount = null;
       }
 
-      if (State.contains (dmz.consts.GameWaiting)
-            && PreviousState.contains (dmz.consts.GameActive)) {
+      if (State.contains(dmz.consts.GameWaiting)
+            && PreviousState.contains(dmz.consts.GameActive)) {
 
                GameOver.scale(0.01);
-               GSwitch.enableSingleSwitchState (1, true);
+               GSwitch.enableSingleSwitchState(1, true);
                GoActive = true;
       }
    }

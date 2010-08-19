@@ -1,5 +1,5 @@
 var dmz =
-      { object : require("dmz/components/object")
+      { object: require("dmz/components/object")
       , time: require("dmz/runtime/time")
       , consts: require("const")
       , input: require("dmz/components/input")
@@ -84,7 +84,7 @@ timeSliceFunction = function (time) {
 
 //Active = 1;
 //timeSlice = dmz.time.setRepeatingTimer (self, timeSliceFunction);
-dmz.input.channel.observe (self, function (channel, state) {
+dmz.input.channel.observe(self, function (channel, state) {
    var hil;
 
    if (state) {  Active += 1; }
@@ -100,7 +100,7 @@ dmz.input.channel.observe (self, function (channel, state) {
    }
 });
 
-dmz.input.axis.observe (self, function (channel, axis) {
+dmz.input.axis.observe(self, function (channel, axis) {
    var value = 0
      ;
    if (dmz.util.isNotZero(axis.value)) {
@@ -115,6 +115,6 @@ dmz.input.axis.observe (self, function (channel, axis) {
    }
 });
 
-dmz.input.button.observe (self, function (channel, button) {
+dmz.input.button.observe(self, function (channel, button) {
    if (button.id === 1 && button.value) { watch = true; }
 });

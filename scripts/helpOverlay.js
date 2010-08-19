@@ -1,5 +1,5 @@
 var dmz =
-      { object : require("dmz/components/object")
+      { object: require("dmz/components/object")
       , time: require("dmz/runtime/time")
       , consts: require("const")
       , input: require("dmz/components/input")
@@ -55,18 +55,18 @@ dmz.input.channel.observe (self, function (channel, state) {
    if (state) {  Active += 1; }
    else { Active -= 1; }
 
-   if (Active == 1) {
+   if (Active === 1) {
       timeSlice = dmz.time.setRepeatingTimer (self, updateTimeSlice);
    }
-   else if (Active == 0) {
+   else if (Active === 0) {
       dmz.time.setRepeatingTimer (self, timeSlice);
    }
 });
 
 dmz.input.key.observe (self, function (channel, key) {
    if (key.state) {
-      if (HKey == key.key || hKey == key.key ||
-            SlashKey == key.key || QuestionKey == key.key) {
+      if ((HKey === key.key) || (hKey === key.key) ||
+            (SlashKey === key.key) || (QuestionKey === key.key)) {
          Show = !Show;
          Scaling = true;
          if (Show) {

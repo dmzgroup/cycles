@@ -46,9 +46,9 @@ dmz.util.defineConst(exports, "GameActive", GameActive);
 
 dmz.util.defineConst(
    exports,
-      "GameStateMask",
-         GameWaiting.or(GameActive).or(GameCountdown1).or(GameCountdown2).or
-            (GameCountdown3).or(GameCountdown4).or(GameCountdown5));
+   "GameStateMask",
+   GameWaiting.or(GameActive).or(GameCountdown1).or(GameCountdown2).or(GameCountdown3)
+      .or(GameCountdown4).or(GameCountdown5));
 
 
 dmz.util.defineConst(exports, "Dead", Dead);
@@ -57,9 +57,13 @@ dmz.util.defineConst(exports, "EngineOn", EngineOn);
 dmz.util.defineConst(exports, "CycleState", CycleState);
 dmz.util.defineConst(exports, "EmptyState", dmz.mask.create());
 
-dmz.util.defineConst(exports, "TimeStampHandle",
+dmz.util.defineConst(
+   exports,
+   "TimeStampHandle",
    dmz.defs.createNamedHandle("MCP_Running_Time"));
-dmz.util.defineConst(exports, "StartLinkHandle",
+dmz.util.defineConst(
+   exports,
+   "StartLinkHandle",
    dmz.defs.createNamedHandle("Start_Position"));
 dmz.util.defineConst(exports, "DroneHandle", dmz.defs.createNamedHandle("Drone_Flag"));
 dmz.util.defineConst(exports, "KillsHandle", dmz.defs.createNamedHandle("Kills"));
@@ -77,8 +81,8 @@ dmz.util.defineConst(exports, "BlueType", BlueType);
 
 dmz.util.defineConst(
    exports,
-      "CycleTypeList",
-         [ RedType, OrangeType, YellowType, BlueType ]);
+   "CycleTypeList",
+   [ RedType, OrangeType, YellowType, BlueType ]);
 
 exports.testMove = function (obj, origPos, pos, ori) {
    var result = true

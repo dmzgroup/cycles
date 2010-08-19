@@ -1,5 +1,5 @@
 var dmz =
-      { object : require("dmz/components/object")
+      { object: require("dmz/components/object")
       , time: require("dmz/runtime/time")
       , consts: require("const")
       , input: require("dmz/components/input")
