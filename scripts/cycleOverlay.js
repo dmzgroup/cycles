@@ -168,7 +168,7 @@ dmz.input.channel.observe(self, function (channel, state) {
 });
 
 dmz.input.button.observe(self, function (channel, button) {
-   if ((button.id) === 2 && button.value) {
+   if ((button.id === 2) && button.value) {
       DashState = !DashState;
    }
    else if ((button.id === 3) && button.value) {
