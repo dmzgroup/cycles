@@ -8,10 +8,10 @@
    <plugin name="dmzObjectModuleBasic"/>
    <plugin name="dmzEventModuleBasic"/>
    <plugin name="dmzEventModuleCommonBasic"/>
-<!--
+   <plugin name="dmzQtPluginNetworkActivity"/>
    <plugin name="dmzQtPluginObjectInspector" unique="object-inspector"/>
+<!--
    <plugin name="dmzPluginMsgDump"/>
-   <plugin name="dmzQtModuleMainWindowBasic"/>
    <plugin name="dmzPluginConsole"/>
 -->
 </plugin-list>

@@ -77,7 +77,7 @@ assignPointsToCycles = function () {
    Object.keys(CycleList).forEach(function (key) {
       cycle = CycleList[key];
       if (cycle.point) {
-         dmz.object.unlinkSubLinks(cycle.point.handle, dmz.consts.StartLinkHandle)
+         dmz.object.unlinkSubObjects(cycle.point.handle, dmz.consts.StartLinkHandle)
          delete cycle.point;
       }
    });
