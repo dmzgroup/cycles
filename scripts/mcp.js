@@ -70,7 +70,20 @@ createStartPoints = function () {
 assignPointsToCycles = function () {
    var count = 0
      , cycle
+     , setPoint
      ;
+
+   setPoint = function (cycle, count) {
+      cycle.point = StartPoints[count];
+      dmz.object.link(
+         dmz.consts.StartLinkHandle,
+         cycle.point.handle,
+         cycle.handle);
+      // Adding to the objs counter will cause the network rules to
+      // send the packet immediately instead of waiting for the one second
+      // heartbeat as specified in the net rules for this obj type.
+      dmz.object.addToCounter(cycle.point.handle, dmz.consts.StartLinkHandle);
+   }
 
    PlayerCount = 0;
    Object.keys(CycleList).forEach(function (key) {
@@ -85,15 +98,7 @@ assignPointsToCycles = function () {
       cycle = CycleList[key];
       if (count < MaxCycles) {
          if (!cycle.drone) {
-            cycle.point = StartPoints[count];
-            dmz.object.link(
-               dmz.consts.StartLinkHandle,
-               cycle.point.handle,
-               parseInt(key));
-            // Adding to the objs counter will cause the network rules to
-            // send the packet immediately instead of waiting for the one second
-            // heartbeat as specified in the net rules for this obj type.
-            dmz.object.addToCounter(cycle.point.handle, dmz.consts.StartLinkHandle);
+            setPoint (cycle, count);
             PlayerCount += 1;
             count += 1;
          }
@@ -104,15 +109,7 @@ assignPointsToCycles = function () {
       cycle = CycleList[key];
       if (count < MaxCycles) {
          if (cycle.drone) {
-            cycle.point = StartPoints[count];
-            dmz.object.link(
-               dmz.consts.StartLinkHandle,
-               cycle.point.handle,
-               parseInt(key));
-            // Adding to the objs counter will cause the network rules to
-            // send the packet immediately instead of waiting for the one second
-            // heartbeat as specified in the net rules for this obj type.
-            dmz.object.addToCounter(cycle.point.handle, dmz.consts.StartLinkHandle);
+            setPoint (cycle, count);
             PlayerCount += 1;
             count += 1;
          }
@@ -239,7 +236,10 @@ updateTimeSlice = function (time) {
 
 dmz.object.create.observe(self, function (obj, Type) {
    if (Type.isOfType(dmz.consts.CycleType)) {
-      CycleList[obj] = { drone: dmz.object.flag(obj, dmz.consts.DroneHandle) };
+      CycleList[obj] =
+         { handle: obj
+         , drone: dmz.object.flag(obj, dmz.consts.DroneHandle)
+         };
       CycleCount += 1;
       AssignPoints = true;
    }
