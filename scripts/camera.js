@@ -44,11 +44,10 @@ timeSliceFunction = function (time) {
 
       if (state && state.contains(dmz.consts.Dead)) {
          if (watch) {
-            pos = dmz.vector.create(300, 50, 300);
-            ori = dmz.vector.Forward.cross(-1, 0, -1).normalize();
-            ori = dmz.matrix.create().fromAxisAndAngle(
-               ori,
-               ori.getAngle(dmz.vector.Forward));
+            pos = dmz.vector.create([300, 50, 300]);
+            ori = dmz.matrix.create().fromTwoVectors(
+               dmz.vector.Forward,
+               dmz.vector.create([-1, 0, -1]));
 
             dmz.portal.view(pos, ori);
          }
