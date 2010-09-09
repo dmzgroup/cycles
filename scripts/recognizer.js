@@ -131,7 +131,6 @@ dmz.object.flag.observe(self, "Recognizer_Controlled", function (obj, attr, valu
      , offset = Infinity
      , distance
      , count = 0
-     , index
      ;
 
    Objs[obj] = obj;
@@ -140,7 +139,7 @@ dmz.object.flag.observe(self, "Recognizer_Controlled", function (obj, attr, valu
       distance = (path[count].subtract(pos)).magnitude();
       if (offset > distance) {
          offset = distance;
-         target = index;
+         target = count;
       }
    }
    dmz.object.counter(obj, TargetHandle, target);
