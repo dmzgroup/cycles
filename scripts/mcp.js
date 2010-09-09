@@ -64,7 +64,6 @@ createStartPoints = function () {
       dmz.object.activate(point.handle);
       if (Odd) { oddPos[0] += Space; }
       else { evenPos[0] += Space; }
-
    }
 };
 
@@ -85,18 +84,39 @@ assignPointsToCycles = function () {
    Object.keys(CycleList).forEach(function (key) {
       cycle = CycleList[key];
       if (count < MaxCycles) {
-         cycle.point = StartPoints[count];
-         dmz.object.link(
-            dmz.consts.StartLinkHandle,
-            cycle.point.handle,
-            parseInt(key));
-         // Adding to the objs counter will cause the network rules to
-         // send the packet immediately instead of waiting for the one second
-         // heartbeat as specified in the net rules for this obj type.
-         dmz.object.addToCounter(cycle.point.handle, dmz.consts.StartLinkHandle);
-         PlayerCount += 1;
+         if (!cycle.drone) {
+            cycle.point = StartPoints[count];
+            dmz.object.link(
+               dmz.consts.StartLinkHandle,
+               cycle.point.handle,
+               parseInt(key));
+            // Adding to the objs counter will cause the network rules to
+            // send the packet immediately instead of waiting for the one second
+            // heartbeat as specified in the net rules for this obj type.
+            dmz.object.addToCounter(cycle.point.handle, dmz.consts.StartLinkHandle);
+            PlayerCount += 1;
+            count += 1;
+         }
       }
-      count += 1;
+   });
+
+   Object.keys(CycleList).forEach(function (key) {
+      cycle = CycleList[key];
+      if (count < MaxCycles) {
+         if (cycle.drone) {
+            cycle.point = StartPoints[count];
+            dmz.object.link(
+               dmz.consts.StartLinkHandle,
+               cycle.point.handle,
+               parseInt(key));
+            // Adding to the objs counter will cause the network rules to
+            // send the packet immediately instead of waiting for the one second
+            // heartbeat as specified in the net rules for this obj type.
+            dmz.object.addToCounter(cycle.point.handle, dmz.consts.StartLinkHandle);
+            PlayerCount += 1;
+            count += 1;
+         }
+      }
    });
 };
 
@@ -125,7 +145,7 @@ getDeadCount = function () {
    return result;
 };
 
-isAllDrones = (self.config.string("drone-free-play.value", "false") == "true") ?
+isAllDrones = (self.config.string("drone-free-play.value", "false") === "true") ?
 function () { return false; } :
 function () {
    var result = true
