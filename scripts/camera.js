@@ -9,7 +9,6 @@ var dmz =
       , matrix: require("dmz/types/matrix")
       , util: require("dmz/types/util")
       }
-
    , timeSlice
    , timeSliceFunction
    , Active = 0
@@ -43,7 +42,9 @@ timeSliceFunction = function (time) {
       state = dmz.object.state(hil);
 
       if (state && state.contains(dmz.consts.Dead)) {
+
          if (watch) {
+
             pos = dmz.vector.create([300, 50, 300]);
             ori = dmz.matrix.create().fromTwoVectors(
                dmz.vector.Forward,
@@ -53,6 +54,7 @@ timeSliceFunction = function (time) {
          }
       }
       else {
+
          watch = false;
          MaxTurn = (Math.PI * 2 * time);
          pos = dmz.object.position(hil);
@@ -81,18 +83,19 @@ timeSliceFunction = function (time) {
    }
 };
 
-//Active = 1;
-//timeSlice = dmz.time.setRepeatingTimer (self, timeSliceFunction);
 dmz.input.channel.observe(self, function (channel, state) {
+
    var hil;
 
    if (state) {  Active += 1; }
    else { Active -= 1; }
 
    if (Active === 1) {
+
       timeSlice = dmz.time.setRepeatingTimer(self, timeSliceFunction);
    }
    else if (Active === 0) {
+
       dmz.time.cancleTimer(timeSlice);
       hil = dmz.object.hil()
       if (hil) { dmz.object.scalar(hil, throttleHandle, 0); }
@@ -100,12 +103,15 @@ dmz.input.channel.observe(self, function (channel, state) {
 });
 
 dmz.input.axis.observe(self, function (channel, axis) {
+
    var value = 0
      ;
+
    if (dmz.util.isNotZero(axis.value)) {
       if (axis.value > 0) { value = 1; }
       else { value = -1; }
    }
+
    switch (axis.id) {
    case 1: break;
    case 2: backMod = (value > 0) ? Math.PI : null; break;
@@ -115,5 +121,6 @@ dmz.input.axis.observe(self, function (channel, axis) {
 });
 
 dmz.input.button.observe(self, function (channel, button) {
+
    if (button.id === 1 && button.value) { watch = true; }
 });

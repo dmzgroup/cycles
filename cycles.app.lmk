@@ -5,7 +5,7 @@ lmk.add_vars {
    majorVersion = "1",
    minorVersion = "0",
    bugVersion = "0",
-   releaseType = "beta 3",
+   releaseType = "beta 4",
    aboutImage = "./assets/DMZ-Icon.png",
 }
 lmk.add_files ({"version.xml",}, {src="version",})
@@ -30,7 +30,7 @@ app.add_config {"config/",}
 app.copy_config {"$(localTmpDir)/version.xml",}
 app.add_data {"assets/DMZ-Splash.png", "../../assets/cycles",}
 app.add_scripts {
-   "../lua/scripts/entity/dmzEntityPluginFreeFly.lua",
+   "../js/scripts/dmz",
    "scripts/",
 }
 lmk.add_vars ({
@@ -40,6 +40,7 @@ lmk.add_vars ({
       {"QtXml.framework/Versions/4/QtXml", "@executable_path/../Frameworks/Qt/QtXml"},
       {"QtSvg.framework/Versions/4/QtSvg", "@executable_path/../Frameworks/Qt/QtSvg"},
       {"QtOpenGL.framework/Versions/4/QtOpenGL", "@executable_path/../Frameworks/Qt/QtOpenGL"},
+      {"libv8.dylib", "@executable_path/../Frameworks/v8/libv8.dylib"},
    },
 }
 ,{opt = true})

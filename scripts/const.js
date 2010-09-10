@@ -85,6 +85,7 @@ dmz.util.defineConst(
    [ RedType, OrangeType, YellowType, BlueType ]);
 
 exports.testMove = function (obj, origPos, pos, ori) {
+
    var result = true
      , deathPoint
      , target
@@ -97,10 +98,12 @@ exports.testMove = function (obj, origPos, pos, ori) {
      ;
 
    if (obj) {
+
       dmz.isect.disable(obj);
       left = (ori.transform(dmz.vector.Left.multiply(0.6))).add(pos);
       right = (ori.transform(dmz.vector.Right.multiply(0.6))).add(pos);
       wiskerResults = dmz.isect.doIsect({ start: right, end: left });
+
       if (wiskerResults && wiskerResults[0]) {
 
          deathPoint = wiskerResults[0].point;
@@ -112,6 +115,7 @@ exports.testMove = function (obj, origPos, pos, ori) {
          origPos = dmz.vector.create(origPos.x, origPos.y + 0.5, origPos.z);
          pos = dmz.vector.create(pos.x, pos.y + 0.5, pos.z);
          isectResults = dmz.isect.doIsect({start: origPos, end: pos});
+
          if(isectResults && isectResults[0]) {
 
             deathPoint = isectResults[0].point;
@@ -119,6 +123,7 @@ exports.testMove = function (obj, origPos, pos, ori) {
             result = false;
          }
       }
+
       if (deathPoint) {
          state = dmz.object.state(obj);
          if (!state) { state = dmz.mask.create(); }
@@ -133,5 +138,5 @@ exports.testMove = function (obj, origPos, pos, ori) {
       dmz.isect.enable(obj);
    }
    return result;
-}
+};
 

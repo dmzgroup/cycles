@@ -76,4 +76,5 @@ Source: {#DependDir}\bin\osgplugins-2.8.0\osgdb_osgfx.dll; DestDir: {app}\bin
 Source: {#DependDir}\bin\fmodex.dll; DestDir: {app}\bin
 Source: {#DependDir}\bin\fmodexL.dll; DestDir: {app}\bin
 Source: {#DependDir}\bin\fmodexp.dll; DestDir: {app}\bin
+Source: {#DependDir}\bin\v8.dll; DestDir: {app}\bin
 Source: {#VsDir}\VC\redist\x86\Microsoft.VC80.CRT\*; DestDir: {app}\bin\Microsoft.VC80.CRT
