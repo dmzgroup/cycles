@@ -96,7 +96,7 @@ dmz.input.channel.observe(self, function (channel, state) {
    }
    else if (Active === 0) {
 
-      dmz.time.cancleTimer(timeSlice);
+      dmz.time.cancelTimer(timeSlice);
       hil = dmz.object.hil()
       if (hil) { dmz.object.scalar(hil, throttleHandle, 0); }
    }

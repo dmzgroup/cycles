@@ -181,7 +181,7 @@ dmz.input.channel.observe(self, function (channel, state) {
    else { Active -= 1; }
 
    if (Active === 1) { timeSlice = dmz.time.setRepeatingTimer(self, updateTimeSlice); }
-   else if (Active === 0) { dmz.time.cancleTimer(self, timeSlice); }
+   else if (Active === 0) { dmz.time.cancelTimer(self, timeSlice); }
 });
 
 dmz.input.button.observe(self, function (channel, button) {
